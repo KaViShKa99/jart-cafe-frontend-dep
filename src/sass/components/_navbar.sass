@@ -1,11 +1,14 @@
 .nav-bar
-    // background-color: grey
+    background-color: var(--orange)
     width: 100%
     display: flex
     justify-content: center
     align-items: center
     padding: 0 20px
-    border:1px solid grey
+    color: white
+    // border:1px solid grey
+    // position: fixed
+    // z-index: 2
 
 
 nav
@@ -19,6 +22,8 @@ nav
     margin:20px 20px 20px 20px
     width: 70%
     height: 40px
+    z-index: 2
+    color: var(--orange)
     
     
 .link-container
@@ -33,13 +38,14 @@ nav
         justify-content: center
         align-items: center
         padding: 5px
+        margin-left: 5px
         
         
         &:nth-child(2)
             width: 40px
             height: 40px
             &:hover
-                background: var(--orange)
+                background: var(--dark-orange)
                 border-radius:50%
                 cursor: pointer
                 
@@ -48,10 +54,36 @@ nav
             width: 40px
             height: 40px
             &:hover
-                background: var(--orange)
+                background: var(--dark-orange)
                 border-radius:50%
                 cursor: pointer
+    
+    .sign-in
+        // background: var(--light-blue)
+        margin: 5px 
+        width: 80px
+
+        &:hover
+            background: var(--dark-orange)
+            margin-left: 5px
+            border-radius: 20px
+            cursor: pointer
             
-                
+    .cart-container 
+        position: relative
+
+        .cart-counter 
+            position: absolute
+            top: -5px
+            right: -8px
+            background: white
+            color: var(--orange)
+            border-radius: 50%
+            padding: 2px 6px
+            font-size: 0.8rem
+            font-weight: bold
+            display: flex
+            justify-content: center
+            align-items: center
             
           

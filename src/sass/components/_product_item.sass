@@ -1,0 +1,74 @@
+.product-details
+  margin-left: 80px
+    
+.product-list
+  display: flex
+  flex-wrap: wrap
+  gap: 15px
+  margin: 10px 80px 80px 80px
+
+.item-container
+  width: 300px
+  height: 300px
+  border: 1px solid #ccc
+  box-shadow: 0 0 10px rgba(0, 0, 0.1, 0.1)
+  overflow: hidden
+  position: relative
+
+.image
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 100%
+  height: 100%
+  position: relative
+  
+
+  img
+    width: 100%
+    height: 100%
+    object-fit: cover // Ensures the image covers the area without stretching
+    transition: opacity 0.3s
+    
+  &:hover
+    cursor: pointer
+    img
+        opacity: 0.6
+
+      
+  
+  .price
+    position: absolute
+    bottom: 10px
+    left: 50%
+    transform: translateX(-50%)
+    background-color: white
+    padding: 5px 10px
+    font-size: 1rem
+    font-weight: bold
+    color: #333
+    border-radius: 20px
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1)
+
+.pagination
+  list-style: none
+  display: flex
+  justify-content: center
+  padding: 0
+  margin: 20px 0
+
+  li
+    margin: 0 5px
+    padding: 5px 10px
+    border: 0.5px solid #ccc
+    cursor: pointer
+    border-radius: 5px
+
+    &:hover
+      color: var(--orange)
+      border: 0.5px solid var(--orange)
+
+    &.active
+      background-color: var(--orange)
+      color: white
+      border: 0.5px solid #ccc
