@@ -170,18 +170,22 @@ const ProductView = () => {
   };
 
   return (
-    <div>
-      <p className="product-details">
-        <span>
+    <div className="product-view">
+      <div className="product-details">
+        <span className="products-name">Pop Arts</span>
+        <p className="products-page-info">
           Showing {indexOfFirstItem + 1} -{" "}
           {currentItems.length + indexOfFirstItem}
-        </span>{" "}
-        out of {productData.length} products
-      </p>
+          {"  "}
+          out of {productData.length} products
+        </p>
+      </div>
+
       <div className="product-list">
         {currentItems.map((product, index) => (
           <ProductItem
             key={index}
+            id={index}
             imageUrl={product.imageUrl}
             price={product.price}
           />

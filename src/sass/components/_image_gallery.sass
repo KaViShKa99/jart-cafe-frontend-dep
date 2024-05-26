@@ -1,0 +1,185 @@
+.gallery-container
+  display: flex
+  flex-direction: column
+  align-items: center
+  width: 100%
+  height: 400px
+  position: relative
+  margin-top: 100px
+
+.gallery-wrapper
+  display: flex
+  align-items: center
+  width: 80%
+  position: relative
+
+// .left-arrow, .right-arrow
+//   background-color: rgba(0, 0, 0, 0.5)
+//   color: white
+//   border: none
+//   border-radius: 50%
+//   width: 40px
+//   height: 40px
+//   display: flex
+//   justify-content: center
+//   align-items: center
+//   cursor: pointer
+//   position: absolute
+//   top: 50%
+//   transform: translateY(-50%)
+//   z-index: 1
+
+// .left-arrow
+//   left: 10px
+
+// .right-arrow
+//   right: 10px
+
+.image-container
+  width: 100%
+  height: 100%
+  display: flex
+  justify-content: center
+  align-items: center
+  overflow: hidden
+
+  img
+    width: 100%
+    height: auto
+    // border-radius: 15px
+    transition: transform 0.3s, box-shadow 0.3s
+
+    &:hover
+      transform: scale(1.05)
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(248, 86, 5, 0.6)
+      cursor: crosshair
+      
+.thumbnail-container
+  display: flex
+  justify-content: center
+  align-items: center
+  margin-top: 10px
+
+  .thumbnail
+    width: 50px
+    height: 50px
+    margin: 0 5px
+    cursor: pointer
+    opacity: 0.7
+    border: 2px solid transparent
+    transition: opacity 0.3s, border 0.3s
+
+    &.active
+      border-color: black
+      opacity: 1
+
+    &:hover
+      opacity: 1
+
+.left-arrow, .right-arrow
+  background-color: rgb(255, 252, 252)
+  color: black
+  border: none
+  border-radius: 50%
+  width: 30px
+  height: 30px
+  display: flex
+  justify-content: center
+  align-items: center
+  cursor: pointer
+  font-size: 15px
+//   position: absolute
+//   top: 50%
+  transform: translateY(-50%)
+  z-index: 1
+//   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px
+
+.left-arrow
+  left: 10px
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+  margin-right: 20px
+
+.right-arrow
+  right: 10px
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+  margin-left: 20px
+
+.overlay
+  background-color: rgba(0, 0, 0, 0.75)
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  display: flex
+  justify-content: center
+  align-items: center
+  z-index: 1000
+
+.modal
+  position: relative
+//   background: white
+  border-radius: 10px
+  max-width: 90%
+  max-height: 90%
+  padding: 20px
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3)
+  display: flex
+  justify-content: center
+  align-items: center
+
+.modal-content
+  display: flex
+  align-items: center
+
+.full-image
+  max-width: 100%
+  max-height: 80vh
+  border: solid white
+//   border-radius: 10px
+
+.close-button
+  background: var(--red)
+  position: absolute
+  top: 3px
+  right: 3px
+  border: none
+  font-size: 1.5rem
+  cursor: pointer
+  color: white
+  width: 20px
+  height: 20px
+  display: flex
+  justify-content: center
+  align-items: center
+//   background: transparent
+
+  &:hover
+    color: white
+    // width: 30px
+    // height: 40px
+
+
+.modal-left-arrow, .modal-right-arrow
+  background-color: rgb(253, 253, 253)
+  color: black
+  border: none
+  border-radius: 50%
+  width: 40px
+  height: 40px
+  display: flex
+  justify-content: center
+  align-items: center
+  cursor: pointer
+  position: absolute
+  top: 50%
+  transform: translateY(-50%)
+  z-index: 1001
+
+.modal-left-arrow
+  left: 10px
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+
+.modal-right-arrow
+  right: 10px
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
