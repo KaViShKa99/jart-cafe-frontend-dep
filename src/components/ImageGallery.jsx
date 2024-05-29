@@ -51,7 +51,6 @@ const ImageGallery = ({ images }) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  let img = images[currentIndex].imageUrl;
 
   return (
     <div className="gallery-container">
@@ -59,6 +58,7 @@ const ImageGallery = ({ images }) => {
         {/* <button onClick={goToPrevious} className="left-arrow">
           &#9664;
         </button> */}
+
         <div className="image-container">
           <img
             src={images[currentIndex]}

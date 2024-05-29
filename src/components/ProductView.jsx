@@ -182,7 +182,8 @@ const ProductView = () => {
       </div>
 
       <div className="product-list">
-        {currentItems.map((product, index) => (
+        {/* {currentItems.map((product, index) => ( */}
+        {productData.map((product, index) => (
           <ProductItem
             key={index}
             id={index}
