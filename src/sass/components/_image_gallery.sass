@@ -25,23 +25,26 @@
 
   img
     width: 100%
-    height: auto
+    // height: auto
     // margin-right: -100px
-    // height: 450px
+    height: 650px
+    transition: transform 0.3s ease-in-out
     // border-radius: 15px
-    transition: transform 0.3s, box-shadow 0.3s
+    // transition: transform 0.3s ease-in-out
+ 
 
 
     &:hover
-      transform: scale(1.05)
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(248, 86, 5, 0.6)
+      // transform: scale(0.1)
+      // box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(248, 86, 5, 0.6)
       cursor: crosshair
+      
       
 .thumbnail-container
   display: flex
   justify-content: center
   align-items: center
-  margin-top: 10px
+  margin-top: 50px
 
   .thumbnail
     width: 50px
@@ -53,7 +56,8 @@
     transition: opacity 0.3s, border 0.3s
 
     &.active
-      border-color: black
+      border-color: white
+      box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px
       opacity: 1
 
     &:hover

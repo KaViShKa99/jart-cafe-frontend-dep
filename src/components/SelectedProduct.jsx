@@ -1,108 +1,51 @@
 import { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import ImageGallery from "./ImageGallery";
-import ProductItem from "./ProductItem";
 import { useParams } from "react-router-dom";
 import productData from "../data/Data";
 
 const SelectedProduct = () => {
   const images = [
-    "https://picsum.photos/id/1018/1000/600/",
-    "https://picsum.photos/id/1015/1000/600/",
-    "https://picsum.photos/id/1013/1000/600/",
-    "https://picsum.photos/id/1019/1000/600/",
+    "/imgs/canvas.jpeg",
+    "/imgs/framed_poster.jpeg",
+    "/imgs/poster.jpeg",
+    "/imgs/prem_can_poster.jpeg",
+    "/imgs/trad_can_poster.jpeg",
+    // "https://picsum.photos/id/1018/1000/600/",
+    // "https://picsum.photos/id/1015/1000/600/",
+    // "https://picsum.photos/id/1013/1000/600/",
+    // "https://picsum.photos/id/1019/1000/600/",
   ];
   const [isPhysical, setIsPhysical] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
+  const [material, setMaterial] = useState("");
+  const [sizes, setSizes] = useState([]);
+  const [quantity, setQuantity] = useState(1);
 
-  const handleToggleChange = () => {
-    console.log("click");
-    setIsPhysical(!isPhysical);
+  const increaseQuantity = (e) => {
+    e.preventDefault();
+    setQuantity(quantity + 1);
+  };
+  const decreaseQuantity = (e) => {
+    e.preventDefault();
+    if (quantity > 1) setQuantity(quantity - 1);
   };
 
   const inputTextChange = () => {
     console.log("onchange");
   };
 
-  const [selectedIndex, setSelectedIndex] = useState(null);
-
-  const handleImageClick = (index) => {
+  const handleImageClick = (index, product) => {
+    setSelectedSizeIndex(null);
     setSelectedIndex(index);
+    setMaterial(product.name);
+    setSizes(product.size);
   };
 
-  // useEffect(() => {
-  //   setImg(productData);
-  // }, []);
-
-  // const productData = [
-  //   {
-  //     imageUrl: "src/assets/vector.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/c1.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/c2.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/c3.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/c4.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/c5.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/vector.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/vector.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/vector.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/vector.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/vector.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/vector.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/vector.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/vector.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/vector.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/vector.jpeg",
-  //     price: "3.49",
-  //   },
-  //   {
-  //     imageUrl: "src/assets/vector.jpeg",
-  //     price: "3.49",
-  //   },
-  // ];
+  const handleSizeClick = (index) => {
+    setSelectedSizeIndex(index);
+  };
 
   const { id } = useParams();
   const product = productData[id];
@@ -168,14 +111,14 @@ const SelectedProduct = () => {
                   Physical Art Print
                 </div>
               </div>
-              <label>Material :</label>
+              <label>Material : {productData && material}</label>
               <div className="material-sizes">
                 {productData &&
                   productData.map((product, index) => (
                     <div
                       key={index}
-                      className="image-container"
-                      onClick={() => handleImageClick(index)}
+                      className="material-image-container"
+                      onClick={() => handleImageClick(index, product)}
                     >
                       <img
                         src={product.imageUrl}
@@ -183,22 +126,42 @@ const SelectedProduct = () => {
                         className={selectedIndex === index ? "selected" : ""}
                       />
                       {selectedIndex === index && (
-                        <div className="checkmark">&#10003;</div>
+                        <div className="checkmark">&#10003; </div>
                       )}
                     </div>
                   ))}
               </div>
-              <label>Size: 8"x10"</label>
+              <label>Size : {productData && sizes[selectedSizeIndex]}</label>
               <div className="sizes-box">
-                <span>18"x24"</span>
-                <span>18"x24"</span>
-                <span>18"x24"</span>
-                <span>18"x24"</span>
-                <span>18"x24"</span>
+                {productData &&
+                  sizes.map((size, index) => (
+                    <div
+                      className="material-size-container"
+                      onClick={() => handleSizeClick(index)}
+                    >
+                      <span
+                        className={selectedSizeIndex === index ? "select" : ""}
+                      >
+                        {size}
+                      </span>
+                    </div>
+                  ))}
               </div>
 
               <label>Upload your photo(s)</label>
-              <input type="file" id="img" name="img" accept="image/*" />
+              <div className="file-input-container">
+                <input
+                  type="file"
+                  id="img"
+                  name="img"
+                  accept="image/*"
+                  className="file-input"
+                />
+                <label htmlFor="img" className="file-input-label">
+                  Choose Image
+                </label>
+              </div>
+
               <label>Number of Person/Pet</label>
               <select name="persons" id="persons">
                 <option value="1">1</option>
@@ -207,22 +170,40 @@ const SelectedProduct = () => {
                 <option value="4">4 (+$21.00)</option>
                 <option value="5">5 or more (+$28.00)</option>
               </select>
-              <label>Text on the painting (Optional)</label>
-              <input
-                type="text"
-                name="Text on the painting"
-                value=""
-                onChange={inputTextChange}
-              />
-              <label>Note for designer (Optional)</label>
-              <input
-                type="text"
-                name="Note for designer"
-                value=""
-                onChange={inputTextChange}
-              />
-              <label>Quantity</label>
-              <button>ADD TO CART</button>
+              <div className="input-container">
+                <label>Text on the painting (Optional)</label>
+                <input
+                  type="text"
+                  name="Text on the painting"
+                  value=""
+                  onChange={inputTextChange}
+                />
+                <label>Note for designer (Optional)</label>
+                <input
+                  type="text"
+                  name="Note for designer"
+                  value=""
+                  onChange={inputTextChange}
+                />
+              </div>
+              {/* <div className="quantity-container">
+              </div> */}
+              <div className="quantity-container">
+                <label>Quantity : {quantity}</label>
+                <div className="quantity-btn">
+                  <button className="decrease-btn" onClick={decreaseQuantity}>
+                    -
+                  </button>
+                  <span class="quantity-value">{quantity}</span>
+                  <button className="increase-btn" onClick={increaseQuantity}>
+                    +
+                  </button>
+                </div>
+                <span>Subtotal : </span>
+              </div>
+              <div className="cart-button">
+                <button>ADD TO CART</button>
+              </div>
             </form>
           </div>
         </div>
