@@ -9,8 +9,8 @@ Modal.setAppElement("#root");
 
 const ImageGallery = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [zoomStyle, setZoomStyle] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [zoomStyle, setZoomStyle] = useState({});
 
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;

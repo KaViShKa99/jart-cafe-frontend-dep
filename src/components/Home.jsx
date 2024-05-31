@@ -6,10 +6,8 @@ const Home = () => {
   return (
     <div className="main-container">
       <Navbar />
-      {/* <div className="categories">categories</div> */}
       <Categories />
       <ProductView />
-      {/* <div className="gallery">image gallery</div> */}
     </div>
   );
 };
