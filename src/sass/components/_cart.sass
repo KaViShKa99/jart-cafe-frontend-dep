@@ -1,0 +1,113 @@
+
+    
+.cart-body
+    // background: var(--light-gray)
+    display: flex
+    height: 700px
+    width: 100%
+    padding: 20px 150px 0px 150px
+
+    .cart-list
+        width: 70%
+        padding: 20px
+
+        .cart-heading
+            font-size: 25px
+            font-weight: 500
+        
+
+        .product-table
+            width: 100%
+            border-collapse: separate
+            border-spacing: 0 10px
+            margin-top: 20px
+
+            .product-details-column
+                display: flex
+                .cart-details-edit
+                    // background: var(--gray)
+                    width: 20px
+                    &:hover
+                        cursor: pointer
+                        color: var(--green)
+                .cart-remove-item
+                    // background: var(--gray)
+                    margin: 10px
+                    cursor: pointer
+
+                    &:hover
+                        color: var(--red)
+
+            tbody tr 
+                td
+                    font-size: 15px
+                    border: 1px solid var(--light-gray)
+                    padding: 20px
+
+                    .cart-product-details
+                        display: flex
+                        flex-direction: column
+                        padding: 10px 20px 10px 20px
+
+                        .design
+                            font-style: oblique
+
+                        span
+                            font-size: 15px
+                            margin-bottom: 8px
+
+                           
+
+
+                    img
+                        width: 100px
+                        height: 100px
+
+                    &:nth-child(1)      
+                        border-right: none
+                    &:nth-child(2)      
+                        // background-color: #f2f2f2
+                        border-right: none
+                        border-left: none
+                    &:nth-child(3)      
+                        border-right: none
+                        border-left: none
+                    &:nth-child(4)      
+                        border-left: none
+
+            th
+                font-size: 15px
+                font-weight: 500
+                background-color: var(--light-gray)
+                text-align: left
+                padding: 10px
+
+            
+    .order-summary
+        // background: var(--light-orange)
+        width: 30%
+        display: flex
+        flex-direction: column
+        padding: 0px 10px 10px 10px
+        margin-top: 80px
+
+        .divider
+            border-bottom: 2px solid var(--black)
+            margin: 20px 0px 20px 0px
+        .gray-divider
+            border-bottom: 1px solid var(--gray)
+            margin: 20px 0
+        div
+            margin-top: 10px
+        .summary-heading
+            font-size: 15px
+            font-weight: 500
+        .sub-total
+            margin-top: 50px
+        .total
+            // background: var(--light-orange)
+            margin-top: 50px
+
+
+
+        

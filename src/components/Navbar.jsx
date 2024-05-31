@@ -4,10 +4,13 @@ import { FiShoppingCart } from "react-icons/fi";
 import { GrFavorite } from "react-icons/gr";
 import { IoSearchOutline } from "react-icons/io5";
 import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 
 Modal.setAppElement("#root");
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const closeModal = () => {
@@ -15,6 +18,9 @@ const Navbar = () => {
   };
   const openModel = () => {
     setIsModalOpen(true);
+  };
+  const openCart = () => {
+    navigate("/cart");
   };
   const data = [
     {
@@ -76,7 +82,7 @@ const Navbar = () => {
             <li>
               <GrFavorite />
             </li>
-            <li className="cart-container">
+            <li className="cart-container" onClick={openCart}>
               <FiShoppingCart size="1rem" />
               <div className="cart-counter">3</div>
             </li>
