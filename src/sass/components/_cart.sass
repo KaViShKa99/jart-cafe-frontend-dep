@@ -1,5 +1,4 @@
 
-    
 .cart-body
     // background: var(--light-gray)
     display: flex
@@ -21,6 +20,47 @@
             border-collapse: separate
             border-spacing: 0 10px
             margin-top: 20px
+
+            .product-total
+                .cart-total
+                    font-size: 15px 
+                    font-weight: 500
+
+            .quantity-details-column
+                .quantity-container
+                    display: flex
+                    flex-direction: column
+                    width: 100%
+
+                    .quantity-btn
+                        height: auto
+                        display: flex
+
+                        .decrease-btn,.increase-btn
+                            padding: 5px
+                            width: 30%
+                            border: none
+                            border: solid 1px var(--gray)
+                            background-color: white
+                            cursor: pointer
+                            color: var(--gray)
+
+                        .decrease-btn:hover
+                            color: black
+                            background-color: var(--light-gray)
+                        .increase-btn:hover
+                            color: black
+                            background-color: var(--light-gray)
+
+                        .quantity-value
+                            padding: 5px
+                            width: 70%
+                            text-align: center
+                            border-top: solid 1px var(--gray)
+                            border-bottom: solid 1px var(--gray)
+                            background-color: white
+                            font-size: 15px
+
 
             .product-details-column
                 display: flex
@@ -44,6 +84,7 @@
                     border: 1px solid var(--light-gray)
                     padding: 20px
 
+                   
                     .cart-product-details
                         display: flex
                         flex-direction: column
@@ -56,9 +97,6 @@
                             font-size: 15px
                             margin-bottom: 8px
 
-                           
-
-
                     img
                         width: 100px
                         height: 100px
@@ -66,7 +104,6 @@
                     &:nth-child(1)      
                         border-right: none
                     &:nth-child(2)      
-                        // background-color: #f2f2f2
                         border-right: none
                         border-left: none
                     &:nth-child(3)      
@@ -84,7 +121,6 @@
 
             
     .order-summary
-        // background: var(--light-orange)
         width: 30%
         display: flex
         flex-direction: column
@@ -104,10 +140,304 @@
             font-weight: 500
         .sub-total
             margin-top: 50px
+            // background: var(--light-gray)
+            width: 100%
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+
+            // .subTotal-value
+            //     background: var(--light-orange)
+                
+
         .total
-            // background: var(--light-orange)
             margin-top: 50px
+            .total-content
+                display: flex
+                flex-direction: row
+                justify-content: space-between
+        button
+            padding: 15px
+            font-size: 15px
+            font-weight: 500
+            background: none
+            border: none
+            cursor: pointer
+            color: white
+            // border-radius: 50px
+            
+
+        .checkout-btn
+            margin-bottom: 20px
+            background: var(--green)
+            // transition: transform 0.3s, background 0.3s
+
+            &:hover
+                border: solid 1px black
+                color: black
+                background: white
+                // transform: var(--btn-scale)
+        .continue-shopping
+            color: black
+            border: solid 1px black
+            // background: var(--green)
+            // transition: transform 0.3s, background 0.3s
+
+            &:hover
+                border: solid 1px black
+                color: white
+                background: var(--black)
+                // transform: var(--btn-scale)
+
+body.no-scroll
+  overflow: hidden
+
+.cart-overlay
+    background-color: rgba(0, 0, 0, 0.75)
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    display: flex
+    justify-content: center
+    align-items: center
+    z-index: 1000
+
+.cart-edit-modal
+    position: relative
+    background: white
+    height: 70%
+    width: 65%
+    padding: 20px
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3)
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: row  
+
+    &:focus
+        border-color: black
+        outline: none 
 
 
+    .cart-edit-container
+        // background: gray
+        display: flex
+        flex-direction: column
+        width: 100%
+        height: 100%
+        .close-button
+            position: absolute
+            top: 10px
+            right: 10px
+            background: none
+            // background: black
+            width: 25px
+            height: 25px
+            // border-radius: 50%
+            border: none
+            font-size: 30px
+            cursor: pointer
+            color: black
 
+            &:hover
+                color: var(--red)
+        .cart-heading
+            font-size: var(--heading-font-size)
+            font-weight: 400
+            margin-bottom: 10px
+
+        .cart-edit-scrollbar
+            flex: 1
+            max-height: 100%
+            overflow-y: auto
+            overflow-x: hidden
+            // background: var(--light-orange)
+            border: solid 1px var(--gray)
+            padding: 10px
+
+            .cart-details-container
+                border-bottom: solid 2.5px var(--light-gray)
+                display: flex
+                flex-direction: row
+                width: 100%
+                height: 70%
+                margin-bottom: 10px
+                padding: 10px 10px 10px 0px
+    
+            .new-product-details
+                width: 35%
+                // background: var(--light-gray)
+                padding: 10px
+                .cart-edit-product-image
+                    // background: var(--light-orange)
+                    // display: flex
+                    // justify-content: center
+                    padding: 10px
+                    img
+                        width: 100px
+                        height: 100px
+                        border: 2px solid transparent
+                        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+                .cart-edit-product-details
+                    display: flex
+                    flex-direction: column
+                    padding: 10px 10px 10px 10px
+                    
+                    .cart-edit-product-text
+                        display: flex
+                        flex-direction: column
+                        margin-bottom: 10px
+                        
+                        .design
+                            font-style: oblique
+                            font-weight: 200
+                            font-size: 12px
+                        span
+                            margin-bottom: 5px
+                            font-size: 15px
+                .cart-edit-btns
+                    // background: var(--light-orange)
+                    display: flex
+                    flex-direction: row
+                    // justify-content: space-between
+                    .quantity-container
+                        display: flex
+                        flex-direction: column
+                        width: 30%
+                        margin-right: 20px
+
+                        .quantity-btn
+                            height: auto
+                            display: flex
+
+                            .decrease-btn,.increase-btn
+                                padding: 5px
+                                width: 30%
+                                border: none
+                                border: solid 1px var(--gray)
+                                background-color: white
+                                cursor: pointer
+                                color: var(--gray)
+
+                            .decrease-btn:hover
+                                color: black
+                                background-color: var(--light-gray)
+                            .increase-btn:hover
+                                color: black
+                                background-color: var(--light-gray)
+
+                            .quantity-value
+                                padding: 5px
+                                width: 70%
+                                text-align: center
+                                border-top: solid 1px var(--gray)
+                                border-bottom: solid 1px var(--gray)
+                                background-color: white
+                                font-size: 15px
+
+                    .crat-item-remove
+                       border: none
+                       cursor: pointer 
+                       background: none
+                    
+                       &:hover
+                        color: var(--red)
+                        // border: none
+            .product-edit-details
+                width: 65%
+                // background: var(--light-orange)
+
+                label
+                    font-size: 15px
+                    margin: 10px
+
+                .material-sizes
+                    // background: var(--dark-orange)
+                    width: 100%
+                    height: auto
+                    display: flex
+                    flex-direction: row
+                    gap:10px
+                    margin-bottom: 20px
+                
+                
+                .material-image-container
+                    position: relative
+                    margin: 10px
+                    
+
+                    img
+                        width: 80px 
+                        height: 100px 
+                        cursor: pointer
+                        border: 2px solid transparent
+
+                        &:hover
+                            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+
+                        &.selected
+                            border-color: green
+
+                    .checkmark
+                        position: absolute
+                        top: 5px
+                        right: 5px
+                        background-color: var(--green)
+                        color: white
+                        border-radius: 50%
+                        padding: 2px 6px
+                        font-size: 16px
+
+                .sizes-box
+                    width: 100%
+                    height: auto
+                    display: flex
+                    gap: 10px
+                    margin: 10px
+
+                    span
+                        border: solid 1px var(--light-gray)
+                        padding: 5px
+                        cursor: pointer
+                        background: var(--light-gray)
+                        // box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+
+                        &:hover
+                            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+
+                        &.select
+                            background: white
+                            border: solid 1px black
         
+        
+        .edit-container-btns
+            display: flex
+            flex-direction: row
+            margin-top: 10px
+            button
+                padding: 10px
+                font-size: 15px
+                width: 50%
+                cursor: pointer
+                border: none
+                // border: solid 1px var(--black)
+                margin: 5px 0px 0px 0px
+                color: white
+ 
+            .add-item-btn
+                margin-right: 10px
+                background: var(--black)
+
+                &:hover
+                    background: var(--dark-gray)
+            
+        
+            .edit-add-to-cart
+                background: var(--red)
+
+                &:hover
+                    color: black
+                    background: white
+                    border: solid 1px var(--black)

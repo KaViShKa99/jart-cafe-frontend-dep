@@ -11,10 +11,6 @@ const SelectedProduct = () => {
     "/imgs/poster.jpeg",
     "/imgs/prem_can_poster.jpeg",
     "/imgs/trad_can_poster.jpeg",
-    // "https://picsum.photos/id/1018/1000/600/",
-    // "https://picsum.photos/id/1015/1000/600/",
-    // "https://picsum.photos/id/1013/1000/600/",
-    // "https://picsum.photos/id/1019/1000/600/",
   ];
   const [isPhysical, setIsPhysical] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);

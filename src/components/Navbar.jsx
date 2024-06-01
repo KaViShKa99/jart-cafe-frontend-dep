@@ -79,9 +79,9 @@ const Navbar = () => {
             <li className="sign-in" onClick={openModel}>
               Sign in
             </li>
-            <li>
+            {/* <li>
               <GrFavorite />
-            </li>
+            </li> */}
             <li className="cart-container" onClick={openCart}>
               <FiShoppingCart size="1rem" />
               <div className="cart-counter">3</div>
@@ -92,7 +92,7 @@ const Navbar = () => {
       <Modal
         isOpen={isModalOpen}
         // onRequestClose={closeModal}
-        contentLabel="Image Modal"
+        contentLabel="Signin Modal"
         className="modal"
         overlayClassName="overlay"
       >
