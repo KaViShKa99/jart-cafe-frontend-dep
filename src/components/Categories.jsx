@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useStateContext } from "./StateContext";
 const Categories = () => {
-  const [activeCategory, setActiveCategory] = useState(null);
-  const handleCategoryClick = (index) => {
+  const { setSelectCategory } = useStateContext();
+  const [activeCategory, setActiveCategory] = useState(0);
+  const handleCategoryClick = (index, name) => {
     setActiveCategory(index);
+    setSelectCategory(name);
   };
   const categories = [
     {
@@ -22,13 +25,18 @@ const Categories = () => {
       imageUrl: "src/assets/c4.jpeg",
     },
   ];
+  useEffect(() => {
+    setSelectCategory("Pop art");
+    console.log(activeCategory);
+  }, []);
+
   return (
     <div className="categorie-list">
       <ul>
         {categories.map((category, index) => (
           <li
             key={index}
-            onClick={() => handleCategoryClick(index)}
+            onClick={() => handleCategoryClick(index, category.name)}
             className={activeCategory === index ? "active" : ""}
           >
             <img src={category.imageUrl} alt="Product" />

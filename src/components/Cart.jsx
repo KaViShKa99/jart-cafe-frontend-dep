@@ -4,16 +4,18 @@ import { AiOutlineDelete } from "react-icons/ai";
 import Navbar from "./Navbar";
 import Modal from "react-modal";
 import productData from "../data/Data";
+import { useStateContext } from "./StateContext";
 
 Modal.setAppElement("#root");
 
 const Cart = () => {
-  const products = [
-    { image: "/imgs/canvas.jpeg", name: "Product 1", price: 10, quantity: 1 },
-    { image: "/imgs/poster.jpeg", name: "Product 1", price: 10, quantity: 1 },
-    // { name: "Product 2", price: 15, quantity: 2 },
-    // { name: "Product 3", price: 20, quantity: 1 },
-  ];
+  const { cartArray, setCartArray } = useStateContext();
+  // const cartProducts = [
+  //   { image: "/imgs/canvas.jpeg", name: "Product 1", price: 10, quantity: 1 },
+  //   { image: "/imgs/poster.jpeg", name: "Product 1", price: 10, quantity: 1 },
+  //   // { name: "Product 2", price: 15, quantity: 2 },
+  //   // { name: "Product 3", price: 20, quantity: 1 },
+  // ];
 
   const initialCartItem = {
     material: "Canvas",
@@ -39,13 +41,21 @@ const Cart = () => {
   const [size, setSize] = useState("");
   const [total, setTotal] = useState(0);
   const [image, setImage] = useState("");
-  const [cartItem, setCartItem] = useState([initialCartItem]);
+  // const [cartItem, setCartItem] = useState([initialCartItem]);
+  const [cartItem, setCartItem] = useState([]);
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  const openCartEdit = () => {
+  const openCartEdit = (index) => {
+    const filteredProducts = cartArray.filter(
+      (product) => product.id === index
+    );
+    console.log(index);
+    console.log(filteredProducts);
+
+    setCartItem(filteredProducts);
     setIsModalOpen(true);
   };
 
@@ -71,6 +81,7 @@ const Cart = () => {
     let total = price * (quantity + 1);
     setTotal(total);
   };
+
   const decreaseQuantity = (e) => {
     e.preventDefault();
     if (quantity > 1) {
@@ -84,9 +95,21 @@ const Cart = () => {
     setCartItem([...cartItem, initialCartItem]);
   };
 
+  // const removeItem = (index) => {
+  //   const updatedCartItems = cartItem.filter((_, i) => i !== index);
+  //   setCartItem(updatedCartItems);
+  // };
+
   const removeItem = (index) => {
-    const updatedCartItems = cartItem.filter((_, i) => i !== index);
-    setCartItem(updatedCartItems);
+    // const updatedCartItems = cartItem.filter((product) => product.id !== index);
+    setCartArray((prevItem) =>
+      prevItem.filter((product) => product.id !== index)
+    );
+    setCartItem((prevItem) =>
+      prevItem.filter((product) => product.id !== index)
+    );
+    // console.log(updatedCartItems);
+    console.log(index);
   };
 
   useEffect(() => {
@@ -122,58 +145,73 @@ const Cart = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map((product, index) => (
-                <tr key={index}>
-                  <td className="product-details-column">
-                    <img src={product.image} />
-                    <div className="cart-product-details">
-                      <span>Personalized Pet portrait</span>
-
-                      <span className="design">Canvas / 12"x16" </span>
-                      <div className="cart-details-btn">
-                        <span
-                          className="cart-details-edit"
-                          onClick={openCartEdit}
-                        >
-                          <FiEdit />
-                        </span>
-                        <span className="cart-remove-item">
-                          <AiOutlineDelete />
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>${product.price.toFixed(2)}</td>
-                  <td className="quantity-details-column">
-                    {/* {product.quantity} */}
-                    <div className="quantity-container">
-                      <div className="quantity-btn">
-                        <button
-                          className="decrease-btn"
-                          onClick={decreaseQuantity}
-                        >
-                          -
-                        </button>
-                        <span className="quantity-value">{quantity}</span>
-                        <button
-                          className="increase-btn"
-                          onClick={increaseQuantity}
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="product-total">
-                    <span className="cart-total">
-                      $
-                      {calculateTotal(product.price, product.quantity).toFixed(
-                        2
-                      )}
-                    </span>
+              {cartArray.length === 0 ? (
+                <tr key="no-items">
+                  <td colSpan="4" className="empty-cart-message">
+                    <span>Your cart is currently empty.</span>
                   </td>
                 </tr>
-              ))}
+              ) : (
+                cartArray.map((product, index) => (
+                  <tr key={index}>
+                    <td className="product-details-column">
+                      <img src={product.imageUrl} />
+                      <div className="cart-product-details">
+                        <span>{product.type}</span>
+
+                        {/* <span className="design">Canvas / 12"x16" </span> */}
+                        <span className="design">
+                          {product.material} / {product.size}
+                        </span>
+                        <div className="cart-details-btn">
+                          <span
+                            className="cart-details-edit"
+                            onClick={() => openCartEdit(product.id)}
+                          >
+                            <FiEdit />
+                          </span>
+                          <span
+                            className="cart-remove-item"
+                            onClick={() => removeItem(product.id)}
+                          >
+                            <AiOutlineDelete />
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>${product.price.toFixed(2)}</td>
+                    <td className="quantity-details-column">
+                      {/* {product.quantity} */}
+                      <div className="quantity-container">
+                        <div className="quantity-btn">
+                          <button
+                            className="decrease-btn"
+                            onClick={decreaseQuantity}
+                          >
+                            -
+                          </button>
+                          <span className="quantity-value">{quantity}</span>
+                          <button
+                            className="increase-btn"
+                            onClick={increaseQuantity}
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="product-total">
+                      <span className="cart-total">
+                        $
+                        {calculateTotal(
+                          product.price,
+                          product.quantity
+                        ).toFixed(2)}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -212,16 +250,16 @@ const Cart = () => {
               <div key={index} className="cart-details-container">
                 <div className="new-product-details">
                   <div className="cart-edit-product-image">
-                    <img src={item.image} />
+                    <img src={item.imageUrl} />
                   </div>
                   <div className="cart-edit-product-details">
                     <div className="cart-edit-product-text">
-                      <span>Personalized Pet portrait</span>
+                      <span>{item.type}</span>
 
                       <span className="design">
-                        {item.material} / {item.size[0].s}{" "}
+                        {item.material} / {item.size}
                       </span>
-                      <span>$ {item.size[0].p}</span>
+                      <span>$ {item.price}</span>
                     </div>
                     <div className="cart-edit-btns">
                       <div className="quantity-container">
@@ -243,9 +281,8 @@ const Cart = () => {
                       </div>
                       <button
                         className="crat-item-remove"
-                        onClick={() => removeItem(index)}
+                        onClick={() => removeItem(item.id)}
                       >
-                        {/* remove */}
                         <AiOutlineDelete />
                       </button>
                     </div>

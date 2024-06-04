@@ -3,8 +3,13 @@ import Navbar from "./Navbar";
 import ImageGallery from "./ImageGallery";
 import { useParams } from "react-router-dom";
 import productData from "../data/Data";
+import { useStateContext } from "./StateContext";
 
 const SelectedProduct = () => {
+  const { selectCategory, cartArray, setCartArray } = useStateContext();
+
+  const { id } = useParams();
+
   const images = [
     "/imgs/canvas.jpeg",
     "/imgs/framed_poster.jpeg",
@@ -12,15 +17,19 @@ const SelectedProduct = () => {
     "/imgs/prem_can_poster.jpeg",
     "/imgs/trad_can_poster.jpeg",
   ];
+  const [filteredProducts, setFilteredProducts] = useState(null);
   const [isPhysical, setIsPhysical] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
   const [material, setMaterial] = useState("");
   const [sizesArray, setSizesArray] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const [price, setPrice] = useState("0.00");
+  const [price, setPrice] = useState("56.00");
   const [size, setSize] = useState("");
   const [total, setTotal] = useState(0);
+  const [designerNote, setDesignerNote] = useState("");
+  const [paintingNote, setPaintingNote] = useState("");
+  const [purchaseItemDetails, setPurchaseItemDetails] = useState([]);
 
   const increaseQuantity = (e) => {
     e.preventDefault();
@@ -37,8 +46,12 @@ const SelectedProduct = () => {
     }
   };
 
-  const inputTextChange = () => {
-    console.log("onchange");
+  const paintingInputTextChange = (e) => {
+    setPaintingNote(e.target.value);
+  };
+
+  const designerInputTextChange = (e) => {
+    setDesignerNote(e.target.value);
   };
 
   const handleImageClick = (index, product) => {
@@ -56,8 +69,46 @@ const SelectedProduct = () => {
     setTotal(size.p);
   };
 
-  const { id } = useParams();
-  const product = productData[id];
+  const addTocart = (e) => {
+    e.preventDefault();
+    const productToAdd = {
+      id: filteredProducts.id,
+      type: selectCategory,
+      price: price,
+      name: filteredProducts.name,
+      imageUrl: filteredProducts.imageUrl,
+      quantity: quantity,
+      material: material,
+      size: size,
+      designerNote: designerNote,
+      paintingNote: paintingNote,
+    };
+
+    setCartArray((prevCartArray) => {
+      if (prevCartArray.length !== 0) {
+        const findItem = prevCartArray.find((product) => product.id == id);
+        if (findItem) {
+          return [...prevCartArray];
+        } else {
+          return [...prevCartArray, productToAdd];
+        }
+      } else {
+        return [productToAdd];
+      }
+    });
+  };
+
+  useEffect(() => {
+    console.log(cartArray);
+  }, [cartArray]);
+
+  useEffect(() => {
+    const product = productData.find((product) => product.id == id);
+    if (product) {
+      setFilteredProducts(product);
+      setPrice(product.price);
+    }
+  }, [id]);
 
   // if (!product) {
   //   return <div>Product not found</div>;
@@ -78,12 +129,12 @@ const SelectedProduct = () => {
           <ImageGallery images={images} />
         </div>
         <div className="product-description">
-          <div className="product-category">Pop Arts</div>
+          <div className="product-category">{selectCategory}</div>
           <div className="product-price">
             <span className="original-price">
-              <del>$80.00</del>
+              <del>$ 80.00</del>
             </span>
-            <span className="discount-price">${price}.00</span>
+            <span className="discount-price">$ {price}</span>
           </div>
           <div className="product-pharagraph">
             Custom pop art portrait, WPAP, Custom portrait, Portrait
@@ -92,7 +143,7 @@ const SelectedProduct = () => {
           </div>
 
           <div className="product-form">
-            <form>
+            <form className="product-form-body">
               <div
                 className={`toggle-container ${
                   isPhysical ? "is-physical" : "is-digital"
@@ -122,7 +173,9 @@ const SelectedProduct = () => {
               </div>
               {isPhysical && (
                 <div className="physical-art-details">
-                  <label>Material : {productData && material}</label>
+                  <label htmlFor="selected-material-design">
+                    Material : {productData && material}
+                  </label>
                   <div className="material-sizes">
                     {productData &&
                       productData.map((product, index) => (
@@ -132,6 +185,7 @@ const SelectedProduct = () => {
                           onClick={() => handleImageClick(index, product)}
                         >
                           <img
+                            id="selected-material-design"
                             src={product.imageUrl}
                             alt="Product"
                             className={
@@ -144,7 +198,9 @@ const SelectedProduct = () => {
                         </div>
                       ))}
                   </div>
-                  <label>Size : {productData && size}</label>
+                  <label htmlFor="selected-size">
+                    Size : {productData && size}
+                  </label>
                   <div className="sizes-box">
                     {productData &&
                       sizesArray.map((size, index) => (
@@ -155,6 +211,7 @@ const SelectedProduct = () => {
                         >
                           <span
                             // key={index}
+                            id="selected-size"
                             className={
                               selectedSizeIndex === index ? "select" : ""
                             }
@@ -167,7 +224,7 @@ const SelectedProduct = () => {
                 </div>
               )}
 
-              <label>Upload your photo(s)</label>
+              <label htmlFor="img">Upload your photo(s)</label>
               <div className="file-input-container">
                 <input
                   type="file"
@@ -182,7 +239,7 @@ const SelectedProduct = () => {
               </div>
               <div className="select-options">
                 <div className="number-persons">
-                  <label>Number of Person/Pet</label>
+                  <label htmlFor="persons">Number of Person/Pet</label>
                   <select name="persons" id="persons">
                     <option value="1">1</option>
                     <option value="2">2 (+$7.00)</option>
@@ -194,7 +251,7 @@ const SelectedProduct = () => {
                 {!isPhysical && (
                   <div className="digital-image-details">
                     <div className="digital-image-style">
-                      <label>Style</label>
+                      <label htmlFor="styles">Style</label>
                       <select name="styles" id="styles">
                         <option value="1">Select a style</option>
                         <option value="2">
@@ -207,7 +264,7 @@ const SelectedProduct = () => {
                       </select>
                     </div>
                     <div className="digital-image-figures">
-                      <label>Figures</label>
+                      <label htmlFor="figures">Figures</label>
                       <select name="figures" id="figures">
                         <option value="0">Select an option</option>
                         <option value="1">1 figure (USD 34.00)</option>
@@ -223,41 +280,59 @@ const SelectedProduct = () => {
               <div className="input-container">
                 {isPhysical && (
                   <div className="text-on-painting">
-                    <label>Text on the painting (Optional)</label>
+                    <label htmlFor="text-on-painting">
+                      Text on the painting (Optional)
+                    </label>
                     <input
+                      id="text-on-painting"
                       type="text"
                       name="Text on the painting"
-                      value=""
-                      onChange={inputTextChange}
+                      value={paintingNote}
+                      onChange={paintingInputTextChange}
                     />
                   </div>
                 )}
                 <div className="designer-note">
-                  <label>Note for designer (Optional)</label>
-                  <input
-                    type="text"
-                    name="Note for designer"
-                    value=""
-                    onChange={inputTextChange}
-                  />
+                  <label htmlFor="designer-note">
+                    Note for designer (Optional) {designerNote}
+                  </label>
+                  <textarea
+                    id="designer-note"
+                    name="designer-note"
+                    rows="4"
+                    cols="50"
+                    value={designerNote}
+                    onChange={designerInputTextChange}
+                  ></textarea>
                 </div>
               </div>
 
               <div className="quantity-container">
-                <label>Quantity : {quantity}</label>
+                <label htmlFor="q-value">Quantity : {quantity}</label>
                 <div className="quantity-btn">
-                  <button className="decrease-btn" onClick={decreaseQuantity}>
+                  <button
+                    id="q-value"
+                    className="decrease-btn"
+                    onClick={decreaseQuantity}
+                  >
                     -
                   </button>
                   <span className="quantity-value">{quantity}</span>
-                  <button className="increase-btn" onClick={increaseQuantity}>
+                  <button
+                    id="q-value"
+                    className="increase-btn"
+                    onClick={increaseQuantity}
+                  >
                     +
                   </button>
                 </div>
                 <span>Subtotal : $ {total} </span>
               </div>
               <div className="cart-button">
-                <button>ADD TO CART</button>
+                <button className="buy-it-now-btn">Buy it now</button>
+                <button className="add-to-cart-btn" onClick={addTocart}>
+                  ADD TO CART
+                </button>
               </div>
             </form>
           </div>

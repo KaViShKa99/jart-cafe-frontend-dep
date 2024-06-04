@@ -1,7 +1,8 @@
-import vectorImg from "../assets/vector.jpeg";
-
 const materialDesign = [
   {
+    id: 1,
+    type: "Pop art",
+    price: 30,
     name: "Canvas",
     imageUrl: "/imgs/canvas.jpeg",
     size: [
@@ -13,6 +14,9 @@ const materialDesign = [
     ],
   },
   {
+    id: 2,
+    type: "Pop art",
+    price: 34,
     name: "Poster",
     imageUrl: "/imgs/framed_poster.jpeg",
     size: [
@@ -23,6 +27,9 @@ const materialDesign = [
     ],
   },
   {
+    id: 3,
+    type: "Cartoon art",
+    price: 70,
     name: "Framed poster",
     imageUrl: "/imgs/poster.jpeg",
     size: [
@@ -32,6 +39,9 @@ const materialDesign = [
     ],
   },
   {
+    id: 4,
+    type: "Vector art",
+    price: 40,
     name: "Traditional Framed Canvas",
     imageUrl: "/imgs/prem_can_poster.jpeg",
     size: [
@@ -43,6 +53,9 @@ const materialDesign = [
     ],
   },
   {
+    id: 5,
+    type: "Pet portrait",
+    price: 60,
     name: "Premium Framed Canvas",
     imageUrl: "/imgs/trad_can_poster.jpeg",
     size: [

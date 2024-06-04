@@ -1,79 +1,83 @@
 import { useState, useEffect } from "react";
 import ProductItem from "./ProductItem";
+import Data from "../data/Data";
+import { useStateContext } from "./StateContext";
 
 const ProductView = () => {
-  const productData = [
-    {
-      imageUrl: "src/assets/vector.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/c1.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/c2.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/c3.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/c4.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/c5.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/vector.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/vector.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/vector.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/vector.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/vector.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/vector.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/vector.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/vector.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/vector.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/vector.jpeg",
-      price: "3.49",
-    },
-    {
-      imageUrl: "src/assets/vector.jpeg",
-      price: "3.49",
-    },
-  ];
+  const { selectCategory } = useStateContext();
+  // const productData = [
+  //   {
+  //     imageUrl: "src/assets/vector.jpeg",
+  //     price: "3.49",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/c1.jpeg",
+  //     price: "3.49",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/c2.jpeg",
+  //     price: "44",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/c3.jpeg",
+  //     price: "50",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/c4.jpeg",
+  //     price: "80",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/c5.jpeg",
+  //     price: "34",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/canvas.jpeg",
+  //     price: "20",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/poster.jpeg",
+  //     price: "38",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/vector.jpeg",
+  //     price: "70",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/vector.jpeg",
+  //     price: "3.49",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/vector.jpeg",
+  //     price: "3.49",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/vector.jpeg",
+  //     price: "3.49",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/vector.jpeg",
+  //     price: "3.49",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/vector.jpeg",
+  //     price: "3.49",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/vector.jpeg",
+  //     price: "3.49",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/vector.jpeg",
+  //     price: "3.49",
+  //   },
+  //   {
+  //     imageUrl: "src/assets/vector.jpeg",
+  //     price: "3.49",
+  //   },
+  // ];
 
   const [currentPage, setCurrentPage] = useState([]);
+  const [productData, setProductData] = useState([]);
   const itemsPerPage = 12;
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -82,10 +86,9 @@ const ProductView = () => {
 
   const totalPages = Math.ceil(productData.length / itemsPerPage);
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, []);
-
+  const filteredProducts = productData.filter(
+    (product) => product.type === selectCategory
+  );
   const handlePageClick = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -169,26 +172,31 @@ const ProductView = () => {
     return pageNumbers;
   };
 
+  useEffect(() => {
+    setCurrentPage(1);
+    setProductData(Data);
+    console.log(selectCategory);
+  }, []);
+
   return (
     <div className="product-view">
       <div className="product-details">
-        <span className="products-name">Pop Arts</span>
+        <span className="products-name">{selectCategory}</span>
         <p className="products-page-info">
-          Showing {indexOfFirstItem + 1} -{" "}
+          Showing {indexOfFirstItem + 1} -
           {currentItems.length + indexOfFirstItem}
-          {"  "}
           out of {productData.length} products
         </p>
       </div>
 
       <div className="product-list">
-        {/* {currentItems.map((product, index) => ( */}
-        {productData.map((product, index) => (
+        {filteredProducts.map((product, index) => (
           <ProductItem
             key={index}
-            id={index}
-            imageUrl={product.imageUrl}
-            price={product.price}
+            product={product}
+            // id={product.id}
+            // imageUrl={product.imageUrl}
+            // price={product.price}
           />
         ))}
       </div>

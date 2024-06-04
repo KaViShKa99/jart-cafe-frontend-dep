@@ -5,11 +5,13 @@ import { GrFavorite } from "react-icons/gr";
 import { IoSearchOutline } from "react-icons/io5";
 import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
+import { useStateContext } from "./StateContext";
 
 Modal.setAppElement("#root");
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { cartArray } = useStateContext();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -22,6 +24,10 @@ const Navbar = () => {
   const openCart = () => {
     navigate("/cart");
   };
+  const openHome = () => {
+    navigate("/");
+  };
+
   const data = [
     {
       key: "john",
@@ -60,10 +66,13 @@ const Navbar = () => {
 
   return (
     <div className="nav-bar">
-      <nav>
-        <span>Jart Cafe</span>
+      <nav id="nav-bar">
+        <span className="home-icon" onClick={openHome}>
+          Jart Cafe
+        </span>
         <div className="search">
           <ReactSearchBox
+            id="search-box"
             placeholder="Search in Jart Cafe"
             value="Doe"
             data={data}
@@ -79,12 +88,9 @@ const Navbar = () => {
             <li className="sign-in" onClick={openModel}>
               Sign in
             </li>
-            {/* <li>
-              <GrFavorite />
-            </li> */}
             <li className="cart-container" onClick={openCart}>
               <FiShoppingCart size="1rem" />
-              <div className="cart-counter">3</div>
+              <div className="cart-counter">{cartArray.length}</div>
             </li>
           </ul>
         </div>
@@ -93,17 +99,18 @@ const Navbar = () => {
         isOpen={isModalOpen}
         // onRequestClose={closeModal}
         contentLabel="Signin Modal"
-        className="modal"
+        className="signup-modal"
         overlayClassName="overlay"
       >
         <div className="login-model-content">
           <button className="close-button" onClick={closeModal}>
             &times;
           </button>
-          <form>
+          <form id="signup-form">
             <label className="signup-heading">Create your Account</label>
             <label className="required">Email address</label>
             <input
+              id="email"
               type="text"
               name="email"
               value=""
@@ -112,6 +119,7 @@ const Navbar = () => {
             />
             <label className="required">Password</label>
             <input
+              id="password"
               className="password"
               type="text"
               name="password"
@@ -119,9 +127,9 @@ const Navbar = () => {
               placeholder="Password"
               // onChange={inputTextChange}
             />
-            <button>LOGIN</button>
+            <button className="login-btn">LOGIN</button>
             <label>Forgot your password?</label>
-            <button>CREATE AN ACCOUNT</button>
+            <button className="create-account-btn">CREATE AN ACCOUNT</button>
           </form>
         </div>
       </Modal>
