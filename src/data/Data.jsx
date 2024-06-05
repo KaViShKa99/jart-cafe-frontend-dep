@@ -2,8 +2,8 @@ const materialDesign = [
   {
     id: 1,
     type: "Pop art",
-    price: 30,
     name: "Canvas",
+    price: 30,
     imageUrl: "/imgs/canvas.jpeg",
     size: [
       { s: '12"x16"', p: 30.0 },
