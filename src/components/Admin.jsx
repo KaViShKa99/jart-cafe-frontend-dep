@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+// import axios from "axios";
+import { storage } from "../config/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export const Admin = () => {
   const categories = [
@@ -23,6 +26,7 @@ export const Admin = () => {
   const [material, setMaterial] = useState("");
   const [materialName, setMaterialName] = useState("");
   const [price, setPrice] = useState("");
+  const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [sizes, setSizes] = useState([]);
   const [newSize, setNewSize] = useState({ s: "", p: "" });
@@ -50,6 +54,7 @@ export const Admin = () => {
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     const newImagePreviews = files.map((file) => URL.createObjectURL(file));
+    setImageFiles([...imageFiles, ...files]);
     setImagePreviews([...imagePreviews, ...newImagePreviews]);
   };
 
@@ -65,6 +70,7 @@ export const Admin = () => {
   };
 
   const removeImage = (index) => {
+    setImageFiles(imageFiles.filter((_, i) => i !== index));
     setImagePreviews(imagePreviews.filter((_, i) => i !== index));
   };
 
@@ -72,10 +78,52 @@ export const Admin = () => {
     setSizes(sizes.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission logic here
-    alert("Form submitted!");
+
+    // Upload images to Firebase Storage and get URLs
+    // const uploadPromises = imageFiles.map((file) => {
+    //   console.log(file.name);
+    //   // const storageRef = storage.ref(`images/${file.name}`);
+    //   const storageRef = ref(storage, `images/${file.name}`);
+    //   uploadBytes(storageRef, file).then(() => {
+    //     alert("image uploaded");
+    //   });
+    //   // return storageRef
+    //   //   .put(file)
+    //   //   .then((snapshot) => snapshot.ref.getDownloadURL());
+    // });
+
+    const uploadPromises = imageFiles.map(async (file) => {
+      console.log(file.name);
+      const storageRef = ref(storage, `images/${file.name}`);
+
+      // Upload the file and get the download URL
+      try {
+        const snapshot = await uploadBytes(storageRef, file);
+        console.log("Image uploaded successfully");
+        return getDownloadURL(snapshot.ref);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    });
+
+    try {
+      const imageUrls = await Promise.all(uploadPromises);
+      console.log(imageUrls);
+      const formData = {
+        category,
+        material,
+        price,
+        images: imageUrls,
+        sizes,
+      };
+
+      // const response = await axios.post("/api/admin/submit", formData);
+      console.log("Form submitted successfully:", response.data);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
