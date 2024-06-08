@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import ProductItem from "./ProductItem";
 import Data from "../data/Data";
 import { useStateContext } from "./StateContext";
+import axios from "axios";
 
 const ProductView = () => {
-  const { selectCategory } = useStateContext();
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const { selectCategory, products, setProducts } = useStateContext();
   // const productData = [
   //   {
   //     imageUrl: "src/assets/vector.jpeg",
@@ -82,11 +84,11 @@ const ProductView = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = productData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(productData.length / itemsPerPage);
+  const totalPages = Math.ceil(products.length / itemsPerPage);
 
-  const filteredProducts = productData.filter(
+  const filteredProducts = products.filter(
     (product) => product.type === selectCategory
   );
   const handlePageClick = (pageNumber) => {
@@ -174,8 +176,17 @@ const ProductView = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-    setProductData(Data);
-    console.log(selectCategory);
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(backendUrl)
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching artworks:", error);
+      });
   }, []);
 
   return (
@@ -185,7 +196,7 @@ const ProductView = () => {
         <p className="products-page-info">
           Showing {indexOfFirstItem + 1} -
           {currentItems.length + indexOfFirstItem}
-          out of {productData.length} products
+          out of {products.length} products
         </p>
       </div>
 

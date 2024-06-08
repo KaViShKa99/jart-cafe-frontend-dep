@@ -6,6 +6,7 @@ export const StateProvider = ({ children }) => {
   const [selectCategory, setSelectCategory] = useState(null);
   const [selectProduct, setSelectProduct] = useState(null);
   const [cartArray, setCartArray] = useState([]);
+  const [products, setProducts] = useState([]);
   return (
     <stateContext.Provider
       value={{
@@ -15,6 +16,8 @@ export const StateProvider = ({ children }) => {
         setSelectProduct,
         cartArray,
         setCartArray,
+        products,
+        setProducts,
       }}
     >
       {children}

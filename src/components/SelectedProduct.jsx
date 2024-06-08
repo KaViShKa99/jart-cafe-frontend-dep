@@ -4,8 +4,11 @@ import ImageGallery from "./ImageGallery";
 import { useParams } from "react-router-dom";
 import productData from "../data/Data";
 import { useStateContext } from "./StateContext";
+import axios from "axios";
 
 const SelectedProduct = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   const { selectCategory, cartArray, setCartArray } = useStateContext();
 
   const { id } = useParams();
@@ -29,7 +32,7 @@ const SelectedProduct = () => {
   const [total, setTotal] = useState(0);
   const [designerNote, setDesignerNote] = useState("");
   const [paintingNote, setPaintingNote] = useState("");
-  const [purchaseItemDetails, setPurchaseItemDetails] = useState([]);
+  const [mainImages, setMainImages] = useState([]);
 
   const increaseQuantity = (e) => {
     e.preventDefault();
@@ -72,11 +75,11 @@ const SelectedProduct = () => {
   const addTocart = (e) => {
     e.preventDefault();
     const productToAdd = {
-      id: filteredProducts.id,
+      id: filteredProducts.artworkId,
       type: selectCategory,
       price: price,
-      name: filteredProducts.name,
-      imageUrl: filteredProducts.imageUrl,
+      name: filteredProducts.material,
+      imageUrl: filteredProducts.images[0].url,
       quantity: quantity,
       material: material,
       size: size,
@@ -99,16 +102,20 @@ const SelectedProduct = () => {
   };
 
   useEffect(() => {
-    console.log(cartArray);
-  }, [cartArray]);
-
-  useEffect(() => {
-    const product = productData.find((product) => product.id == id);
-    if (product) {
-      setFilteredProducts(product);
-      setPrice(product.price);
-    }
-  }, [id]);
+    axios
+      .get(backendUrl + `/${id}`)
+      .then((response) => {
+        let product = response.data;
+        setMainImages(product.images);
+        setFilteredProducts(product);
+        setPrice(product.price);
+        // console.log(product);
+        // console.log(product.price);
+      })
+      .catch((error) => {
+        console.log("error fetching data for id", error);
+      });
+  }, []);
 
   // if (!product) {
   //   return <div>Product not found</div>;
@@ -126,7 +133,7 @@ const SelectedProduct = () => {
       <Navbar />
       <div className="selected-product-container">
         <div className="product-image">
-          <ImageGallery images={images} />
+          <ImageGallery images={mainImages} />
         </div>
         <div className="product-description">
           <div className="product-category">{selectCategory}</div>

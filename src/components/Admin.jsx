@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 import { storage } from "../config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -29,7 +29,7 @@ export const Admin = () => {
   const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [sizes, setSizes] = useState([]);
-  const [newSize, setNewSize] = useState({ s: "", p: "" });
+  const [newSize, setNewSize] = useState({ design: "", price: "" });
 
   const handleCategoryChange = (event) => {
     const selectedCategory = categories.find(
@@ -63,9 +63,9 @@ export const Admin = () => {
   };
 
   const addNewSize = () => {
-    if (newSize.s && newSize.p) {
+    if (newSize.design && newSize.price) {
       setSizes([...sizes, newSize]);
-      setNewSize({ s: "", p: "" });
+      setNewSize({ design: "", price: "" });
     }
   };
 
@@ -112,14 +112,19 @@ export const Admin = () => {
       const imageUrls = await Promise.all(uploadPromises);
       console.log(imageUrls);
       const formData = {
-        category,
-        material,
-        price,
-        images: imageUrls,
-        sizes,
+        type: categoryName,
+        material: materialName,
+        price: price,
+        imageUrl: imageUrls,
+        size: sizes,
       };
 
-      // const response = await axios.post("/api/admin/submit", formData);
+      console.log(formData);
+
+      const response = await axios.post(
+        "http://localhost:8080/api/artworks",
+        formData
+      );
       console.log("Form submitted successfully:", response.data);
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -193,8 +198,8 @@ export const Admin = () => {
         <label>Sizes</label>
         {sizes.map((size, index) => (
           <div key={index} className="size-input">
-            <span>{size.s}</span>
-            <span> - ${size.p}</span>
+            <span>{size.design}</span>
+            <span> - ${size.price}</span>
             <button type="button" onClick={() => removeSize(index)}>
               Remove
             </button>
@@ -206,8 +211,8 @@ export const Admin = () => {
           <select
             name="newSize"
             id="newSize"
-            value={newSize.s}
-            onChange={(e) => handleNewSizeChange("s", e.target.value)}
+            value={newSize.design}
+            onChange={(e) => handleNewSizeChange("design", e.target.value)}
           >
             <option value="">Select a size</option>
             {commonSizes.map((size, index) => (
@@ -218,8 +223,8 @@ export const Admin = () => {
           </select>
           <input
             type="text"
-            value={newSize.p}
-            onChange={(e) => handleNewSizeChange("p", e.target.value)}
+            value={newSize.price}
+            onChange={(e) => handleNewSizeChange("price", e.target.value)}
             placeholder="Enter price"
           />
           <button type="button" onClick={addNewSize}>
@@ -261,7 +266,7 @@ export const Admin = () => {
           <ul>
             {sizes.map((size, index) => (
               <li key={index}>
-                {size.s} - ${size.p}
+                {size.design} - ${size.price}
               </li>
             ))}
           </ul>

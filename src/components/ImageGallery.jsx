@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -11,21 +11,27 @@ const ImageGallery = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [zoomStyle, setZoomStyle] = useState({});
+  const [selectImage, setSelectImage] = useState("");
 
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? images.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
+    setSelectImage(images[newIndex].url);
   };
 
   const goToNext = () => {
     const isLastSlide = currentIndex === images.length - 1;
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
+    setSelectImage(images[newIndex].url);
   };
-  const goToImage = (index) => {
+
+  const goToImage = (index, image) => {
+    setSelectImage(image);
     setCurrentIndex(index);
   };
+
   const handleMouseMove = (e) => {
     const { left, top, width, height } = e.target.getBoundingClientRect();
     const x = ((e.clientX - left) / width) * 100;
@@ -52,26 +58,40 @@ const ImageGallery = ({ images }) => {
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [isModalOpen]);
+
   return (
     <div className="gallery-container">
       <div className="gallery-wrapper">
-        {/* <button onClick={goToPrevious} className="left-arrow">
-          &#9664;
-        </button> */}
-
         <div className="image-container">
-          <img
-            src={images[currentIndex]}
-            alt="gallery"
-            style={zoomStyle}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            onClick={() => openModal(currentIndex)}
-          />
+          {images && images.length > 0 && (
+            <img
+              src={
+                !isModalOpen
+                  ? currentIndex === 0
+                    ? images[0].url
+                    : selectImage
+                  : images[0].url
+              }
+              alt="gallery"
+              style={zoomStyle}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              onClick={() => openModal(currentIndex)}
+            />
+          )}
         </div>
-        {/* <button onClick={goToNext} className="right-arrow">
-          &#9654;
-        </button> */}
       </div>
       <div className="thumbnail-container">
         <button onClick={goToPrevious} className="left-arrow">
@@ -80,10 +100,10 @@ const ImageGallery = ({ images }) => {
         {images.map((image, index) => (
           <img
             key={index}
-            src={image}
+            src={image.url}
             alt={`thumbnail ${index}`}
             className={`thumbnail ${index === currentIndex ? "active" : ""}`}
-            onClick={() => goToImage(index)}
+            onClick={() => goToImage(index, image.url)}
           />
         ))}
         <button onClick={goToNext} className="right-arrow">
@@ -105,11 +125,13 @@ const ImageGallery = ({ images }) => {
             {/* &#9664; */}
             <MdOutlineKeyboardArrowLeft />
           </button>
-          <img
-            src={images[currentIndex]}
-            alt="full-size gallery"
-            className="full-image"
-          />
+          {images && images.length > 0 && (
+            <img
+              src={currentIndex === 0 ? images[0].url : selectImage}
+              alt="full-size gallery"
+              className="full-image"
+            />
+          )}
           <button onClick={goToNext} className="modal-right-arrow">
             {/* &#9654; */}
             <MdOutlineKeyboardArrowRight />
