@@ -180,7 +180,7 @@ const ProductView = () => {
 
   useEffect(() => {
     axios
-      .get(backendUrl)
+      .get(backendUrl + `/artworks`)
       .then((response) => {
         setProducts(response.data);
       })

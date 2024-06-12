@@ -37,6 +37,7 @@ nav
         margin: 0
 
     li
+        // background: var(--light-blue)
         display: flex
         justify-content: center
         align-items: center
@@ -44,25 +45,24 @@ nav
         margin-left: 5px
         
         
-        &:nth-child(2)
-            width: 40px
-            height: 40px
-            &:hover
-                background: var(--dark-orange)
-                border-radius:50%
-                cursor: pointer
+        // &:nth-child(2)
+        //     width: 40px
+        //     height: 40px
+        //     &:hover
+        //         background: var(--dark-orange)
+        //         border-radius:50%
+        //         cursor: pointer
                 
 
-        &:nth-child(3)
-            width: 40px
-            height: 40px
-            &:hover
-                background: var(--dark-orange)
-                border-radius:50%
-                cursor: pointer
+        // &:nth-child(3)
+        //     width: 40px
+        //     height: 40px
+        //     &:hover
+        //         background: var(--dark-orange)
+        //         border-radius:50%
+        //         cursor: pointer
     
     .sign-in
-        // background: var(--light-blue)
         margin: 5px 
         width: 80px
 
@@ -74,20 +74,48 @@ nav
             
     .cart-container 
         position: relative
+        // width: 40px
+        // height: 40px
+        // background: var(--dark-orange)
+
+        .cart-btn
+            width: 40px
+            height: 40px
+            // background: var(--dark-orange)
+            display: flex
+            justify-content: center
+            align-items: center
+            &:hover
+                background: var(--dark-orange)
+                border-radius:50%
+                cursor: pointer
+            // .cart-icon
+            //     background: var(--light-blue)
+
+       
 
         .cart-counter 
             position: absolute
-            top: -5px
-            right: -8px
+            top: -2px
+            right: -6px
             background: white
             color: var(--orange)
             border-radius: 50%
-            padding: 2px 6px
+            // padding: 2px 6px
+            padding: 1px 7px
             font-size: 0.8rem
             font-weight: bold
             display: flex
             justify-content: center
             align-items: center
+            
+
+.icon-button-hover 
+    color: white !important
+    background: none !important
+    &:hover
+        background: var(--dark-orange) !important
+
 
 body.no-scroll
   overflow: hidden
@@ -146,56 +174,67 @@ body.no-scroll
         display: flex
         justify-content: center
         flex-direction: column
-        // gap: 20px
-
+  
+            
+    .signup-form,.signin-form,.forgot-password-form
+        .forgot-password-heading
+            font-size: 25px
+            font-weight: 300
+            margin-bottom: 40px
+        .signin-heading
+            font-size: 25px
+            font-weight: 300
+            margin-bottom: 40px
         .signup-heading
             font-size: 25px
             font-weight: 300
-        
-        label
-            font-size: 16px
-            margin-bottom: 10px
-            margin-top: 30px
+            margin-bottom: 40px
+        .required-label-input-container
+            display: flex
+            justify-content: center
+            flex-direction: column
+            margin-bottom: 20px
+            label
+                font-size: 16px
+                margin-bottom: 5px
+                #required
+                    margin-bottom: 10px
+                    &:after
+                        content: '*'
+                        color: red
+                        margin-left: 2px
 
-        .required
-            &:after
-                content: '*'
-                color: red
-                margin-left: 2px
-
-        input
-            height: 40px
-            border: solid 1px var(--gray)
-            font-size: 15px
-            padding-left: 10px
-
-            // &::placeholder
-            //     padding-left: 10px
-
-            &:focus
-                border-color: black
-                outline: none
-        .password
-            margin-bottom: 50px
-        button
-            height: 50px
-            background: none
-            border: none
-            font-size: 16px
-            font-weight: 400
-            color: white
-            cursor: pointer
-            // border-radius: 50px
-
-            &:hover 
-                transform: scale(1.02)
-        .login-btn
-            background: var(--black)
-        .create-account-btn
-            background: var(--green)
-                
-            
-        
-
-            
+            input
+                font-size: 15px
+                height: 50px
+                padding-left: 10px
+                border: solid 1px var(--gray)
+                border-radius: 5px
+                &:focus
+                    border-color: black
+                    outline: none
+            .error
+                font-size: 16px
+                color: red  
           
+        .button-container
+            display: flex
+            width: 100%
+            justify-content: center
+            flex-direction: column
+            button
+                margin: 5px 0px 10px 0px
+                height: 50px
+                background: none
+                border: none
+                font-size: 16px
+                font-weight: 400
+                color: white
+                cursor: pointer
+                border-radius: 5px
+                &:hover 
+                    transform: scale(1.02)
+            .create-account-btn
+                background: var(--orange)
+            .login-btn
+                background: var(--black)

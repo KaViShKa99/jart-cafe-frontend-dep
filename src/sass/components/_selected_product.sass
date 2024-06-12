@@ -1,356 +1,72 @@
 .selected-product-container
+    // background: grey
+    display: flex
+    flex-direction: row
+    margin: 10px
+.reviews-and-shipping
+    margin: 10px
+    // background: yellow
     display: flex
     flex-direction: row
     justify-content: center
-    align-items: center
-    margin: 10px
 
-    .product-image
-        width: 50%
-        height: 700px
-        // margin-left: 150px
-        // margin-top: 50px
-        margin: 50px 0px 0px 150px
-    .product-description
-        // background: grey
-        display: flex
-        justify-content: space-between
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 1200px) 
+    .selected-product-container 
+        .gallery-container
+            // background: pink
+            margin: 20px 0px 0px 100px
+            .thumbnail-container
+                margin-top: 10px
+        .product-description
+            margin: 20px 100px 0px 30px
+
+    .reviews-and-shipping
+        flex-direction: column-reverse
+        align-items: center
+        
+@media (max-width: 1000px) 
+    .selected-product-container 
+        .gallery-container
+            // background: pink
+            margin: 20px 0px 0px 40px
+            .thumbnail-container
+                margin-top: 10px
+        .product-description
+            margin: 20px 40px 0px 30px
+
+    // .reviews-and-shipping
+// @media (max-width: 900px) 
+//     .selected-product-container 
+//         flex-direction: column
+//         align-items: center
+//         .gallery-container
+//             // background: pink
+//             margin: 20px 0px 0px 0px
+//             .thumbnail-container
+//                 margin-top: 10px
+//         // .product-description
+//             margin: 20px 0px 0px 30px
+
+    // .reviews-and-shipping
+
+        
+@media (max-width: 768px) 
+    .selected-product-container 
         flex-direction: column
-        width: 50%
-        height: 700px
-        margin: 20px 150px 0px 30px
-        gap: 20px
+        align-items: center
+        .gallery-container
+            // background: pink
+            margin: 20px 0px 0px 0px
+        .product-description
+            margin: 20px 0px 0px 0px
 
-        .product-category
-            font-size: 30px
-            font-weight: bold
-            // margin-bottom: 20px
+    .reviews-and-shipping
+        flex-direction: column
+        align-items: center
+        
 
-        .product-price
-            
-            font-weight: bold
 
-            span
-                font-size: 30px
-                del
-                    font-size: 30px
-            
-            // margin-right: 100px 
-            .original-price
-                color: var(--gray)
-                margin-right: 10px
-            .discount-price
-                color: var(--red)
-
-            // margin-bottom: 20px
-
-        .product-pharagraph
-            // font-family: "Inter", sans-serif
-            font-size: 16px
-            color: #333
-            // font-family: "Roboto", sans-serif
-            line-height: 1.6
-            padding: 0
-            text-align: justify
-        .product-form
-            // background: grey
-            // font-family: "Inter", sans-serif
-            display: flex
-            flex-direction: column
-            align-items: flex-start
-
-  
-            form
-                display: flex
-                flex-direction: column
-                align-items: flex-start
-                width: 100%
-                // font-size: 16px
-                // margin-top: 10px
-
-            label
-                margin-bottom: 5px
-                font-size: 16px
-
-            select, input[type="text"]
-                width: 100%
-                height: 50px
-                margin-bottom: 10px
-            
-            .toggle-container 
-                display: flex
-                align-items: center
-                justify-content: space-between
-                width: 100%
-                margin-bottom: 20px
-                position: relative
-                border-radius: 50px
-                background-color: #f0f0f0
-                font-weight: bold
-                // border-radius: 25px 25px 25px 25px
-                // padding: 5px
-                // border: solid 1px black
-                &.is-physical
-                    // background-color: var(--light-gray)
-                    background-color: var(--orange-transparent)
-                    
-                &.is-digital
-                    background-color: var(--orange-transparent)
-
-                
-            .toggle-option 
-                z-index: 10
-                flex: 1
-                text-align: center
-                padding: 10px
-                cursor: pointer
-                transition: color 0.3s
-                color: white
-                border-radius: 50px
-                // margin: 2px
-                transition: color 0.3s, background-color 0.3s
-
-                // &:hover 
-                //     background-color: var(--dark-orange)
-
-                &.active-physical
-                    color: black        
-                    // background-color: var(--orange-transparent)
-                    // opacity: 0.5
-
-                &.active-digital
-                    color: black
-                    // background-color: var(--light-black)
-                    // opacity: 0.5
-                    // border-radius: 25px 0 0 25px
-                    
-                    
-            .toggle-background 
-                position: absolute
-                top: 0
-                bottom: 0
-                left: 0
-                width: 50%
-                background-color: var(--orange)
-                // background-color: var(--black)
-                border-radius: 50px
-                transition: left 0.3s
-                // margin: 5px
-                &.is-physical
-                    background-color: var(--orange)
-                    // background-color: var(--black)
-               
-
-            .toggle-container.is-physical .toggle-background 
-                left: 50%
-
-            .material-sizes
-                // background: var(--dark-orange)
-                width: 100%
-                height: auto
-                display: flex
-                flex-direction: row
-                gap:10px
-                margin-bottom: 20px
-                
-                
-                .material-image-container
-                    position: relative
-                    margin: 10px
-                    
-
-                    img
-                        width: 80px // Adjust size as needed
-                        height: 100px // Adjust size as needed
-                        cursor: pointer
-                        border: 2px solid transparent
-
-                        &:hover
-                            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
-
-                        &.selected
-                            border-color: green
-
-                    .checkmark
-                        position: absolute
-                        top: 5px
-                        right: 5px
-                        background-color: var(--green)
-                        color: white
-                        border-radius: 50%
-                        padding: 2px 6px
-                        font-size: 16px
-
-            .sizes-box
-                width: 100%
-                height: auto
-                display: flex
-                gap: 10px
-                margin-top: 20px
-                margin-bottom: 20px
-                span
-                    border: solid 1px var(--light-gray)
-                    padding: 5px
-                    cursor: pointer
-                    background: var(--light-gray)
-
-                    &:hover
-                        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
-
-                    &.select
-                        background: white
-                        border: solid 1px black
-
-            .file-input-container
-                position: relative
-                display: inline-block
-                width: 100%
-                margin-top: 10px
-                margin-bottom: 20px
-
-            .file-input
-                width: 0.1px
-                height: 0.1px
-                opacity: 0
-                overflow: hidden
-                position: absolute
-                z-index: -1
-
-            .file-input-label
-                display: inline-block
-                justify-content: center
-                text-align: center
-                width: 100%
-                padding: 10px 20px
-                font-size: 16px
-                font-weight: 600
-                color: #fff
-                background-color: var(--black)
-                border-radius: 4px
-                cursor: pointer
-                transition: background-color 0.3s
-                border: solid 1px black
-
-                &:hover
-                    // color: black
-                    // background-color: var(--light-gray)
-                    // border: solid 1px black
-                    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
-
-            .select-options
-                select
-                    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
-                    margin-top: 8px
-                    font-size: 15px
-                    padding-left: 10px
-                    border-radius: 4px
-                    cursor: pointer
-                    border: 1px solid var(--black)
-
-                    &:focus
-                        border-color: black
-                        outline: none
-
-            .input-container
-                width: 80%
-                margin-bottom: 10px
-                label
-                    display: block
-                    margin-bottom: 8px
-
-                input
-                    display: block
-                    width: 100%
-                    padding: 8px
-                    margin-bottom: 16px
-                    font-size: 16px
-                    border-radius: 4px
-                    transition: border-color 0.3s
-                    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
-                    border: 1px solid var(--black)
-
-                    &:focus
-                        border-color: black
-                        outline: none
-                
-                .designer-note
-                    textarea
-                        height: 50px
-                        width: 100%
-                        display: block
-                        resize: vertical
-                        padding: 10px
-                        font-size: 15px
-                        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
-
-                        &:focus
-                            border-color: black
-                            outline: none
-         
-
-            .quantity-container
-                margin-bottom: 20px
-                display: flex
-                flex-direction: column
-                width: 25%
-
-            .quantity-btn
-                height: auto
-                display: flex
-                margin-top: 10px
-                margin-bottom: 10px
-
-                .decrease-btn,.increase-btn
-                    padding: 5px
-                    width: 30%
-                    border: none
-                    border: solid 1px var(--gray)
-                    background-color: white
-                    cursor: pointer
-                    color: var(--gray)
-
-                .decrease-btn:hover
-                    color: white
-                    background-color: var(--red)
-                .increase-btn:hover
-                    color: white
-                    background-color: var(--green)
-
-                .quantity-value
-                    padding: 5px
-                    width: 70%
-                    text-align: center
-                    border-top: solid 1px var(--gray)
-                    border-bottom: solid 1px var(--gray)
-                    background-color: white
-
-            .cart-button
-                width: 100%
-                margin-bottom: 20px
-                button
-                    align-self: flex-start
-                    border: none
-                    cursor: pointer
-                    width: 100%
-                    height: 50px
-                    font-weight: bold
-                    border: solid 1px black
-                    transition: scale 0.3s
-                    border-radius: 50px
-
-                    &:hover
-                        transform: scale(1.02)
-
-                .buy-it-now-btn
-                    background: none
-                    color: var(--black)
-                    margin-bottom: 10px
-                .add-to-cart-btn
-                    border: none
-                    background-color: var(--orange)
-                    color: white
-
-                    
 
 
 

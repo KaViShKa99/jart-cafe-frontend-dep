@@ -71,10 +71,19 @@ const ImageGallery = ({ images }) => {
     };
   }, [isModalOpen]);
 
+  if (images === null) {
+    return (
+      <div className="gallery-container">
+        <h2>Images not found</h2>
+      </div>
+    );
+  }
+
   return (
     <div className="gallery-container">
       <div className="gallery-wrapper">
         <div className="image-container">
+          {/* <h2>image</h2> */}
           {images && images.length > 0 && (
             <img
               src={

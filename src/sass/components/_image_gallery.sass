@@ -1,42 +1,34 @@
 .gallery-container
   display: flex
   flex-direction: column
-  align-items: center
-  width: 100%
-  height: 400px
-  position: relative
-  margin-top: 10px
-  
+  width: 50%
+  height: auto
+  margin: 20px 0px 0px 150px
+  // background: yellow
 
 .gallery-wrapper
   display: flex
   align-items: center
-//   width: 80%
-  position: relative
-
-.image-container
   width: 100%
-  height: 100%
-  display: flex
-  justify-content: center
-  align-items: center
-  overflow: hidden
+  height: auto
+  position: relative
+  // background: pink
+
+  .image-container
+    display: flex
+    justify-content: center
+    align-items: center
+    overflow: hidden
+    width: 100%
+    height: 100%
   
 
-  img
-    width: 100%
-    // height: auto
-    // margin-right: -100px
-    height: 650px
-    transition: transform 0.3s 
-    // border-radius: 15px
-    // transition: transform 0.3s ease-in-out
+    img
+      width: 100%
+      height: auto
+      transition: transform 0.3s 
  
-
-
     &:hover
-      // transform: scale(0.1)
-      // box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(248, 86, 5, 0.6)
       cursor: crosshair
       
       

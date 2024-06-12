@@ -1,0 +1,100 @@
+.product-review
+    width: 50%
+    padding: 10px
+    .review-pagination
+        display: flex
+        // background: lightBlue
+        justify-content: center
+        list-style: none
+
+    .filter-sort-options
+        display: flex
+        justify-content: space-between
+        margin-bottom: 10px
+
+        label
+            margin-right: 5px
+
+        select
+            margin-right: 20px
+    .review
+        background-color: #f9f9f9
+        border: 1px solid #ddd
+        border-radius: 10px
+        padding: 20px
+        margin-bottom: 20px
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
+
+        .review-header
+            display: flex
+            justify-content: space-between
+            align-items: center
+            margin-bottom: 15px
+
+            .review-rating
+                display: flex
+
+            .star
+                font-size: 1.5em
+                color: #ddd
+
+            .filled
+                color: #f39c12
+
+            .review-details
+                display: flex
+                flex-direction: column
+                align-items: flex-end
+                font-size: 0.875em
+                color: #777
+
+            .review-username
+                font-weight: bold
+                margin-bottom: 5px
+
+            .review-date
+                font-style: italic
+
+        .review-comment
+            font-size: 1em
+            line-height: 1.5
+            color: #333
+.product-and-shipping-details
+    padding: 10px
+    width: 50%
+    
+    // background: pink
+    .tabs
+        display: flex
+        justify-content: center
+        margin-top: 20px
+        
+
+        button
+            background-color: white
+            border: 1px solid black
+            padding: 10px 20px
+            cursor: pointer
+
+            &:not(:last-child)
+                border-right: none
+
+            &:hover
+                background-color: #e9e9e9
+
+            &.active
+                background-color: var(--black)
+                color: #fff
+
+    .tab-content
+        // margin-top: 20px
+        padding: 20px
+        // border: 1px solid #ccc
+        background-color: #fff
+
+/* Media Queries for Mobile Responsiveness */
+// @media (max-width: 768px) 
+//     .reviews-and-shipping
+//         flex-direction: column
+//         align-items: center
+

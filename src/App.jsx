@@ -3,6 +3,8 @@ import Home from "./components/Home";
 import SelectedProduct from "./components/SelectedProduct";
 import Cart from "./components/Cart";
 import { Admin } from "./components/Admin";
+import NewPasswordPage from "./components/NewPasswordPage";
+import "rsuite/dist/rsuite.min.css";
 
 const App = () => {
   return (
@@ -11,6 +13,7 @@ const App = () => {
       <Route path="/products/:id" element={<SelectedProduct />}></Route>
       <Route path="/cart" element={<Cart />}></Route>
       <Route path="/admin" element={<Admin />}></Route>
+      <Route path="/password-reset" element={<NewPasswordPage />}></Route>
     </Routes>
   );
 };
