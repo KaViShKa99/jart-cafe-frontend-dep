@@ -1,17 +1,21 @@
 
 .categorie-list
-    margin: 10px 80px 80px 80px
-    // background-color: grey
+    //background: green
+    display: flex
+    justify-content: center
+    align-items: center
     ul
         display: flex
         justify-content: center
         align-items: center
         list-style: none
+        //background: red
+        gap: 20px
+        padding: 20px
         
 
         li
-             margin-top: 20px
-             margin-left: 50px
+             margin: 20px 0px 20px 0px
              padding: 0
              cursor: pointer
              transition: opacity 0.3s, transform 0.3s
@@ -20,25 +24,19 @@
              height: 100px
              text-align: center
              border: 1px solid black
+             //background: yellow
+
 
              &:hover
-                // opacity: 0.8
                 border: 1px solid var(--orange)
                 color: var(--orange)
                 transform: scale(1.1)
                 text-decoration: underline
-                // box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
 
              &.active
-                // background-color: var(--orange)
-                // opacity: 0.5
-                // padding: 0
-                // margin: 0
-                // border-radius: 50%
                 border: 3.5px solid var(--orange)
                 color: var(--orange)
                 text-decoration: underline
-                // box-shadow: 0 0 25px rgba(248, 105, 33, 0.849)
 
                 
         img

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { storage } from "../config/firebase";
+import { storage } from "../../config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export const Admin = () => {

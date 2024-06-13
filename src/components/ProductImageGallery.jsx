@@ -7,7 +7,7 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-const ImageGallery = ({ images }) => {
+const ProductImageGallery = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [zoomStyle, setZoomStyle] = useState({});
@@ -151,4 +151,4 @@ const ImageGallery = ({ images }) => {
   );
 };
 
-export default ImageGallery;
+export default ProductImageGallery;

@@ -3,8 +3,9 @@ import ProductItem from "./ProductItem";
 import Data from "../data/Data";
 import { useStateContext } from "./StateContext";
 import axios from "axios";
+import { Pagination, Dropdown } from "rsuite";
 
-const ProductView = () => {
+const ProductGallery = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { selectCategory, products, setProducts } = useStateContext();
   // const productData = [
@@ -78,9 +79,9 @@ const ProductView = () => {
   //   },
   // ];
 
-  const [currentPage, setCurrentPage] = useState([]);
-  const [productData, setProductData] = useState([]);
-  const itemsPerPage = 12;
+  const [currentPage, setCurrentPage] = useState(1);
+  // const [productData, setProductData] = useState([]);
+  const itemsPerPage = 1;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -202,18 +203,25 @@ const ProductView = () => {
 
       <div className="product-list">
         {filteredProducts.map((product, index) => (
-          <ProductItem
-            key={index}
-            product={product}
-            // id={product.id}
-            // imageUrl={product.imageUrl}
-            // price={product.price}
-          />
+          <ProductItem key={index} product={product} />
         ))}
       </div>
-      <ul className="pagination">{renderPageNumbers()}</ul>
+      {/* <ul className="pagination">{renderPageNumbers()}</ul> */}
+      <div className="product-gallery-pagination">
+        <Pagination
+          prev
+          last
+          next
+          first
+          size="md"
+          total={totalPages}
+          limit={itemsPerPage}
+          activePage={currentPage}
+          onChangePage={setCurrentPage}
+        />
+      </div>
     </div>
   );
 };
 
-export default ProductView;
+export default ProductGallery;

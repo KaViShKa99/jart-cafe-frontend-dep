@@ -9,14 +9,18 @@
 
     .filter-sort-options
         display: flex
-        justify-content: space-between
+        align-items: center
         margin-bottom: 10px
-
+        // background: pink
+        .sort
+            border: 1px solid black
+            background: none
         label
             margin-right: 5px
+            font-size: 15px
 
-        select
-            margin-right: 20px
+        // select
+        //     margin-right: 20px
     .review
         background-color: #f9f9f9
         border: 1px solid #ddd
@@ -33,13 +37,13 @@
 
             .review-rating
                 display: flex
+                // background: pink
 
-            .star
-                font-size: 1.5em
-                color: #ddd
+                .star
+                    color: #ddd
 
-            .filled
-                color: #f39c12
+                .filled
+                    color: #f39c12
 
             .review-details
                 display: flex
@@ -63,7 +67,6 @@
     padding: 10px
     width: 50%
     
-    // background: pink
     .tabs
         display: flex
         justify-content: center
@@ -92,9 +95,5 @@
         // border: 1px solid #ccc
         background-color: #fff
 
-/* Media Queries for Mobile Responsiveness */
-// @media (max-width: 768px) 
-//     .reviews-and-shipping
-//         flex-direction: column
-//         align-items: center
+
 

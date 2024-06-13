@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import Modal from "react-modal";
-import productData from "../data/Data";
-import { useStateContext } from "./StateContext";
+import productData from "../../data/Data";
+import { useStateContext } from "../StateContext";
 
 Modal.setAppElement("#root");
 

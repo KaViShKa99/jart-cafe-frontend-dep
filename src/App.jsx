@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./components/Home";
-import SelectedProduct from "./components/SelectedProduct";
-import Cart from "./components/Cart";
-import { Admin } from "./components/Admin";
-import NewPasswordPage from "./components/NewPasswordPage";
+import Home from "./components/pages/Home";
+import SelectedProduct from "./components/pages/SelectedProduct";
+import Cart from "./components/pages/Cart";
+import { Admin } from "./components/pages/Admin";
+import NewPasswordPage from "./components/pages/NewPasswordPage";
 import "rsuite/dist/rsuite.min.css";
 
 const App = () => {

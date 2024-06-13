@@ -4,111 +4,120 @@
     display: flex
     justify-content: center
     align-items: center
-    padding: 0 20px
+    // padding: 0 20px
     color: white
     // border:1px solid grey
     // position: fixed
     // z-index: 1000
 
 
-nav
-    display: flex
-    align-items: center
-    width: 100%
-    height: 60px
-
-.home-icon
-    cursor: pointer
-
-.search
-    flex:1
-    margin:20px 20px 20px 20px
-    width: 70%
-    height: 40px
-    z-index: 2
-    color: black
-    
-    
-.link-container
-    ul.links
+    nav
         display: flex
-        list-style: none
-        padding: 0
-        margin: 0
-
-    li
-        // background: var(--light-blue)
-        display: flex
-        justify-content: center
         align-items: center
-        padding: 5px
-        margin-left: 5px
-        
-        
-        // &:nth-child(2)
-        //     width: 40px
-        //     height: 40px
-        //     &:hover
-        //         background: var(--dark-orange)
-        //         border-radius:50%
-        //         cursor: pointer
-                
+        justify-content: center
+        width: 100%
+        height: auto
+        //background: green
 
-        // &:nth-child(3)
-        //     width: 40px
-        //     height: 40px
-        //     &:hover
-        //         background: var(--dark-orange)
-        //         border-radius:50%
-        //         cursor: pointer
-    
-    .sign-in
-        margin: 5px 
-        width: 80px
-
-        &:hover
-            background: var(--dark-orange)
-            margin-left: 5px
-            border-radius: 20px
+        .home-icon
+            font-size: 15px
             cursor: pointer
-            
-    .cart-container 
-        position: relative
-        // width: 40px
-        // height: 40px
-        // background: var(--dark-orange)
+            //background: gray
+            margin: 10px
 
-        .cart-btn
-            width: 40px
+        .search
+            // flex:1
+            margin:20px 20px 20px 20px
+            width: 70%
             height: 40px
-            // background: var(--dark-orange)
-            display: flex
-            justify-content: center
-            align-items: center
-            &:hover
-                background: var(--dark-orange)
-                border-radius:50%
-                cursor: pointer
-            // .cart-icon
-            //     background: var(--light-blue)
-
-       
-
-        .cart-counter 
-            position: absolute
-            top: -2px
-            right: -6px
-            background: white
-            color: var(--orange)
-            border-radius: 50%
-            // padding: 2px 6px
-            padding: 1px 7px
-            font-size: 0.8rem
-            font-weight: bold
-            display: flex
-            justify-content: center
-            align-items: center
+            z-index: 2
+            color: black
+            // background: yellow
             
+            
+            
+        .link-container
+            //background: brown
+            margin: 10px
+            ul.links
+                display: flex
+                list-style: none
+                padding: 0
+                margin: 0
+
+            li
+                // background: var(--light-blue)
+                display: flex
+                justify-content: center
+                align-items: center
+                padding: 5px
+                margin-left: 5px
+                
+                
+                // &:nth-child(2)
+                //     width: 40px
+                //     height: 40px
+                //     &:hover
+                //         background: var(--dark-orange)
+                //         border-radius:50%
+                //         cursor: pointer
+                        
+
+                // &:nth-child(3)
+                //     width: 40px
+                //     height: 40px
+                //     &:hover
+                //         background: var(--dark-orange)
+                //         border-radius:50%
+                //         cursor: pointer
+            
+            .sign-in
+                margin: 5px 
+                width: 80px
+
+                &:hover
+                    background: var(--dark-orange)
+                    margin-left: 5px
+                    border-radius: 20px
+                    cursor: pointer
+                    
+            .cart-container 
+                position: relative
+                // width: 40px
+                // height: 40px
+                // background: var(--dark-orange)
+
+                .cart-btn
+                    width: 40px
+                    height: 40px
+                    // background: var(--dark-orange)
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    &:hover
+                        background: var(--dark-orange)
+                        border-radius:50%
+                        cursor: pointer
+                    // .cart-icon
+                    //     background: var(--light-blue)
+
+            
+
+                .cart-counter 
+                    position: absolute
+                    top: -2px
+                    right: -6px
+                    background: white
+                    color: var(--orange)
+                    border-radius: 50%
+                    // padding: 2px 6px
+                    padding: 1px 7px
+                    font-size: 0.8rem
+                    font-weight: bold
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    
 
 .icon-button-hover 
     color: white !important
@@ -147,94 +156,143 @@ body.no-scroll
         border-color: black
         outline: none
 
-.login-model-content
-    // background: var(--orange)
-    // border: solid 1px var(--gray)
-    height: 100%
-    width: 80%
-    padding: 20px
+    .login-model-content
+        // background: var(--orange)
+        // border: solid 1px var(--gray)
+        height: 100%
+        width: 80%
+        padding: 20px
 
-    .close-button
-        position: absolute
-        top: 10px
-        right: 10px
-        background: none
-        // width: 25px
-        // height: 25px
-        // border-radius: 50%
-        border: none
-        font-size: 30px
-        cursor: pointer
-        color: black
+        .close-button
+            position: absolute
+            top: 10px
+            right: 10px
+            background: none
+            border: none
+            font-size: 30px
+            cursor: pointer
+            color: black
 
-        &:hover
-            color: var(--red)
+            &:hover
+                color: var(--red)
+        
+        form
+            display: flex
+            justify-content: center
+            flex-direction: column
     
-    form
-        display: flex
-        justify-content: center
-        flex-direction: column
-  
-            
-    .signup-form,.signin-form,.forgot-password-form
-        .forgot-password-heading
-            font-size: 25px
-            font-weight: 300
-            margin-bottom: 40px
-        .signin-heading
-            font-size: 25px
-            font-weight: 300
-            margin-bottom: 40px
-        .signup-heading
-            font-size: 25px
-            font-weight: 300
-            margin-bottom: 40px
-        .required-label-input-container
-            display: flex
-            justify-content: center
-            flex-direction: column
-            margin-bottom: 20px
-            label
-                font-size: 16px
-                margin-bottom: 5px
-                #required
-                    margin-bottom: 10px
-                    &:after
-                        content: '*'
-                        color: red
-                        margin-left: 2px
+                
+        .signup-form,.signin-form,.forgot-password-form
+            .forgot-password-heading
+                font-size: 25px
+                font-weight: 300
+                margin-bottom: 40px
+            .signin-heading
+                font-size: 25px
+                font-weight: 300
+                margin-bottom: 40px
+            .signup-heading
+                font-size: 25px
+                font-weight: 300
+                margin-bottom: 40px
+            .required-label-input-container
+                display: flex
+                justify-content: center
+                flex-direction: column
+                margin-bottom: 20px
+                label
+                    font-size: 16px
+                    margin-bottom: 5px
+                    #required
+                        margin-bottom: 10px
+                        &:after
+                            content: '*'
+                            color: red
+                            margin-left: 2px
 
-            input
-                font-size: 15px
-                height: 50px
-                padding-left: 10px
-                border: solid 1px var(--gray)
-                border-radius: 5px
-                &:focus
-                    border-color: black
-                    outline: none
-            .error
-                font-size: 16px
-                color: red  
-          
-        .button-container
+                input
+                    font-size: 15px
+                    height: 50px
+                    padding-left: 10px
+                    border: solid 1px var(--gray)
+                    border-radius: 5px
+                    &:focus
+                        border-color: black
+                        outline: none
+                .error
+                    font-size: 16px
+                    color: red  
+            
+            .button-container
+                display: flex
+                width: 100%
+                justify-content: center
+                flex-direction: column
+                button
+                    margin: 5px 0px 10px 0px
+                    height: 50px
+                    background: none
+                    border: none
+                    font-size: 16px
+                    font-weight: 400
+                    color: white
+                    cursor: pointer
+                    border-radius: 5px
+                    &:hover 
+                        transform: scale(1.02)
+                .create-account-btn
+                    background: var(--orange)
+                .login-btn
+                    background: var(--black)
+
+        
+
+
+@media (max-width: 1400px) 
+    .overlay
+        .signup-modal
+            width: 50%
+
+            .login-model-content
+                width: 80%
+    
+
+@media (max-width: 1000px) 
+    .overlay
+        .signup-modal
+            width: 60%
+            .login-model-content
+                width: 100%
+    
+@media (max-width: 700px) 
+    .overlay
+        .signup-modal
+            width: 70%
+
+            .login-model-content
+                width: 100%
+    
+
+@media (max-width: 600px) 
+    .overlay
+        .signup-modal
+            width: 90%
+
+            .login-model-content
+                width: 100%
+    .nav-bar
+        nav
             display: flex
-            width: 100%
-            justify-content: center
-            flex-direction: column
-            button
-                margin: 5px 0px 10px 0px
-                height: 50px
-                background: none
-                border: none
-                font-size: 16px
-                font-weight: 400
-                color: white
-                cursor: pointer
-                border-radius: 5px
-                &:hover 
-                    transform: scale(1.02)
-            .create-account-btn
-                background: var(--orange)
-            .login-btn
-                background: var(--black)
+            flex-direction: row
+            align-items: center
+            flex-wrap: wrap
+            justify-content: space-between
+
+            // .home-icon,
+            // .link-container
+            .search
+                display: flex
+                width: 100%
+                order: 2
+    
+               

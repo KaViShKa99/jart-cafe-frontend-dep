@@ -1,0 +1,56 @@
+.home-container
+    //background: pink
+        
+
+    
+@media (max-width: 1300px) 
+    .home-container
+        //background: lightBlue
+        .product-view
+            margin: 0px 80px 0px 80px
+            .product-list
+                .item-container
+                    width: 250px
+                    height: 250px
+
+
+@media (max-width: 700px) 
+    .home-container
+        //background: lightBlue
+        .product-view
+            //background: yellow
+            .product-list
+                .item-container
+                    width: auto
+                    height: auto
+@media (max-width: 500px) 
+    .home-container
+        .categorie-list
+            //background: pink
+            padding: 10px
+            ul
+                padding: 10px
+                li
+                    border-radius: 50%
+                    width: 80px
+                    height: 80px
+                    font-size: 15px
+                     
+                    &:hover
+                        transform: none
+                    &.active
+                        border: 1px solid var(--orange)
+                        
+                        
+@media (max-width: 400px) 
+    .home-container
+        .categorie-list
+            //background: pink
+            ul
+                gap: 5px
+                padding: 10px
+                li
+                    border-radius: 50%
+                    // width: 50px
+                    // height: 50px
+                    font-size: 15px

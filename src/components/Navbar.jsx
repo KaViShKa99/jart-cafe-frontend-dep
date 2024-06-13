@@ -8,6 +8,9 @@ import { useStateContext } from "./StateContext";
 import axios from "axios";
 
 import DropdownMenu from "./DropdownMenu";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import ForgotPassword from "./pages/ForgotPassword";
 
 Modal.setAppElement("#root");
 
@@ -21,8 +24,8 @@ const Navbar = () => {
   const [isOpenSignUp, setIsOpenSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
   const [fNameError, setFNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [sfName, setSfName] = useState("");
   const [sEmail, setSEmail] = useState("");
@@ -105,7 +108,8 @@ const Navbar = () => {
     }
   };
 
-  const closeModal = () => {
+  const closeModal = (e) => {
+    e.preventDefault();
     setIsForgotPassword(false);
     setIsOpenSignUp(false);
     setIsModalOpen(false);
@@ -230,7 +234,7 @@ const Navbar = () => {
     <div className="nav-bar">
       <nav id="nav-bar">
         <span className="home-icon" onClick={openHome}>
-          Jart Cafe
+          JC
         </span>
         <div className="search">
           <ReactSearchBox
@@ -279,127 +283,20 @@ const Navbar = () => {
         overlayClassName="overlay"
       >
         <div className="login-model-content">
-          <button className="close-button" onClick={closeModal}>
+          <button className="close-button" onClick={(e) => closeModal(e)}>
             &times;
           </button>
           {!isOpenSignUp && !isForgotPassword ? (
-            <form id="signin-form" className="signin-form">
-              <label className="signin-heading">LOGIN</label>
-              <div className="required-label-input-container">
-                <label>Email address</label>
-                <input
-                  id="email"
-                  type="text"
-                  name="email"
-                  value={email}
-                  placeholder="Email"
-                  onChange={emailChange}
-                />
-                {emailError && <div className="error">{emailError}</div>}
-              </div>
-              <div className="required-label-input-container">
-                <label>Password</label>
-                <input
-                  id="password"
-                  className="password"
-                  type="password"
-                  name="password"
-                  value={password}
-                  placeholder="Password"
-                  onChange={passwordChange}
-                />
-                {passwordError && <div className="error">{passwordError}</div>}
-              </div>
-              <div className="button-container">
-                <button className="login-btn" onClick={loginBtn}>
-                  LOGIN
-                </button>
-              </div>
-
-              <label className="forgot-password">
-                <a style={{ fontSize: "15px" }} onClick={openForgotPassword}>
-                  Forgot your password?
-                </a>
-              </label>
-              <div className="button-container">
-                <button className="create-account-btn" onClick={openSignUp}>
-                  REGISTER
-                </button>
-              </div>
-            </form>
+            <SignIn
+              openSignup={(e) => setIsOpenSignUp(e)}
+              openForogotpwd={(e) => setIsForgotPassword(e)}
+              openDropDown={(e) => setOpenDropDown(e)}
+              close={(e) => setIsModalOpen(e)}
+            />
           ) : isOpenSignUp ? (
-            <form className="signup-form" id="signup-form">
-              <label className="signup-heading">CREATE AN ACCOUNT</label>
-              <div className="required-label-input-container">
-                <label>First name</label>
-                <input
-                  id="fname"
-                  type="text"
-                  name="first name"
-                  value={sfName}
-                  placeholder="First name"
-                  onChange={sfNameChange}
-                />
-              </div>
-              <div className="required-label-input-container">
-                <label id="required">Email address</label>
-                <input
-                  id="email"
-                  type="text"
-                  name="email"
-                  value={sEmail}
-                  placeholder="Email"
-                  onChange={sEmailChange}
-                />
-                {emailError && <div className="error">{emailError}</div>}
-              </div>
-              <div className="required-label-input-container">
-                <label id="required" className="rPassword">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  className="rPassword-input"
-                  type="password"
-                  name="password"
-                  value={sPassword}
-                  placeholder="Password"
-                  onChange={sPasswordChange}
-                />
-                {passwordError && <div className="error">{passwordError}</div>}
-              </div>
-              <div className="button-container">
-                <button className="create-account-btn" onClick={registerBtn}>
-                  REGISTER
-                </button>
-              </div>
-              <div className="button-container">
-                <button className="login-btn" onClick={openLogin}>
-                  BACK TO LOGIN
-                </button>
-              </div>
-            </form>
+            <SignUp openSignup={(e) => setIsOpenSignUp(e)} />
           ) : (
-            <form className="forgot-password-form" id="forgot-password-form">
-              <label className="forgot-password-heading">RESET PASSWORD</label>
-              <div className="required-label-input-container">
-                <label>Email address</label>
-                <input
-                  id="forgot-password-email"
-                  type="text"
-                  name="forgot-password-email"
-                  // value={forgotPasswordEmail}
-                  placeholder="Email"
-                  // onChange={forgotPasswordEmailChange}
-                />
-                {emailError && <div className="error">{emailError}</div>}
-              </div>
-              <div className="button-container">
-                <button className="create-account-btn" onClick={openSignUp}>
-                  SUBMIT
-                </button>
-              </div>
-            </form>
+            <ForgotPassword close={(e) => closeModal(e)} />
           )}
         </div>
       </Modal>

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import Navbar from "./Navbar";
-import ImageGallery from "./ImageGallery";
-import ReviewsContainer from "./ReviewsContainer";
-import ProductDetails from "./ProductDetails";
-import ProductBuyForm from "./ProductBuyForm";
+import Navbar from "../Navbar";
+import ProductImageGallery from "../ProductImageGallery";
+import ReviewsContainer from "../ReviewsContainer";
+import ProductDetails from "../ProductDetails";
+import ProductBuyForm from "../ProductBuyForm";
 
 const SelectedProduct = () => {
   const [mainImages, setMainImages] = useState(null);
@@ -12,7 +12,7 @@ const SelectedProduct = () => {
     <div className="selected-products">
       <Navbar />
       <div className="selected-product-container">
-        <ImageGallery images={mainImages} />
+        <ProductImageGallery images={mainImages} />
         <ProductBuyForm images={setMainImages} />
       </div>
       <div className="reviews-and-shipping">

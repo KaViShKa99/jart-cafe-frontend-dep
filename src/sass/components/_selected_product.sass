@@ -24,6 +24,10 @@
     .reviews-and-shipping
         flex-direction: column-reverse
         align-items: center
+        .product-review
+            width: 80%
+        .product-and-shipping-details
+            width: 80%
         
 @media (max-width: 1000px) 
     .selected-product-container 
@@ -36,17 +40,19 @@
             margin: 20px 40px 0px 30px
 
     // .reviews-and-shipping
-// @media (max-width: 900px) 
-//     .selected-product-container 
-//         flex-direction: column
-//         align-items: center
-//         .gallery-container
-//             // background: pink
-//             margin: 20px 0px 0px 0px
-//             .thumbnail-container
-//                 margin-top: 10px
-//         // .product-description
-//             margin: 20px 0px 0px 30px
+@media (max-width: 900px) 
+    .selected-product-container 
+        flex-direction: column
+        align-items: center
+        .gallery-container
+            // background: pink
+            margin: 20px 0px 0px 0px
+            width: 60%
+            .thumbnail-container
+                margin-top: 10px
+        .product-description
+            margin: 20px 0px 0px 30px
+            width: 80%
 
     // .reviews-and-shipping
 
@@ -62,8 +68,12 @@
             margin: 20px 0px 0px 0px
 
     .reviews-and-shipping
-        flex-direction: column
+        flex-direction: column-reverse
         align-items: center
+        .product-review
+            width: 100%
+        .product-and-shipping-details
+            width: 100%
         
 
 

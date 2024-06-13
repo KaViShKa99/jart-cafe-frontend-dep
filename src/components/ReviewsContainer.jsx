@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Pagination } from "rsuite";
+import { useState, useEffect } from "react";
+import { Pagination, Dropdown } from "rsuite";
 import Review from "./Review";
 
 const ReviewsContainer = () => {
@@ -50,61 +50,66 @@ const ReviewsContainer = () => {
   const [filterOption, setFilterOption] = useState("all");
   const [sortOption, setSortOption] = useState("newest");
   const [currentPage, setCurrentPage] = useState(1);
+  const [filteredReviews, setFilteredReviews] = useState(reviews);
   const reviewsPerPage = 3;
 
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-  const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
+  const currentReviews = filteredReviews.slice(
+    indexOfFirstReview,
+    indexOfLastReview
+  );
 
-  const handleSortChange = (e) => {
-    setSortOption(e.target.value);
-  };
+  const sortedAndFilteredReviews = (e) => {
+    console.log(e);
+    setSortOption(e);
+    // setSortOption(e.target.value);
 
-  const handleFilterChange = (e) => {
-    setFilterOption(e.target.value);
-  };
+    // let filteredReviews = reviews;
+    // if (filterOption !== "all") {
+    //   filteredReviews = reviews.filter(
+    //     (review) => review.rating === parseInt(filterOption)
+    //   );
+    // }
 
-  const sortedAndFilteredReviews = () => {
-    let filteredReviews = reviews;
-    if (filterOption !== "all") {
-      filteredReviews = reviews.filter(
-        (review) => review.rating === parseInt(filterOption)
-      );
-    }
-
-    switch (sortOption) {
-      case "newest":
-        return filteredReviews.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
-        );
-      case "highest":
-        return filteredReviews.sort((a, b) => b.rating - a.rating);
-      case "lowest":
-        return filteredReviews.sort((a, b) => a.rating - b.rating);
+    let sortedReviews = [...filteredReviews];
+    switch (e) {
+      // switch (e.target.value) {
+      case "Newest":
+        sortedReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+        break;
+      case "Highest":
+        sortedReviews.sort((a, b) => b.rating - a.rating);
+        break;
+      case "Lowest":
+        sortedReviews.sort((a, b) => a.rating - b.rating);
+        break;
       default:
-        return filteredReviews;
+        break;
     }
+
+    setFilteredReviews(sortedReviews);
   };
+
+  useEffect(() => {
+    console.log(sortOption, filteredReviews);
+  }, [sortOption]);
 
   return (
     <div className="product-review">
       <h2>Reviews</h2>
       <div className="filter-sort-options">
-        <label htmlFor="filter">Filter by Rating: </label>
-        <select id="filter" value={filterOption} onChange={handleFilterChange}>
-          <option value="all">All</option>
-          <option value="5">5 Stars</option>
-          <option value="4">4 Stars</option>
-          <option value="3">3 Stars</option>
-          <option value="2">2 Stars</option>
-          <option value="1">1 Star</option>
-        </select>
         <label htmlFor="sort">Sort by: </label>
-        <select id="sort" value={sortOption} onChange={handleSortChange}>
-          <option value="newest">Newest Review</option>
-          <option value="highest">Highest Review</option>
-          <option value="lowest">Lowest Review</option>
-        </select>
+        <Dropdown
+          trigger={["click", "hover"]}
+          activeKey={sortOption}
+          onSelect={sortedAndFilteredReviews}
+          title={sortOption}
+        >
+          <Dropdown.Item eventKey="Newest">Newest</Dropdown.Item>
+          <Dropdown.Item eventKey="Highest">Highest Ratings</Dropdown.Item>
+          <Dropdown.Item eventKey="Lowest">Lowest Ratings</Dropdown.Item>
+        </Dropdown>
       </div>
 
       {currentReviews.length > 0 ? (
@@ -114,6 +119,7 @@ const ReviewsContainer = () => {
       ) : (
         <p>No reviews available.</p>
       )}
+
       <div className="review-pagination">
         <Pagination
           prev

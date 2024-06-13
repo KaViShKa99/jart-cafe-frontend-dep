@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
 const NewPasswordPage = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   const query = useQuery();
   const token = query.get("token");
   const [password, setPassword] = useState("");
@@ -29,27 +32,42 @@ const NewPasswordPage = () => {
 
     setLoading(true);
 
-    try {
-      const response = await fetch("https://your-api-url.com/reset-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ password, token }),
+    axios
+      .post(`${backendUrl}/password-reset/reset`, {
+        token: token,
+        newPassword: confirmPassword,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setMessage("Password has been reset successfully");
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+        setMessage("An error occurred");
       });
 
-      const data = await response.json();
+    // try {
+    //   const response = await fetch("https://your-api-url.com/reset-password", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ password, token }),
+    //   });
 
-      if (response.ok) {
-        setMessage("Password has been reset successfully");
-      } else {
-        setMessage(data.message || "An error occurred");
-      }
-    } catch (error) {
-      setMessage("An error occurred");
-    } finally {
-      setLoading(false);
-    }
+    //   const data = await response.json();
+
+    //   if (response.ok) {
+    //     setMessage("Password has been reset successfully");
+    //   } else {
+    //     setMessage(data.message || "An error occurred");
+    //   }
+    // } catch (error) {
+    //   setMessage("An error occurred");
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
