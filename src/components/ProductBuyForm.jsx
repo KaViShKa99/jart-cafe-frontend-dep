@@ -72,6 +72,7 @@ const ProductBuyForm = ({ images }) => {
       quantity: quantity,
       material: material,
       size: size,
+      //sizeArray: sizesArray,
       designerNote: designerNote,
       paintingNote: paintingNote,
     };
@@ -135,7 +136,7 @@ const ProductBuyForm = ({ images }) => {
               className={`toggle-option ${isPhysical ? "active-digital" : ""}`}
               onClick={() => setIsPhysical(false)}
             >
-              Digital Art Print
+              Digital Art
             </div>
             <div
               className={`toggle-option ${
@@ -143,7 +144,7 @@ const ProductBuyForm = ({ images }) => {
               }`}
               onClick={() => setIsPhysical(true)}
             >
-              Physical Art Print
+              Physical Art
             </div>
           </div>
           {isPhysical && (

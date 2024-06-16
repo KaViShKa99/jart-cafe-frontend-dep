@@ -1,0 +1,35 @@
+.quantity-container
+    display: flex
+    flex-direction: column
+    // width: 30%
+    width: 80px
+    margin-right: 20px
+
+    .quantity-btn
+        height: auto
+        display: flex
+
+        .decrease-btn,.increase-btn
+            padding: 5px
+            width: 30%
+            border: none
+            border: solid 1px var(--gray)
+            background-color: white
+            cursor: pointer
+            color: var(--gray)
+
+        .decrease-btn:hover
+            color: black
+            background-color: var(--light-gray)
+        .increase-btn:hover
+            color: black
+            background-color: var(--light-gray)
+
+        .quantity-value
+            padding: 5px
+            width: 70%
+            text-align: center
+            border-top: solid 1px var(--gray)
+            border-bottom: solid 1px var(--gray)
+            background-color: white
+            font-size: 15px

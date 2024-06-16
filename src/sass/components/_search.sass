@@ -1,0 +1,44 @@
+.search-bar-container
+    position: relative
+    width: 100%
+    margin: 0 auto 
+    color: black
+    display: flex
+    align-items: center
+    justify-content: center
+
+
+    .search-icon
+        position: absolute
+        top: 50%
+        left: 10px
+        transform: translateY(-50%)
+        font-size: 1.5rem
+
+    .search-bar
+        width: 100%
+        padding: 10px 10px 10px 35px
+        border: 1px solid #ccc
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+        
+
+    .suggestions-list
+        position: absolute
+        top: 50px
+        left: 0
+        width: 100%
+        border: 1px solid #ccc
+        border-top: none
+        border-radius: 0 0 4px 4px
+        background-color: white
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+        z-index: 1000
+        padding: 10px
+        list-style: none
+
+        .suggestion-item
+            padding: 10px
+            cursor: pointer
+
+        .suggestion-item:hover
+            background-color: #f0f0f0

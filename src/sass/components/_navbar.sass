@@ -4,11 +4,9 @@
     display: flex
     justify-content: center
     align-items: center
-    // padding: 0 20px
+    padding: 0 5%
     color: white
-    // border:1px solid grey
-    // position: fixed
-    // z-index: 1000
+ 
 
 
     nav
@@ -17,27 +15,31 @@
         justify-content: center
         width: 100%
         height: auto
-        //background: green
+        // background: green
+        padding: 10px 10px
 
         .home-icon
-            font-size: 15px
+            // font-size: 15px
             cursor: pointer
-            //background: gray
-            margin: 10px
+            // margin: 10px
 
         .search
-            // flex:1
+            flex:1
             margin:20px 20px 20px 20px
-            width: 70%
+            width: 80%
             height: 40px
             z-index: 2
             color: black
-            // background: yellow
+            background: white
+            
+                        
+                        
+                        
             
             
             
         .link-container
-            //background: brown
+            // background: brown
             margin: 10px
             ul.links
                 display: flex
@@ -287,12 +289,36 @@ body.no-scroll
             align-items: center
             flex-wrap: wrap
             justify-content: space-between
-
-            // .home-icon,
-            // .link-container
+  
             .search
                 display: flex
-                width: 100%
                 order: 2
-    
+                width: 100% 
+                margin: 0 0 10px 0
+                
+
+                .search-bar-container
+                    display: flex
+                    flex: 1
+
+                    .search-bar
+                        flex: 1
+                        width: 500px
+ 
+            .link-container
+                margin: 10px 40px 10px 10px
+@media (max-width: 498px) 
+    .overlay
+        .signup-modal
+            width: 90%
+
+            .login-model-content
+                width: 100%
+
+                    
+
+           
+                        
+
+                        
                

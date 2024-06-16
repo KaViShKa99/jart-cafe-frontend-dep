@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { storage } from "../../config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
 export const Admin = () => {
   const categories = [
@@ -21,15 +23,28 @@ export const Admin = () => {
 
   const commonSizes = ['12"x16"', '8"x10"', '18"x24"', '24"x30"', '30"x40"'];
 
+  const initializeMaterialsSizes = () => {
+    return materials.map((material) => ({
+      material: material.name,
+      sizes: commonSizes.map((size) => ({ size, price: "" })),
+    }));
+  };
+
   const [category, setCategory] = useState("");
   const [categoryName, setCategoryName] = useState("");
-  const [material, setMaterial] = useState("");
-  const [materialName, setMaterialName] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [imageFiles, setImageFiles] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]);
-  const [sizes, setSizes] = useState([]);
-  const [newSize, setNewSize] = useState({ design: "", price: "" });
+  const [images, setImages] = useState([]);
+  const [imageLinks, setImageLinks] = useState("");
+  const [materialsSizes, setMaterialsSizes] = useState(
+    initializeMaterialsSizes()
+  );
+  const [newSize, setNewSize] = useState({
+    material: "",
+    design: "",
+    price: "",
+  });
 
   const handleCategoryChange = (event) => {
     const selectedCategory = categories.find(
@@ -39,12 +54,12 @@ export const Admin = () => {
     setCategoryName(selectedCategory.name);
   };
 
-  const handleMaterialChange = (event) => {
-    const selectedMaterial = materials.find(
-      (mat) => mat.id === parseInt(event.target.value)
-    );
-    setMaterial(selectedMaterial.id);
-    setMaterialName(selectedMaterial.name);
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const handleDescriptionChange = (value) => {
+    setDescription(value);
   };
 
   const handlePriceChange = (event) => {
@@ -53,9 +68,26 @@ export const Admin = () => {
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    const newImagePreviews = files.map((file) => URL.createObjectURL(file));
-    setImageFiles([...imageFiles, ...files]);
-    setImagePreviews([...imagePreviews, ...newImagePreviews]);
+    setImages([...images, ...files]);
+  };
+
+  const handleImageLinksChange = (event) => {
+    setImageLinks(event.target.value);
+  };
+
+  const handleSizePriceChange = (material, size, value) => {
+    setMaterialsSizes((prevSizes) =>
+      prevSizes.map((mat) =>
+        mat.material === material
+          ? {
+              ...mat,
+              sizes: mat.sizes.map((s) =>
+                s.size === size ? { ...s, price: value } : s
+              ),
+            }
+          : mat
+      )
+    );
   };
 
   const handleNewSizeChange = (field, value) => {
@@ -63,60 +95,77 @@ export const Admin = () => {
   };
 
   const addNewSize = () => {
-    if (newSize.design && newSize.price) {
-      setSizes([...sizes, newSize]);
-      setNewSize({ design: "", price: "" });
+    if (newSize.material && newSize.design && newSize.price) {
+      setMaterialsSizes((prevSizes) => {
+        const existingMaterial = prevSizes.find(
+          (mat) => mat.material === newSize.material
+        );
+        if (existingMaterial) {
+          existingMaterial.sizes.push({
+            size: newSize.design,
+            price: newSize.price,
+          });
+        } else {
+          prevSizes.push({
+            material: newSize.material,
+            sizes: [{ size: newSize.design, price: newSize.price }],
+          });
+        }
+        return [...prevSizes];
+      });
+      setNewSize({ material: "", design: "", price: "" });
     }
   };
 
   const removeImage = (index) => {
-    setImageFiles(imageFiles.filter((_, i) => i !== index));
-    setImagePreviews(imagePreviews.filter((_, i) => i !== index));
+    setImages(images.filter((_, i) => i !== index));
   };
 
-  const removeSize = (index) => {
-    setSizes(sizes.filter((_, i) => i !== index));
+  const removeSize = (material, index) => {
+    setMaterialsSizes((prevSizes) => {
+      const updatedSizes = prevSizes.map((mat) => {
+        if (mat.material === material) {
+          mat.sizes = mat.sizes.filter((_, i) => i !== index);
+        }
+        return mat;
+      });
+      return updatedSizes.filter((mat) => mat.sizes.length > 0);
+    });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Upload images to Firebase Storage and get URLs
-    // const uploadPromises = imageFiles.map((file) => {
-    //   console.log(file.name);
-    //   // const storageRef = storage.ref(`images/${file.name}`);
-    //   const storageRef = ref(storage, `images/${file.name}`);
-    //   uploadBytes(storageRef, file).then(() => {
-    //     alert("image uploaded");
-    //   });
-    //   // return storageRef
-    //   //   .put(file)
-    //   //   .then((snapshot) => snapshot.ref.getDownloadURL());
-    // });
+    let imageUrls = [];
 
-    const uploadPromises = imageFiles.map(async (file) => {
-      console.log(file.name);
-      const storageRef = ref(storage, `images/${file.name}`);
+    if (images.length > 0) {
+      const uploadPromises = images.map(async (file) => {
+        const storageRef = ref(storage, `images/${file.name}`);
+        try {
+          const snapshot = await uploadBytes(storageRef, file);
+          const url = await getDownloadURL(snapshot.ref);
+          imageUrls.push(url);
+        } catch (error) {
+          console.error("Error uploading image:", error);
+        }
+      });
 
-      // Upload the file and get the download URL
-      try {
-        const snapshot = await uploadBytes(storageRef, file);
-        console.log("Image uploaded successfully");
-        return getDownloadURL(snapshot.ref);
-      } catch (error) {
-        console.error("Error uploading image:", error);
-      }
-    });
+      await Promise.all(uploadPromises);
+    }
+
+    if (imageLinks.trim() !== "") {
+      const links = imageLinks.split("\n").map((link) => link.trim());
+      imageUrls = [...imageUrls, ...links];
+    }
 
     try {
-      const imageUrls = await Promise.all(uploadPromises);
-      console.log(imageUrls);
       const formData = {
-        type: categoryName,
-        material: materialName,
+        category: categoryName,
+        title: title,
+        description: description,
         price: price,
-        imageUrl: imageUrls,
-        size: sizes,
+        images: imageUrls,
+        materials: materialsSizes,
       };
 
       console.log(formData);
@@ -149,20 +198,21 @@ export const Admin = () => {
           ))}
         </select>
 
-        <label htmlFor="material">Material</label>
-        <select
-          name="material"
-          id="material"
-          value={material}
-          onChange={handleMaterialChange}
-        >
-          <option value="">Select a material</option>
-          {materials.map((mat) => (
-            <option key={mat.id} value={mat.id}>
-              {mat.name}
-            </option>
-          ))}
-        </select>
+        <label htmlFor="title">Title</label>
+        <input
+          id="title"
+          type="text"
+          name="title"
+          value={title}
+          onChange={handleTitleChange}
+        />
+
+        <label htmlFor="description">Description</label>
+        <ReactQuill
+          id="description"
+          value={description}
+          onChange={handleDescriptionChange}
+        />
 
         <label htmlFor="price">Price</label>
         <input
@@ -173,19 +223,21 @@ export const Admin = () => {
           onChange={handlePriceChange}
         />
 
-        <label htmlFor="images">Images</label>
-        <input
-          id="images"
-          type="file"
-          name="images"
-          multiple
-          onChange={handleFileChange}
+        <label>Choose Images</label>
+        <input type="file" name="images" multiple onChange={handleFileChange} />
+
+        <label>Paste Image Links (one per line)</label>
+        <textarea
+          value={imageLinks}
+          onChange={handleImageLinksChange}
+          rows="3"
+          placeholder="Paste image links here..."
         />
 
-        {imagePreviews.map((image, index) => (
+        {images.map((image, index) => (
           <div key={index} className="image-preview">
             <img
-              src={image}
+              src={URL.createObjectURL(image)}
               alt={`Preview ${index}`}
               style={{ width: "100px", height: "auto" }}
             />
@@ -196,41 +248,49 @@ export const Admin = () => {
         ))}
 
         <label>Sizes</label>
-        {sizes.map((size, index) => (
-          <div key={index} className="size-input">
-            <span>{size.design}</span>
-            <span> - ${size.price}</span>
-            <button type="button" onClick={() => removeSize(index)}>
-              Remove
+        {materialsSizes.map((mat, matIndex) => (
+          <div key={matIndex} className="material-section">
+            <button
+              type="button"
+              className="material-dropdown"
+              onClick={() => {
+                const updatedSizes = [...materialsSizes];
+                updatedSizes[matIndex].expanded =
+                  !updatedSizes[matIndex].expanded;
+                setMaterialsSizes(updatedSizes);
+              }}
+            >
+              {mat.material}
             </button>
+            {mat.expanded && (
+              <div className="size-list">
+                {mat.sizes.map((size, index) => (
+                  <div key={index} className="size-input">
+                    <span>{size.size}</span>
+                    <input
+                      type="text"
+                      value={size.price}
+                      onChange={(e) =>
+                        handleSizePriceChange(
+                          mat.material,
+                          size.size,
+                          e.target.value
+                        )
+                      }
+                      placeholder="Enter price"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeSize(mat.material, index)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
-
-        <div className="new-size-input">
-          <label htmlFor="newSize">Select Size:</label>
-          <select
-            name="newSize"
-            id="newSize"
-            value={newSize.design}
-            onChange={(e) => handleNewSizeChange("design", e.target.value)}
-          >
-            <option value="">Select a size</option>
-            {commonSizes.map((size, index) => (
-              <option key={index} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
-          <input
-            type="text"
-            value={newSize.price}
-            onChange={(e) => handleNewSizeChange("price", e.target.value)}
-            placeholder="Enter price"
-          />
-          <button type="button" onClick={addNewSize}>
-            Add Size
-          </button>
-        </div>
 
         <button type="submit" className="submit-button">
           Submit
@@ -243,33 +303,49 @@ export const Admin = () => {
           <strong>Category:</strong> {categoryName}
         </p>
         <p>
-          <strong>Material:</strong> {materialName}
+          <strong>Title:</strong> {title}
         </p>
+        {/* <p>
+          <strong>Description:</strong> {description}
+        </p> */}
         <p>
           <strong>Price:</strong> {price}
         </p>
         <div>
           <strong>Images:</strong>
           <div className="image-previews">
-            {imagePreviews.map((image, index) => (
+            {images.map((image, index) => (
               <img
                 key={index}
-                src={image}
+                src={URL.createObjectURL(image)}
                 alt={`Preview ${index}`}
+                style={{ width: "100px", height: "auto", marginRight: "10px" }}
+              />
+            ))}
+            {imageLinks.split("\n").map((link, index) => (
+              <img
+                key={index + images.length}
+                src={link}
+                alt={`Link ${index}`}
                 style={{ width: "100px", height: "auto", marginRight: "10px" }}
               />
             ))}
           </div>
         </div>
         <div>
-          <strong>Sizes:</strong>
-          <ul>
-            {sizes.map((size, index) => (
-              <li key={index}>
-                {size.design} - ${size.price}
-              </li>
-            ))}
-          </ul>
+          <strong>Materials and Sizes:</strong>
+          {materialsSizes.map((mat, matIndex) => (
+            <div key={matIndex}>
+              <h3>{mat.material}</h3>
+              <ul>
+                {mat.sizes.map((size, index) => (
+                  <li key={index}>
+                    {size.size} - ${size.price}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </div>

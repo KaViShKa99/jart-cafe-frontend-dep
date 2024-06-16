@@ -11,6 +11,7 @@ import DropdownMenu from "./DropdownMenu";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
+import SearchBar from "./SearchBar";
 
 Modal.setAppElement("#root");
 
@@ -33,80 +34,81 @@ const Navbar = () => {
   const [openDropDown, setOpenDropDown] = useState(false);
   const [profileDetails, setProfileDetails] = useState([]);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [serachData, setSearchData] = useState([]);
 
   useEffect(() => {
     setEmailError("");
     setPasswordError("");
   }, [email, password, sfName, sEmail, sPassword]);
 
-  const sfNameChange = (e) => {
-    const sfNameValue = e.target.value;
-    console.log(sfNameValue);
-    setSfName(sfNameValue);
-  };
-  const sEmailChange = (e) => {
-    const sEmailValue = e.target.value;
-    console.log(sEmailValue);
-    setSEmail(sEmailValue);
-  };
-  const sPasswordChange = (e) => {
-    const sPasswordValue = e.target.value;
-    console.log(sPasswordValue);
-    setSPassword(sPasswordValue);
-  };
-  const emailChange = (e) => {
-    const emailValue = e.target.value;
-    setEmail(emailValue);
-    setEmailError("");
-  };
-  const passwordChange = (e) => {
-    const passwordValue = e.target.value;
-    setPassword(passwordValue);
-    setPasswordError("");
-  };
+  // const sfNameChange = (e) => {
+  //   const sfNameValue = e.target.value;
+  //   console.log(sfNameValue);
+  //   setSfName(sfNameValue);
+  // };
+  // const sEmailChange = (e) => {
+  //   const sEmailValue = e.target.value;
+  //   console.log(sEmailValue);
+  //   setSEmail(sEmailValue);
+  // };
+  // const sPasswordChange = (e) => {
+  //   const sPasswordValue = e.target.value;
+  //   console.log(sPasswordValue);
+  //   setSPassword(sPasswordValue);
+  // };
+  // const emailChange = (e) => {
+  //   const emailValue = e.target.value;
+  //   setEmail(emailValue);
+  //   setEmailError("");
+  // };
+  // const passwordChange = (e) => {
+  //   const passwordValue = e.target.value;
+  //   setPassword(passwordValue);
+  //   setPasswordError("");
+  // };
 
-  const openLogin = (e) => {
-    e.preventDefault();
-    setIsOpenSignUp(false);
-  };
+  // const openLogin = (e) => {
+  //   e.preventDefault();
+  //   setIsOpenSignUp(false);
+  // };
 
-  const loginBtn = (e) => {
-    e.preventDefault();
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let valid = true;
+  // const loginBtn = (e) => {
+  //   e.preventDefault();
+  //   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   let valid = true;
 
-    if (!emailPattern.test(email)) {
-      setEmailError("*Invalid email address");
-      valid = false;
-    }
+  //   if (!emailPattern.test(email)) {
+  //     setEmailError("*Invalid email address");
+  //     valid = false;
+  //   }
 
-    if (password.length < 8) {
-      setPasswordError("*Password must be at least 8 characters long");
-      valid = false;
-    }
+  //   if (password.length < 8) {
+  //     setPasswordError("*Password must be at least 8 characters long");
+  //     valid = false;
+  //   }
 
-    if (valid) {
-      axios
-        .post(`${backendUrl}/user/authenticate`, {
-          email: email,
-          password: password,
-        })
-        .then((response) => {
-          console.log("Response:", response.data);
-          const token = response.data.jwtToken;
-          console.log(token);
-          localStorage.setItem("jwtToken", token);
-          fetchUserProfile(token);
-          setEmail("");
-          setPassword("");
-          setOpenDropDown(true);
-          setIsModalOpen(false);
-        })
-        .catch((error) => {
-          console.log("Error:", error);
-        });
-    }
-  };
+  //   if (valid) {
+  //     axios
+  //       .post(`${backendUrl}/user/authenticate`, {
+  //         email: email,
+  //         password: password,
+  //       })
+  //       .then((response) => {
+  //         console.log("Response:", response.data);
+  //         const token = response.data.jwtToken;
+  //         console.log(token);
+  //         localStorage.setItem("jwtToken", token);
+  //         fetchUserProfile(token);
+  //         setEmail("");
+  //         setPassword("");
+  //         setOpenDropDown(true);
+  //         setIsModalOpen(false);
+  //       })
+  //       .catch((error) => {
+  //         console.log("Error:", error);
+  //       });
+  //   }
+  // };
 
   const closeModal = (e) => {
     e.preventDefault();
@@ -114,41 +116,41 @@ const Navbar = () => {
     setIsOpenSignUp(false);
     setIsModalOpen(false);
   };
-  const registerBtn = (e) => {
-    e.preventDefault();
-    // setIsOpenSignUp(false);
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let valid = true;
+  // const registerBtn = (e) => {
+  //   e.preventDefault();
+  //   // setIsOpenSignUp(false);
+  //   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   let valid = true;
 
-    if (!emailPattern.test(sEmail)) {
-      setEmailError("*Invalid email address");
-      valid = false;
-    }
+  //   if (!emailPattern.test(sEmail)) {
+  //     setEmailError("*Invalid email address");
+  //     valid = false;
+  //   }
 
-    if (sPassword.length < 8) {
-      setPasswordError("*Password must be at least 8 characters long");
-      valid = false;
-    }
+  //   if (sPassword.length < 8) {
+  //     setPasswordError("*Password must be at least 8 characters long");
+  //     valid = false;
+  //   }
 
-    if (valid) {
-      axios
-        .post(`${backendUrl}/user/sign-up`, {
-          name: sfName,
-          email: sEmail,
-          password: sPassword,
-        })
-        .then((response) => {
-          console.log("Response:", response.data);
-          setSfName("");
-          setSEmail("");
-          setSPassword("");
-          setIsOpenSignUp(false);
-        })
-        .catch((error) => {
-          console.log("Error:", error);
-        });
-    }
-  };
+  //   if (valid) {
+  //     axios
+  //       .post(`${backendUrl}/user/sign-up`, {
+  //         name: sfName,
+  //         email: sEmail,
+  //         password: sPassword,
+  //       })
+  //       .then((response) => {
+  //         console.log("Response:", response.data);
+  //         setSfName("");
+  //         setSEmail("");
+  //         setSPassword("");
+  //         setIsOpenSignUp(false);
+  //       })
+  //       .catch((error) => {
+  //         console.log("Error:", error);
+  //       });
+  //   }
+  // };
 
   const fetchUserProfile = (token) => {
     axios
@@ -171,10 +173,10 @@ const Navbar = () => {
     fetchUserProfile(localStorage.getItem("jwtToken"));
   }, []);
 
-  const openSignUp = (e) => {
-    e.preventDefault();
-    setIsOpenSignUp(true);
-  };
+  // const openSignUp = (e) => {
+  //   e.preventDefault();
+  //   setIsOpenSignUp(true);
+  // };
   const openModel = () => {
     // setOpenDropDown(true);
     setIsModalOpen(true);
@@ -186,9 +188,9 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const openForgotPassword = () => {
-    setIsForgotPassword(true);
-  };
+  // const openForgotPassword = () => {
+  //   setIsForgotPassword(true);
+  // };
 
   const data = [
     {
@@ -230,14 +232,20 @@ const Navbar = () => {
     console.log(openDropDown);
   }, [openDropDown]);
 
+  useEffect(() => {
+    console.log(serachData);
+  }, [serachData]);
+
   return (
     <div className="nav-bar">
       <nav id="nav-bar">
         <span className="home-icon" onClick={openHome}>
-          JC
+          Jart-cafe
         </span>
+        {/* <SearchBar /> */}
         <div className="search">
-          <ReactSearchBox
+          <SearchBar searchItem={(e) => setSearchData(e)} />
+          {/* <ReactSearchBox
             id="search-box"
             placeholder="Search in Jart Cafe"
             value="Doe"
@@ -247,7 +255,7 @@ const Navbar = () => {
             iconBoxSize="48px"
             autoFocus
             dropdownHoverColor="#fff0e8"
-          />
+          /> */}
         </div>
         <div className="link-container">
           <ul className="links">

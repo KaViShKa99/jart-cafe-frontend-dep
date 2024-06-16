@@ -6,6 +6,8 @@ import Modal from "react-modal";
 import productData from "../../data/Data";
 import { useStateContext } from "../StateContext";
 
+import QuantityCounter from "../QuantityCounter";
+
 Modal.setAppElement("#root");
 
 const Cart = () => {
@@ -41,7 +43,6 @@ const Cart = () => {
   const [size, setSize] = useState("");
   const [total, setTotal] = useState(0);
   const [image, setImage] = useState("");
-  // const [cartItem, setCartItem] = useState([initialCartItem]);
   const [cartItem, setCartItem] = useState([]);
 
   const closeModal = () => {
@@ -56,6 +57,7 @@ const Cart = () => {
     console.log(filteredProducts);
 
     setCartItem(filteredProducts);
+    //setSizesArray(filteredProducts.sizeArray);
     setIsModalOpen(true);
   };
 
@@ -64,7 +66,7 @@ const Cart = () => {
     setSelectedIndex(index);
     setMaterial(product.name);
     setSizesArray(product.size);
-    setTotal(0);
+    //setTotal(0);
     setImage(product.imageUrl);
   };
 
@@ -72,27 +74,12 @@ const Cart = () => {
     setSelectedSizeIndex(index);
     setPrice(size.p);
     setSize(size.s);
-    setTotal(size.p);
-  };
-
-  const increaseQuantity = (e) => {
-    e.preventDefault();
-    setQuantity(quantity + 1);
-    let total = price * (quantity + 1);
-    setTotal(total);
-  };
-
-  const decreaseQuantity = (e) => {
-    e.preventDefault();
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-      let total = price * (quantity - 1);
-      setTotal(total);
-    }
+    //setTotal(size.p);
   };
 
   const addNewItem = () => {
-    setCartItem([...cartItem, initialCartItem]);
+    console.log([...cartItem, initialCartItem]);
+    // setCartItem([...cartItem, initialCartItem]);
   };
 
   // const removeItem = (index) => {
@@ -129,6 +116,13 @@ const Cart = () => {
     };
   }, [isModalOpen]);
 
+  useEffect(() => {
+    const totalValue = cartArray.reduce((acc, product) => {
+      return acc + product.quantity * product.price;
+    }, 0);
+    setTotal(totalValue);
+  }, [cartArray]);
+
   return (
     <div className="cart-container">
       <Navbar />
@@ -140,8 +134,8 @@ const Cart = () => {
               <tr>
                 <th>PRODUCTS</th>
                 <th>PRICE</th>
-                <th>QUANTITY</th>
-                <th>TOTAL</th>
+                <th className="q-hide">QUANTITY</th>
+                <th className="t-hide">TOTAL</th>
               </tr>
             </thead>
             <tbody>
@@ -155,50 +149,39 @@ const Cart = () => {
                 cartArray.map((product, index) => (
                   <tr key={index}>
                     <td className="product-details-column">
-                      <img src={product.imageUrl} />
-                      <div className="cart-product-details">
-                        <span>{product.type}</span>
+                      <div className="product-details-column-container">
+                        <img src={product.imageUrl} />
+                        <div className="cart-product-details">
+                          <span>{product.type}</span>
 
-                        {/* <span className="design">Canvas / 12"x16" </span> */}
-                        <span className="design">
-                          {product.material} / {product.size}
-                        </span>
-                        <div className="cart-details-btn">
-                          <span
-                            className="cart-details-edit"
-                            onClick={() => openCartEdit(product.id)}
-                          >
-                            <FiEdit />
+                          <span className="design">
+                            {product.material} / {product.size}
                           </span>
-                          <span
-                            className="cart-remove-item"
-                            onClick={() => removeItem(product.id)}
-                          >
-                            <AiOutlineDelete />
-                          </span>
+                          <div className="cart-details-btn">
+                            <span
+                              className="cart-details-edit"
+                              onClick={() => openCartEdit(product.id)}
+                            >
+                              <FiEdit />
+                            </span>
+                            <span
+                              className="cart-remove-item"
+                              onClick={() => removeItem(product.id)}
+                            >
+                              <AiOutlineDelete />
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </td>
-                    <td>${product.price.toFixed(2)}</td>
+                    <td className="product-price">
+                      ${product.price.toFixed(2)}
+                    </td>
                     <td className="quantity-details-column">
-                      {/* {product.quantity} */}
-                      <div className="quantity-container">
-                        <div className="quantity-btn">
-                          <button
-                            className="decrease-btn"
-                            onClick={decreaseQuantity}
-                          >
-                            -
-                          </button>
-                          <span className="quantity-value">{quantity}</span>
-                          <button
-                            className="increase-btn"
-                            onClick={increaseQuantity}
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
+                      <QuantityCounter
+                        TotalQuantity={() => {}}
+                        product={product}
+                      />
                     </td>
                     <td className="product-total">
                       <span className="cart-total">
@@ -207,7 +190,28 @@ const Cart = () => {
                           product.price,
                           product.quantity
                         ).toFixed(2)}
+                        {/* &{product.quantity.toFixed(2)} */}
                       </span>
+                    </td>
+
+                    <td className="combined-column">
+                      <div className="combined-column-container">
+                        <div className="c-price">
+                          Price :- ${product.price.toFixed(2)}
+                        </div>
+
+                        <QuantityCounter
+                          TotalQuantity={() => {}}
+                          product={product}
+                        />
+                        <div className="c-total">
+                          Total :- $
+                          {calculateTotal(
+                            product.price,
+                            product.quantity
+                          ).toFixed(2)}
+                        </div>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -219,12 +223,13 @@ const Cart = () => {
           <div className="summary-heading">ORDER SUMMARY</div>
           <div className="divider"></div>
           <div className="sub-total">
-            Sub Total:<span className="subTotal-value">$504.00</span>
+            Sub Total:
+            <span className="subTotal-value">$ {total.toFixed(2)}</span>
           </div>
           <div className="total">
             <div className="gray-divider" />
             <div className="total-content">
-              Total: <span className="total-value">$504.00</span>
+              Total: <span className="total-value">$ {total.toFixed(2)}</span>
             </div>
             <div className="gray-divider" />
           </div>
@@ -262,7 +267,7 @@ const Cart = () => {
                       <span>$ {item.price}</span>
                     </div>
                     <div className="cart-edit-btns">
-                      <div className="quantity-container">
+                      {/* <div className="quantity-container">
                         <div className="quantity-btn">
                           <button
                             className="decrease-btn"
@@ -278,7 +283,11 @@ const Cart = () => {
                             +
                           </button>
                         </div>
-                      </div>
+                      </div> */}
+                      <QuantityCounter
+                        TotalQuantity={() => {}}
+                        product={item}
+                      />
                       <button
                         className="crat-item-remove"
                         onClick={() => removeItem(item.id)}
@@ -339,9 +348,9 @@ const Cart = () => {
 
           <div className="edit-container-btns">
             <button className="add-item-btn" onClick={addNewItem}>
-              + ADD
+              UPDATE CART
             </button>
-            <button className="edit-add-to-cart">ADD TO CART</button>
+            <button className="edit-add-to-cart">CLEAR CART</button>
           </div>
         </div>
       </Modal>

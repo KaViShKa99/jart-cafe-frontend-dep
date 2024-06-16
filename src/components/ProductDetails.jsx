@@ -23,25 +23,9 @@ const ProductDetails = () => {
         {activeTab === "details" && (
           <div className="item-more-details">
             <h2>Item More Details</h2>
-            <p>
-              Handmade Materials: Digital, portrait, drawing Welcome to The Best
-              Custom Portraits Shop ! Create a beautiful custom portrait of your
-              family or your best friends. This portrait is perfect for someone
-              as a gift. It would be charming detail in your home ! These custom
-              portraits will capture the unique characteristics of each member
-              of your family. You can add in your pets, too! It's perfect for
-              wedding gift, anniversary, birthday, housewarming gift and more!
-              HOW TO ORDER : 1. Choose number of characters 2. Checkout 3. Send
-              me a reference photos through etsy message and i'll do the rest :)
-              IMPORTANT - This is Digital Files only. This is sent to you by
-              email or link immediately, so that you can print it out at home or
-              at a local print shop. So, you will save cost and time. No
-              shipping time, shipping cost and risk of damage. - The portrait
-              will be complete within 3 - 5 days. ( the time may change
-              depending on the number of orders received, check our shops
-              announcement for current waiting time ) - You will receive High
-              Quality Files in JPEG and PDF files. - You have deadline and need
-              rush order? No problem, just contact me.
+            <p style={{ whiteSpace: "pre-wrap" }}>
+              This is a <strong>bold</strong> text and this is <em>italic</em>{" "}
+              text
             </p>
           </div>
         )}
