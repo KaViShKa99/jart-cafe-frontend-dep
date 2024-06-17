@@ -1,71 +1,33 @@
 const materialDesign = [
   {
     id: 1,
-    type: "Pop art",
-    name: "Canvas",
-    price: 30,
-    imageUrl: "/imgs/canvas.jpeg",
-    size: [
-      { s: '12"x16"', p: 30.0 },
-      { s: '8"x10"', p: 35.0 },
-      { s: '18"x24"', p: 40.0 },
-      { s: '24"x30"', p: 10.0 },
-      { s: '30"x40"', p: 60.0 },
-    ],
+    material: "Canvas",
+    image: "/imgs/canvas.jpeg",
   },
   {
     id: 2,
-    type: "Pop art",
-    price: 34,
-    name: "Poster",
-    imageUrl: "/imgs/framed_poster.jpeg",
-    size: [
-      { s: '18"x24"', p: 30.0 },
-      { s: '12"x18"', p: 20.0 },
-      { s: '16"x20"', p: 60.0 },
-      { s: '24"x36"', p: 70.0 },
-    ],
+    material: "Poster",
+    image: "/imgs/framed_poster.jpeg",
   },
   {
     id: 3,
-    type: "Cartoon art",
-    price: 70,
-    name: "Framed poster",
-    imageUrl: "/imgs/poster.jpeg",
-    size: [
-      { s: '12"x16"', p: 30.0 },
-      { s: '18"x24"', p: 35.0 },
-      { s: '16"x20"', p: 40.0 },
-    ],
+    material: "Framed poster",
+    image: "/imgs/poster.jpeg",
   },
   {
     id: 4,
-    type: "Vector art",
-    price: 40,
-    name: "Traditional Framed Canvas",
-    imageUrl: "/imgs/prem_can_poster.jpeg",
-    size: [
-      { s: '8"x10"', p: 25 },
-      { s: '16"x20"', p: 45 },
-      { s: '24"x36"', p: 60 },
-      { s: '11"x14"', p: 35 },
-      { s: '24"x20"', p: 55 },
-    ],
+    material: "Traditional Framed Canvas",
+    image: "/imgs/prem_can_poster.jpeg",
   },
   {
     id: 5,
-    type: "Pet portrait",
-    price: 60,
-    name: "Premium Framed Canvas",
-    imageUrl: "/imgs/trad_can_poster.jpeg",
-    size: [
-      { s: '12"x16"', p: "$50" },
-      { s: '8"x10"', p: "$30" },
-      { s: '18"x24"', p: "$60" },
-      { s: '24"x30"', p: "$70" },
-      { s: '30"x40"', p: "$80" },
-    ],
+    material: "Premium Framed Canvas",
+    image: "/imgs/trad_can_poster.jpeg",
   },
 ];
 
 export default materialDesign;
+
+// https://i.etsystatic.com/24137450/r/il/6078d0/2888378380/il_fullxfull.2888378380_r0vr.jpg
+// https://i.etsystatic.com/24137450/r/il/4931c0/2407845454/il_fullxfull.2407845454_c9g2.jpg
+// https://i.etsystatic.com/24137450/r/il/afa898/3666602410/il_fullxfull.3666602410_d1cn.jpg

@@ -7,6 +7,7 @@ import productData from "../../data/Data";
 import { useStateContext } from "../StateContext";
 
 import QuantityCounter from "../QuantityCounter";
+import ProductBuyForm from "../ProductBuyForm";
 
 Modal.setAppElement("#root");
 
@@ -43,7 +44,7 @@ const Cart = () => {
   const [size, setSize] = useState("");
   const [total, setTotal] = useState(0);
   const [image, setImage] = useState("");
-  const [cartItem, setCartItem] = useState([]);
+  const [cartItem, setCartItem] = useState(null);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -51,7 +52,7 @@ const Cart = () => {
 
   const openCartEdit = (index) => {
     const filteredProducts = cartArray.filter(
-      (product) => product.id === index
+      (product) => product.artworkId === index
     );
     console.log(index);
     console.log(filteredProducts);
@@ -78,7 +79,7 @@ const Cart = () => {
   };
 
   const addNewItem = () => {
-    console.log([...cartItem, initialCartItem]);
+    // console.log([...cartItem, initialCartItem]);
     // setCartItem([...cartItem, initialCartItem]);
   };
 
@@ -90,17 +91,18 @@ const Cart = () => {
   const removeItem = (index) => {
     // const updatedCartItems = cartItem.filter((product) => product.id !== index);
     setCartArray((prevItem) =>
-      prevItem.filter((product) => product.id !== index)
+      prevItem.filter((product) => product.artworkId !== index)
     );
     setCartItem((prevItem) =>
-      prevItem.filter((product) => product.id !== index)
+      prevItem.filter((product) => product.artworkId !== index)
     );
     // console.log(updatedCartItems);
     console.log(index);
   };
 
   useEffect(() => {
-    setImage(productData[0].imageUrl);
+    setImage(productData[0].image);
+    console.log(cartArray);
   }, []);
 
   useEffect(() => {
@@ -115,13 +117,6 @@ const Cart = () => {
       document.body.classList.remove("no-scroll");
     };
   }, [isModalOpen]);
-
-  useEffect(() => {
-    const totalValue = cartArray.reduce((acc, product) => {
-      return acc + product.quantity * product.price;
-    }, 0);
-    setTotal(totalValue);
-  }, [cartArray]);
 
   return (
     <div className="cart-container">
@@ -150,23 +145,25 @@ const Cart = () => {
                   <tr key={index}>
                     <td className="product-details-column">
                       <div className="product-details-column-container">
-                        <img src={product.imageUrl} />
+                        <img src={product.productImage} />
                         <div className="cart-product-details">
-                          <span>{product.type}</span>
+                          <span>{product.category}</span>
 
                           <span className="design">
-                            {product.material} / {product.size}
+                            {!product.isDigitalArt
+                              ? `${product.material} / ${product.size}`
+                              : "Digital arts"}
                           </span>
                           <div className="cart-details-btn">
                             <span
                               className="cart-details-edit"
-                              onClick={() => openCartEdit(product.id)}
+                              onClick={() => openCartEdit(product.artworkId)}
                             >
                               <FiEdit />
                             </span>
                             <span
                               className="cart-remove-item"
-                              onClick={() => removeItem(product.id)}
+                              onClick={() => removeItem(product.artworkId)}
                             >
                               <AiOutlineDelete />
                             </span>
@@ -175,41 +172,45 @@ const Cart = () => {
                       </div>
                     </td>
                     <td className="product-price">
-                      ${product.price.toFixed(2)}
+                      ${product.eachPrice.toFixed(2)}
                     </td>
                     <td className="quantity-details-column">
                       <QuantityCounter
                         TotalQuantity={() => {}}
                         product={product}
+                        cartUpdate={true}
                       />
                     </td>
                     <td className="product-total">
                       <span className="cart-total">
-                        $
+                        {/* $
                         {calculateTotal(
                           product.price,
                           product.quantity
-                        ).toFixed(2)}
-                        {/* &{product.quantity.toFixed(2)} */}
+                        ).toFixed(2)} */}
+                        $ {product.total && product.total.toFixed(2)}
                       </span>
                     </td>
 
                     <td className="combined-column">
                       <div className="combined-column-container">
                         <div className="c-price">
-                          Price :- ${product.price.toFixed(2)}
+                          Price :- ${product.eachPrice.toFixed(2)}
                         </div>
 
                         <QuantityCounter
                           TotalQuantity={() => {}}
                           product={product}
+                          cartUpdate={true}
                         />
                         <div className="c-total">
-                          Total :- $
+                          Total :-
+                          {/* $
                           {calculateTotal(
                             product.price,
                             product.quantity
-                          ).toFixed(2)}
+                          ).toFixed(2)} */}
+                          {/* &{product.total.toFixed(2)} */}
                         </div>
                       </div>
                     </td>
@@ -251,107 +252,19 @@ const Cart = () => {
           <span className="cart-heading">Edit item</span>
 
           <div className="cart-edit-scrollbar">
-            {cartItem.map((item, index) => (
-              <div key={index} className="cart-details-container">
-                <div className="new-product-details">
-                  <div className="cart-edit-product-image">
-                    <img src={item.imageUrl} />
-                  </div>
-                  <div className="cart-edit-product-details">
-                    <div className="cart-edit-product-text">
-                      <span>{item.type}</span>
-
-                      <span className="design">
-                        {item.material} / {item.size}
-                      </span>
-                      <span>$ {item.price}</span>
-                    </div>
-                    <div className="cart-edit-btns">
-                      {/* <div className="quantity-container">
-                        <div className="quantity-btn">
-                          <button
-                            className="decrease-btn"
-                            onClick={decreaseQuantity}
-                          >
-                            -
-                          </button>
-                          <span className="quantity-value">{quantity}</span>
-                          <button
-                            className="increase-btn"
-                            onClick={increaseQuantity}
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div> */}
-                      <QuantityCounter
-                        TotalQuantity={() => {}}
-                        product={item}
-                      />
-                      <button
-                        className="crat-item-remove"
-                        onClick={() => removeItem(item.id)}
-                      >
-                        <AiOutlineDelete />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="product-edit-details">
-                  <label>Material : {cartItem && item.material}</label>
-                  <div className="material-sizes">
-                    {productData &&
-                      productData.map((product, index) => (
-                        <div
-                          key={index}
-                          className="material-image-container"
-                          onClick={() => handleImageClick(index, product)}
-                        >
-                          <img
-                            src={product.imageUrl}
-                            alt="Product"
-                            className={
-                              selectedIndex === index ? "selected" : ""
-                            }
-                          />
-                          {selectedIndex === index && (
-                            <div className="checkmark">&#10003; </div>
-                          )}
-                        </div>
-                      ))}
-                  </div>
-                  <label>Size : {productData && size}</label>
-                  <div className="sizes-box">
-                    {productData &&
-                      sizesArray.map((size, index) => (
-                        <div
-                          key={index}
-                          className="material-size-container"
-                          onClick={() => handleSizeClick(index, size)}
-                        >
-                          <span
-                            // key={index}
-                            className={
-                              selectedSizeIndex === index ? "select" : ""
-                            }
-                          >
-                            {size.s}
-                          </span>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              </div>
-            ))}
+            <ProductBuyForm
+              props={cartItem ? cartItem[0] : []}
+              editForm={true}
+              close={(e) => setIsModalOpen(e)}
+            />
           </div>
 
-          <div className="edit-container-btns">
+          {/* <div className="edit-container-btns">
             <button className="add-item-btn" onClick={addNewItem}>
               UPDATE CART
             </button>
             <button className="edit-add-to-cart">CLEAR CART</button>
-          </div>
+          </div> */}
         </div>
       </Modal>
     </div>

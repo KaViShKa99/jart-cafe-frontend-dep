@@ -45,9 +45,8 @@ export const StateProvider = ({ children }) => {
   const updateQuantity = (id, quantity) => {
     setCartArray((prevCart) =>
       prevCart.map((item) =>
-        item.id === id
-          ? // ? { ...item, quantity: item.quantity + quantity }
-            { ...item, quantity: quantity }
+        item.artworkId === id
+          ? { ...item, quantity: quantity, total: item.eachPrice * quantity }
           : item
       )
     );

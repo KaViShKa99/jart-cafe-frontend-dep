@@ -91,10 +91,6 @@ const ReviewsContainer = () => {
     setFilteredReviews(sortedReviews);
   };
 
-  useEffect(() => {
-    console.log(sortOption, filteredReviews);
-  }, [sortOption]);
-
   return (
     <div className="product-review">
       <h2>Reviews</h2>

@@ -8,6 +8,9 @@ import { Pagination, Dropdown } from "rsuite";
 const ProductGallery = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { selectCategory, products, setProducts } = useStateContext();
+  const filteredProducts = products.filter(
+    (product) => product.category === selectCategory
+  );
   // const productData = [
   //   {
   //     imageUrl: "src/assets/vector.jpeg",
@@ -81,99 +84,16 @@ const ProductGallery = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   // const [productData, setProductData] = useState([]);
-  const itemsPerPage = 1;
+  const itemsPerPage = 3;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredProducts.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   const totalPages = Math.ceil(products.length / itemsPerPage);
-
-  const filteredProducts = products.filter(
-    (product) => product.type === selectCategory
-  );
-  const handlePageClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const renderPageNumbers = () => {
-    const pageNumbers = [];
-
-    // Left arrow
-    if (currentPage > 1) {
-      pageNumbers.push(
-        <li key="prev" onClick={() => handlePageClick(currentPage - 1)}>
-          &lt;
-        </li>
-      );
-    }
-
-    // First two pages
-    for (let i = 1; i <= 2; i++) {
-      if (i <= totalPages) {
-        pageNumbers.push(
-          <li
-            key={i}
-            onClick={() => handlePageClick(i)}
-            className={currentPage === i ? "active" : null}
-          >
-            {i}
-          </li>
-        );
-      }
-    }
-
-    // Ellipsis if needed
-    if (currentPage > 3) {
-      pageNumbers.push(<li key="ellipsis-left">...</li>);
-    }
-
-    // Current page and neighbors
-    if (currentPage > 2 && currentPage < totalPages - 1) {
-      for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-        pageNumbers.push(
-          <li
-            key={i}
-            onClick={() => handlePageClick(i)}
-            className={currentPage === i ? "active" : null}
-          >
-            {i}
-          </li>
-        );
-      }
-    }
-
-    // Ellipsis if needed
-    if (currentPage < totalPages - 2) {
-      pageNumbers.push(<li key="ellipsis-right">...</li>);
-    }
-
-    // Last two pages
-    for (let i = totalPages - 1; i <= totalPages; i++) {
-      if (i > 2) {
-        pageNumbers.push(
-          <li
-            key={i}
-            onClick={() => handlePageClick(i)}
-            className={currentPage === i ? "active" : null}
-          >
-            {i}
-          </li>
-        );
-      }
-    }
-
-    // Right arrow
-    if (currentPage < totalPages) {
-      pageNumbers.push(
-        <li key="next" onClick={() => handlePageClick(currentPage + 1)}>
-          &gt;
-        </li>
-      );
-    }
-
-    return pageNumbers;
-  };
 
   useEffect(() => {
     setCurrentPage(1);
@@ -184,11 +104,20 @@ const ProductGallery = () => {
       .get(backendUrl + `/artworks`)
       .then((response) => {
         setProducts(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching artworks:", error);
       });
   }, []);
+
+  useEffect(() => {
+    console.log(filteredProducts);
+  }, [selectCategory]);
+
+  if (!filteredProducts || filteredProducts.length === 0) {
+    return <div className="product-view-not-avilable">No item available</div>;
+  }
 
   return (
     <div className="product-view">
@@ -202,11 +131,10 @@ const ProductGallery = () => {
       </div>
 
       <div className="product-list">
-        {filteredProducts.map((product, index) => (
+        {currentItems.map((product, index) => (
           <ProductItem key={index} product={product} />
         ))}
       </div>
-      {/* <ul className="pagination">{renderPageNumbers()}</ul> */}
       <div className="product-gallery-pagination">
         <Pagination
           prev
@@ -214,7 +142,7 @@ const ProductGallery = () => {
           next
           first
           size="md"
-          total={totalPages}
+          total={filteredProducts.length}
           limit={itemsPerPage}
           activePage={currentPage}
           onChangePage={setCurrentPage}

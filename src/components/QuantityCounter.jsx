@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useStateContext } from "./StateContext";
 
-const QuantityCounter = ({ TotalQuantity, product }) => {
+const QuantityCounter = ({ TotalQuantity, product, cartUpdate }) => {
   const { updateQuantity } = useStateContext();
 
   const [quantity, setQuantity] = useState(product.quantity || 1);
+  // const [quantity, setQuantity] = useState(1);
 
   const decreaseQuantity = (e) => {
     e.preventDefault();
@@ -18,8 +19,12 @@ const QuantityCounter = ({ TotalQuantity, product }) => {
   };
 
   useEffect(() => {
-    updateQuantity(product.id, quantity);
-    TotalQuantity(quantity);
+    if (cartUpdate) {
+      updateQuantity(product.artworkId, quantity);
+      TotalQuantity(quantity);
+    } else {
+      TotalQuantity(quantity);
+    }
   }, [quantity]);
 
   return (

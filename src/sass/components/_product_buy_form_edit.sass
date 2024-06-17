@@ -1,0 +1,371 @@
+.product-description-edit
+        // background: pink
+        display: flex
+        justify-content: space-between
+        flex-direction: column
+        align-items: center
+        width: 100%
+        height: auto
+
+        .product-form
+                // background: grey
+                // font-family: "Inter", sans-serif
+                display: flex
+                flex-direction: column
+                align-items: flex-start
+
+    
+                form
+                    display: flex
+                    flex-direction: column
+                    align-items: flex-start
+                    width: 100%
+                    // font-size: 16px
+                    // margin-top: 10px
+
+                label
+                    margin-bottom: 5px
+                    font-size: 16px
+
+                select, input[type="text"]
+                    width: 100%
+                    height: 50px
+                    margin-bottom: 10px
+                
+                .toggle-container 
+                    display: flex
+                    align-items: center
+                    justify-content: space-between
+                    width: 100%
+                    margin-bottom: 20px
+                    position: relative
+                    border-radius: 50px
+                    background-color: #f0f0f0
+    
+                    &.is-physical
+                        background-color: var(--orange-transparent)
+                        
+                    &.is-digital
+                        background-color: var(--orange-transparent)
+
+                    
+                .toggle-option 
+                    z-index: 10
+                    flex: 1
+                    text-align: center
+                    padding: 10px
+                    cursor: pointer
+                    transition: color 0.3s
+                    color: white
+                    border-radius: 50px
+                    // margin: 2px
+                    transition: color 0.3s, background-color 0.3s
+
+                    // &:hover 
+                    //     background-color: var(--dark-orange)
+
+                    &.active-physical
+                        color: black        
+                        // background-color: var(--orange-transparent)
+                        // opacity: 0.5
+
+                    &.active-digital
+                        color: black
+                        // background-color: var(--light-black)
+                        // opacity: 0.5
+                        // border-radius: 25px 0 0 25px
+                        
+                        
+                .toggle-background 
+                    position: absolute
+                    top: 0
+                    bottom: 0
+                    left: 0
+                    width: 50%
+                    background-color: var(--orange)
+                    // background-color: var(--black)
+                    border-radius: 50px
+                    transition: left 0.3s
+                    // margin: 5px
+                    &.is-physical
+                        background-color: var(--orange)
+                        // background-color: var(--black)
+                
+
+                .toggle-container.is-physical .toggle-background 
+                    left: 50%
+
+                .material-sizes
+                    // background: var(--dark-orange)
+                    width: 100%
+                    height: auto
+                    display: flex
+                    flex-direction: row
+                    flex-wrap: wrap
+                    gap:10px
+                    margin-bottom: 20px
+                    
+                    
+                    .material-image-container
+                        position: relative
+                        margin: 10px
+                        
+
+                        img
+                            width: 80px // Adjust size as needed
+                            height: 100px // Adjust size as needed
+                            cursor: pointer
+                            border: 2px solid transparent
+
+                            &:hover
+                                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+
+                            &.selected
+                                border-color: green
+
+                        .checkmark
+                            position: absolute
+                            top: 5px
+                            right: 5px
+                            background-color: var(--green)
+                            color: white
+                            border-radius: 50%
+                            padding: 2px 6px
+                            font-size: 16px
+
+                .sizes-box
+                    width: 100%
+                    height: auto
+                    display: flex
+                    gap: 10px
+                    margin-top: 20px
+                    margin-bottom: 20px
+                    span
+                        border: solid 1px var(--light-gray)
+                        padding: 5px
+                        cursor: pointer
+                        background: var(--light-gray)
+
+                        &:hover
+                            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+
+                        &.select
+                            background: white
+                            border: solid 1px black
+
+                .file-input-container
+                    position: relative
+                    display: inline-block
+                    width: 100%
+                    margin-top: 10px
+                    margin-bottom: 20px
+
+                .file-input
+                    width: 0.1px
+                    height: 0.1px
+                    opacity: 0
+                    overflow: hidden
+                    position: absolute
+                    z-index: -1
+
+                .file-input-label
+                    display: inline-block
+                    justify-content: center
+                    text-align: center
+                    width: 100%
+                    padding: 10px 20px
+                    font-size: 16px
+                    font-weight: 600
+                    color: #fff
+                    background-color: var(--black)
+                    border-radius: 4px
+                    cursor: pointer
+                    transition: background-color 0.3s
+                    border: solid 1px black
+
+                    &:hover
+                        // color: black
+                        // background-color: var(--light-gray)
+                        // border: solid 1px black
+                        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+
+                .select-options
+                    select
+                        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+                        margin-top: 8px
+                        font-size: 15px
+                        padding-left: 10px
+                        border-radius: 4px
+                        cursor: pointer
+                        border: 1px solid var(--black)
+
+                        &:focus
+                            border-color: black
+                            outline: none
+
+                .input-container
+                    width: 80%
+                    margin-bottom: 10px
+                    label
+                        display: block
+                        margin-bottom: 8px
+
+                    input
+                        display: block
+                        width: 100%
+                        padding: 8px
+                        margin-bottom: 16px
+                        font-size: 16px
+                        border-radius: 4px
+                        transition: border-color 0.3s
+                        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+                        border: 1px solid var(--black)
+
+                        &:focus
+                            border-color: black
+                            outline: none
+                    
+                    .designer-note
+                        textarea
+                            height: 50px
+                            width: 100%
+                            display: block
+                            resize: vertical
+                            padding: 10px
+                            font-size: 15px
+                            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+
+                            &:focus
+                                border-color: black
+                                outline: none
+            
+                .product-buy-quantity-btn
+                    //background: pink
+                    margin-bottom: 10px
+                    label
+                        display: block
+                        margin: 8px 0px 8px 0px
+
+            
+                .cart-button
+                    width: 100%
+                    margin-bottom: 20px
+                    button
+                        align-self: flex-start
+                        border: none
+                        cursor: pointer
+                        width: 100%
+                        height: 50px
+                        font-weight: bold
+                        border: solid 1px black
+                        transition: scale 0.3s
+                        border-radius: 50px
+
+                        &:hover
+                            transform: scale(1.02)
+
+                    .buy-it-now-btn
+                        background: none
+                        color: var(--black)
+                        margin-bottom: 10px
+                    .add-to-cart-btn
+                        border: none
+                        background-color: var(--orange)
+                        color: white
+                    .save-to-cart-btn
+                        border: none
+                        background-color: var(--green)
+                        color: white
+
+
+        .new-product-details-edit
+            display: flex
+            flex-direction: column
+            align-items: center
+            background-color: #ffffff
+            border-radius: 10px
+            padding: 25px
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1)
+            max-width: 450px
+            margin: 20px auto
+            font-family: 'Arial, sans-serif'
+            color: #444
+
+            .price
+                font-size: 20px
+                font-weight: bold
+                color: #28a745
+                margin-bottom: 20px
+
+            img
+                width: 100%
+                border-radius: 10px
+                margin-bottom: 20px
+
+            .category
+                font-size: 18px
+                font-weight: bold
+                color: #666
+                margin-bottom: 15px
+
+            .details
+                display: flex
+                flex-direction: column
+                align-items: flex-start
+                width: 100%
+
+                .detail-item
+                    width: 100%
+                    display: flex
+                    justify-content: space-between
+                    padding: 10px 0
+                    border-bottom: 1px solid #e0e0e0
+
+                    &:last-child
+                        border-bottom: none
+
+                    .label
+                        font-weight: bold
+                        color: #333
+
+                    .value
+                        color: #777
+
+            .total
+                width: 100%
+                display: flex
+                justify-content: space-between
+                padding: 10px 0
+                margin-top: 20px
+                font-size: 18px
+                font-weight: bold
+                color: #d9534f
+
+                .label
+                color: #333
+
+                .value
+                color: #d9534f
+
+            .note
+                font-size: 14px
+                color: #555
+                margin-top: 10px
+
+@media (max-width: 600px)
+  .new-product-details-edit
+    padding: 15px
+
+  .details .detail-item
+    padding: 8px 0
+
+  .price
+    font-size: 18px
+
+  .total
+    font-size: 16px
+
+  .note
+    font-size: 12px
+
+

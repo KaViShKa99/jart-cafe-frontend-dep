@@ -41,142 +41,34 @@ const Navbar = () => {
     setPasswordError("");
   }, [email, password, sfName, sEmail, sPassword]);
 
-  // const sfNameChange = (e) => {
-  //   const sfNameValue = e.target.value;
-  //   console.log(sfNameValue);
-  //   setSfName(sfNameValue);
-  // };
-  // const sEmailChange = (e) => {
-  //   const sEmailValue = e.target.value;
-  //   console.log(sEmailValue);
-  //   setSEmail(sEmailValue);
-  // };
-  // const sPasswordChange = (e) => {
-  //   const sPasswordValue = e.target.value;
-  //   console.log(sPasswordValue);
-  //   setSPassword(sPasswordValue);
-  // };
-  // const emailChange = (e) => {
-  //   const emailValue = e.target.value;
-  //   setEmail(emailValue);
-  //   setEmailError("");
-  // };
-  // const passwordChange = (e) => {
-  //   const passwordValue = e.target.value;
-  //   setPassword(passwordValue);
-  //   setPasswordError("");
-  // };
-
-  // const openLogin = (e) => {
-  //   e.preventDefault();
-  //   setIsOpenSignUp(false);
-  // };
-
-  // const loginBtn = (e) => {
-  //   e.preventDefault();
-  //   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   let valid = true;
-
-  //   if (!emailPattern.test(email)) {
-  //     setEmailError("*Invalid email address");
-  //     valid = false;
-  //   }
-
-  //   if (password.length < 8) {
-  //     setPasswordError("*Password must be at least 8 characters long");
-  //     valid = false;
-  //   }
-
-  //   if (valid) {
-  //     axios
-  //       .post(`${backendUrl}/user/authenticate`, {
-  //         email: email,
-  //         password: password,
-  //       })
-  //       .then((response) => {
-  //         console.log("Response:", response.data);
-  //         const token = response.data.jwtToken;
-  //         console.log(token);
-  //         localStorage.setItem("jwtToken", token);
-  //         fetchUserProfile(token);
-  //         setEmail("");
-  //         setPassword("");
-  //         setOpenDropDown(true);
-  //         setIsModalOpen(false);
-  //       })
-  //       .catch((error) => {
-  //         console.log("Error:", error);
-  //       });
-  //   }
-  // };
-
   const closeModal = (e) => {
     e.preventDefault();
     setIsForgotPassword(false);
     setIsOpenSignUp(false);
     setIsModalOpen(false);
   };
-  // const registerBtn = (e) => {
-  //   e.preventDefault();
-  //   // setIsOpenSignUp(false);
-  //   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   let valid = true;
 
-  //   if (!emailPattern.test(sEmail)) {
-  //     setEmailError("*Invalid email address");
-  //     valid = false;
-  //   }
-
-  //   if (sPassword.length < 8) {
-  //     setPasswordError("*Password must be at least 8 characters long");
-  //     valid = false;
-  //   }
-
-  //   if (valid) {
-  //     axios
-  //       .post(`${backendUrl}/user/sign-up`, {
-  //         name: sfName,
-  //         email: sEmail,
-  //         password: sPassword,
-  //       })
-  //       .then((response) => {
-  //         console.log("Response:", response.data);
-  //         setSfName("");
-  //         setSEmail("");
-  //         setSPassword("");
-  //         setIsOpenSignUp(false);
-  //       })
-  //       .catch((error) => {
-  //         console.log("Error:", error);
-  //       });
-  //   }
+  // const fetchUserProfile = (token) => {
+  //   axios
+  //     .get(`${backendUrl}/user/profile`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     })
+  //     .then((response) => {
+  //       response.data;
+  //       console.log(response.data);
+  //       setProfileDetails(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error:", error);
+  //       // Handle token expiry or invalid token
+  //       localStorage.removeItem("jwtToken");
+  //     });
   // };
 
-  const fetchUserProfile = (token) => {
-    axios
-      .get(`${backendUrl}/user/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        response.data;
-        console.log(response.data);
-        setProfileDetails(response.data);
-      })
-      .catch((error) => {
-        console.log("Error:", error);
-        // Handle token expiry or invalid token
-        localStorage.removeItem("jwtToken");
-      });
-  };
+  // useEffect(() => {
+  //   fetchUserProfile(localStorage.getItem("jwtToken"));
+  // }, []);
 
-  useEffect(() => {
-    fetchUserProfile(localStorage.getItem("jwtToken"));
-  }, []);
-
-  // const openSignUp = (e) => {
-  //   e.preventDefault();
-  //   setIsOpenSignUp(true);
-  // };
   const openModel = () => {
     // setOpenDropDown(true);
     setIsModalOpen(true);

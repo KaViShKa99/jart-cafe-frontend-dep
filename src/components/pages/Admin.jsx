@@ -34,17 +34,19 @@ export const Admin = () => {
   const [categoryName, setCategoryName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
+  const [lastPrice, setLastPrice] = useState(0);
   const [images, setImages] = useState([]);
   const [imageLinks, setImageLinks] = useState("");
   const [materialsSizes, setMaterialsSizes] = useState(
     initializeMaterialsSizes()
   );
-  const [newSize, setNewSize] = useState({
-    material: "",
-    design: "",
-    price: "",
-  });
+
+  // const [newSize, setNewSize] = useState({
+  //   material: "",
+  //   design: "",
+  //   price: "",
+  // });
 
   const handleCategoryChange = (event) => {
     const selectedCategory = categories.find(
@@ -60,6 +62,10 @@ export const Admin = () => {
 
   const handleDescriptionChange = (value) => {
     setDescription(value);
+  };
+
+  const handleLastPriceChange = (event) => {
+    setLastPrice(event.target.value);
   };
 
   const handlePriceChange = (event) => {
@@ -88,33 +94,6 @@ export const Admin = () => {
           : mat
       )
     );
-  };
-
-  const handleNewSizeChange = (field, value) => {
-    setNewSize({ ...newSize, [field]: value });
-  };
-
-  const addNewSize = () => {
-    if (newSize.material && newSize.design && newSize.price) {
-      setMaterialsSizes((prevSizes) => {
-        const existingMaterial = prevSizes.find(
-          (mat) => mat.material === newSize.material
-        );
-        if (existingMaterial) {
-          existingMaterial.sizes.push({
-            size: newSize.design,
-            price: newSize.price,
-          });
-        } else {
-          prevSizes.push({
-            material: newSize.material,
-            sizes: [{ size: newSize.design, price: newSize.price }],
-          });
-        }
-        return [...prevSizes];
-      });
-      setNewSize({ material: "", design: "", price: "" });
-    }
   };
 
   const removeImage = (index) => {
@@ -154,9 +133,21 @@ export const Admin = () => {
     }
 
     if (imageLinks.trim() !== "") {
-      const links = imageLinks.split("\n").map((link) => link.trim());
+      const links = imageLinks
+        .split("\n")
+        .map((link) => link.trim())
+        .filter((link) => link !== "");
       imageUrls = [...imageUrls, ...links];
     }
+
+    console.log(imageUrls);
+
+    const filteredMaterialsSizes = materialsSizes.map((mat) => ({
+      ...mat,
+      sizes: mat.sizes.filter((s) => s.price !== "" && s.price !== null),
+    }));
+
+    console.log(filteredMaterialsSizes);
 
     try {
       const formData = {
@@ -164,8 +155,9 @@ export const Admin = () => {
         title: title,
         description: description,
         price: price,
+        lastPrice: lastPrice,
         images: imageUrls,
-        materials: materialsSizes,
+        materials: filteredMaterialsSizes,
       };
 
       console.log(formData);
@@ -221,6 +213,14 @@ export const Admin = () => {
           name="price"
           value={price}
           onChange={handlePriceChange}
+        />
+        <label htmlFor="price">Last Price</label>
+        <input
+          id="last-price"
+          type="text"
+          name="last-price"
+          value={lastPrice}
+          onChange={handleLastPriceChange}
         />
 
         <label>Choose Images</label>

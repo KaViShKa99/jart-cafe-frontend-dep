@@ -17,14 +17,14 @@ const ProductImageGallery = ({ images }) => {
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? images.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
-    setSelectImage(images[newIndex].url);
+    setSelectImage(images[newIndex]);
   };
 
   const goToNext = () => {
     const isLastSlide = currentIndex === images.length - 1;
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
-    setSelectImage(images[newIndex].url);
+    setSelectImage(images[newIndex]);
   };
 
   const goToImage = (index, image) => {
@@ -89,9 +89,9 @@ const ProductImageGallery = ({ images }) => {
               src={
                 !isModalOpen
                   ? currentIndex === 0
-                    ? images[0].url
+                    ? images[currentIndex]
                     : selectImage
-                  : images[0].url
+                  : images[0]
               }
               alt="gallery"
               style={zoomStyle}
@@ -109,10 +109,10 @@ const ProductImageGallery = ({ images }) => {
         {images.map((image, index) => (
           <img
             key={index}
-            src={image.url}
+            src={image}
             alt={`thumbnail ${index}`}
             className={`thumbnail ${index === currentIndex ? "active" : ""}`}
-            onClick={() => goToImage(index, image.url)}
+            onClick={() => goToImage(index, image)}
           />
         ))}
         <button onClick={goToNext} className="right-arrow">
@@ -127,22 +127,17 @@ const ProductImageGallery = ({ images }) => {
         overlayClassName="overlay"
       >
         <div className="modal-content">
-          {/* <button onClick={closeModal} className="close-button">
-            &times;
-          </button> */}
           <button onClick={goToPrevious} className="modal-left-arrow">
-            {/* &#9664; */}
             <MdOutlineKeyboardArrowLeft />
           </button>
           {images && images.length > 0 && (
             <img
-              src={currentIndex === 0 ? images[0].url : selectImage}
+              src={currentIndex === 0 ? images[0] : selectImage}
               alt="full-size gallery"
               className="full-image"
             />
           )}
           <button onClick={goToNext} className="modal-right-arrow">
-            {/* &#9654; */}
             <MdOutlineKeyboardArrowRight />
           </button>
         </div>

@@ -4,37 +4,154 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import productData from "../data/Data";
 
-const ProductBuyForm = ({ images }) => {
+import QuantityCounter from "./QuantityCounter";
+
+const ProductBuyForm = ({ props, editForm, close }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { id } = useParams();
 
-  const { selectCategory, setCartArray } = useStateContext();
+  const { cartArray, setCartArray } = useStateContext();
 
-  const [filteredProducts, setFilteredProducts] = useState(null);
+  const [data, setData] = useState([]);
   const [isPhysical, setIsPhysical] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
   const [material, setMaterial] = useState("");
   const [sizesArray, setSizesArray] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const [price, setPrice] = useState("56.00");
+  const [price, setPrice] = useState(0);
   const [size, setSize] = useState("");
   const [total, setTotal] = useState(0);
   const [designerNote, setDesignerNote] = useState("");
   const [paintingNote, setPaintingNote] = useState("");
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [person, setPerson] = useState(null);
+  const [style, setStyle] = useState(null);
+  const [figure, setFigure] = useState(null);
 
-  const increaseQuantity = (e) => {
-    e.preventDefault();
-    setQuantity(quantity + 1);
-    let total = price * (quantity + 1);
-    setTotal(total);
+  const digitalArt = {
+    artworkId: data && data.artworkId,
+    category: data && data.category,
+    productImage: data
+      ? !editForm
+        ? data.images[0]
+        : data.productImage
+      : null,
+    uploadedImage: uploadedImage,
+    numOfPersons: person,
+    materials: data && data.materials,
+    style: style,
+    figure: figure,
+    designerNote: designerNote,
+    quantity: quantity,
+    eachPrice: total,
+    total: total * quantity,
+    isDigitalArt: true,
   };
-  const decreaseQuantity = (e) => {
-    e.preventDefault();
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-      let total = price * (quantity - 1);
-      setTotal(total);
+
+  const physicalArt = {
+    artworkId: data && data.artworkId,
+    category: data && data.category,
+    material: material,
+    size: size,
+    materials: data && data.materials,
+    productImage: data
+      ? !editForm
+        ? data.images[0]
+        : data.productImage
+      : null,
+    uploadedImage: uploadedImage,
+    numOfPersons: person,
+    paintingNote: paintingNote,
+    designerNote: designerNote,
+    quantity: quantity,
+    eachPrice: total,
+    total: total * quantity,
+    isDigitalArt: false,
+  };
+
+  const persons = [
+    { id: 1, name: "1", value: 0 },
+    { id: 2, name: "2 +$7.00", value: 7 },
+    { id: 3, name: "3 +$14.00", value: 14 },
+    { id: 4, name: "4 +$21.00", value: 21 },
+    { id: 5, name: "5 or more +$28.00", value: 28 },
+  ];
+  const styles = [
+    {
+      id: 1,
+      type: "Select a style",
+      name: "",
+      value: 0,
+    },
+    {
+      id: 2,
+      type: "head to shoulder",
+      name: "(USD 17.00 to USD 108.00)",
+      value: 17,
+    },
+    { id: 3, type: "half body", name: "(USD 18.00 to USD 140.00)", value: 18 },
+    { id: 4, type: "full body", name: "(USD 34.00 to USD 210.00)", value: 34 },
+  ];
+
+  const figures = [
+    { id: 1, name: "Select an option", value: 0 },
+    { id: 2, name: "1 figure (USD 34.00)", value: 34 },
+    { id: 3, name: "2 figure (USD 44.00)", value: 44 },
+    { id: 4, name: "3 figure (USD 54.00)", value: 54 },
+    { id: 5, name: "4 figure (USD 74.00)", value: 74 },
+    { id: 6, name: "5 figure (USD 104.00)", value: 104 },
+  ];
+
+  const handleFiguresChange = (event) => {
+    const selectedFigure = figures.find(
+      (fig) => fig.id === parseInt(event.target.value)
+    );
+    if (!figure) {
+      setTotal((pre) => pre + selectedFigure.value);
+      setFigure(selectedFigure);
+    } else {
+      const prvFig = figures.find((fig) => fig.id === figure.id);
+      console.log(figure);
+      setTotal((pre) => pre - prvFig.value + selectedFigure.value);
+      setFigure(selectedFigure);
+    }
+  };
+
+  const handleStyleChange = (event) => {
+    const selectedStyle = styles.find(
+      (sty) => sty.id === parseInt(event.target.value)
+    );
+    console.log(selectedStyle);
+    console.log(selectedStyle.value);
+    console.log(!style);
+    if (!style) {
+      setTotal((pre) => pre + selectedStyle.value);
+      setStyle(selectedStyle);
+    } else {
+      const prvSty = styles.find((sty) => sty.id === style.id);
+      setTotal((pre) => pre - prvSty.value + selectedStyle.value);
+      setStyle(selectedStyle);
+    }
+  };
+  const handlePerChange = (event) => {
+    const selectedPer = persons.find(
+      (per) => per.id === parseInt(event.target.value)
+    );
+    if (!person) {
+      setTotal((pre) => pre + selectedPer.value);
+      setPerson(selectedPer);
+    } else {
+      const prvPer = persons.find((per) => per.id === person.id);
+      setTotal((pre) => pre - prvPer.value + selectedPer.value);
+      setPerson(selectedPer);
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setUploadedImage(file);
     }
   };
 
@@ -47,78 +164,229 @@ const ProductBuyForm = ({ images }) => {
   };
 
   const handleImageClick = (index, product) => {
+    const matArry = data.materials;
+    const sizeArray = matArry.filter((e) => e.material === product.material);
+    setSizesArray(sizeArray[0].sizes);
+
     setSelectedSizeIndex(null);
     setSelectedIndex(index);
-    setMaterial(product.name);
-    setSizesArray(product.size);
-    setTotal(0);
+    setMaterial(product.material);
+    setPrice(data.price);
+    setTotal(data.price);
   };
 
   const handleSizeClick = (index, size) => {
     setSelectedSizeIndex(index);
-    setPrice(size.p);
-    setSize(size.s);
-    setTotal(size.p);
+    setPrice(size.price);
+    setSize(size.size);
+    setTotal(size.price);
   };
 
   const addTocart = (e) => {
     e.preventDefault();
-    const productToAdd = {
-      id: filteredProducts.artworkId,
-      type: selectCategory,
-      price: price,
-      name: filteredProducts.material,
-      imageUrl: filteredProducts.images[0].url,
-      quantity: quantity,
-      material: material,
-      size: size,
-      //sizeArray: sizesArray,
-      designerNote: designerNote,
-      paintingNote: paintingNote,
-    };
+
+    // const digitalArt = {
+    //   artworkId: data.artworkId,
+    //   category: data.category,
+    //   productImage: !editForm ? data.images[0] : data.productImage,
+    //   uploadedImage: uploadedImage,
+    //   numOfPersons: person,
+    //   materials: data.materials,
+    //   style: style,
+    //   figure: figure,
+    //   designerNote: designerNote,
+    //   quantity: quantity,
+    //   eachPrice: total,
+    //   total: total * quantity,
+    //   isDigitalArt: true,
+    // };
+
+    // const physicalArt = {
+    //   artworkId: data.artworkId,
+    //   category: data.category,
+    //   material: material,
+    //   size: size,
+    //   materials: data.materials,
+    //   productImage: !editForm ? data.images[0] : data.productImage,
+    //   uploadedImage: uploadedImage,
+    //   numOfPersons: person,
+    //   paintingNote: paintingNote,
+    //   designerNote: designerNote,
+    //   quantity: quantity,
+    //   eachPrice: total,
+    //   total: total * quantity,
+    //   isDigitalArt: false,
+    // };
+
+    const newItem = isPhysical ? physicalArt : digitalArt;
 
     setCartArray((prevCartArray) => {
       if (prevCartArray.length !== 0) {
-        const findItem = prevCartArray.find((product) => product.id == id);
+        const findItem = prevCartArray.find(
+          (product) => product.artworkId == data.artworkId
+        );
+        console.log(findItem);
         if (findItem) {
           return [...prevCartArray];
         } else {
-          return [...prevCartArray, productToAdd];
+          return [...prevCartArray, newItem];
         }
       } else {
-        return [productToAdd];
+        return [newItem];
       }
     });
   };
 
+  const updateCartItem = (e) => {
+    e.preventDefault();
+
+    const updateItem = isPhysical ? physicalArt : digitalArt;
+
+    setCartArray((prevCartArray) => {
+      if (prevCartArray.length !== 0) {
+        const existingItemIndex = prevCartArray.findIndex(
+          (product) => product.artworkId === data.artworkId
+        );
+        console.log(existingItemIndex);
+        if (existingItemIndex !== -1) {
+          const updatedCartArray = [...prevCartArray];
+          updatedCartArray[existingItemIndex] = updateItem;
+          return updatedCartArray;
+        }
+      }
+    });
+    close(false);
+  };
+
   useEffect(() => {
-    axios
-      .get(backendUrl + `/artworks/${id}`)
-      .then((response) => {
-        let product = response.data;
-        console.log(product);
-        images(product.images);
-        setFilteredProducts(product);
-        setPrice(product.price);
-      })
-      .catch((error) => {
-        console.log("error fetching data for id", error);
-      });
+    setData(props);
+    if (props) {
+      setTotal(editForm ? props.eachPrice : props.price);
+    }
+  }, [props]);
+
+  useEffect(() => {
+    let imageUrl;
+    if (uploadedImage) {
+      imageUrl = URL.createObjectURL(uploadedImage);
+    }
+
+    return () => {
+      if (imageUrl) {
+        URL.revokeObjectURL(imageUrl);
+      }
+    };
+  }, [uploadedImage]);
+
+  useEffect(() => {
+    console.log(editForm);
+    if (data.isDigitalArt) {
+      setIsPhysical(!data.isDigitalArt);
+    }
+  }, [editForm]);
+
+  useEffect(() => {
+    console.log(data);
   }, []);
 
   return (
-    <div className="product-description">
-      <div className="product-category">{selectCategory}selectCategory</div>
-      <div className="product-price">
-        <span className="original-price">
-          <del>$ 80.00</del>
-        </span>
-        <span className="discount-price">$ {price}</span>
-      </div>
-      <div className="product-pharagraph">
-        Custom pop art portrait, WPAP, Custom portrait, Portrait illustration,
-        Personalized gift, Birthday gift, Couple portrait, Family portrait
-      </div>
+    // <div className="product-description">
+    <div
+      className={editForm ? "product-description-edit" : "product-description"}
+    >
+      {!editForm && (
+        <>
+          <div className="product-category">
+            {data ? data.category : "category"}
+          </div>
+          <div className="product-price">
+            <span className="original-price">
+              <del>${data ? data.lastPrice : "100"}</del>
+            </span>
+            <span className="discount-price">
+              ${!price ? (data ? data.price : "50") : price}
+            </span>
+          </div>
+          <div className="product-pharagraph">
+            {data ? data.title : "title"}
+          </div>
+        </>
+      )}
+
+      {editForm && data && (
+        <div className="new-product-details-edit">
+          <span className="price">$ {data.eachPrice}</span>
+          <img src={data.productImage} alt="Product Image" />
+          <span className="category">{data.category}</span>
+
+          <div className="details">
+            <div className="detail-item">
+              <span className="label">Type</span>
+              <span className="value">
+                {!isPhysical
+                  ? "Digital Artwork"
+                  : data.material
+                  ? `${data.material} / ${data.size}`
+                  : `${material} / ${size}`}
+              </span>
+            </div>
+            <div className="detail-item">
+              <span className="label">Quantity</span>
+              <span className="value">
+                {!quantity ? data.quantity : quantity}
+              </span>
+            </div>
+            {!isPhysical && (
+              <>
+                <div className="detail-item">
+                  <span className="label">Figure</span>
+                  <span className="value">
+                    {data.figure
+                      ? data.figure.name
+                      : figure
+                      ? figure.name
+                      : "No figure selected"}
+                  </span>
+                </div>
+                <div className="detail-item">
+                  <span className="label">Style</span>
+                  <span className="value">
+                    {data.style
+                      ? data.style.type
+                      : style
+                      ? style.type
+                      : "No style selected"}
+                  </span>
+                </div>
+              </>
+            )}
+            <div className="detail-item">
+              <span className="label">Persons</span>
+              <span className="value">
+                {data.numOfPersons
+                  ? data.numOfPersons.name
+                  : person
+                  ? person.name
+                  : "No person selected"}
+              </span>
+            </div>
+          </div>
+
+          <div className="total">
+            <span className="label">Total</span>
+            <span className="value">
+              {/* $ {data.eachPrice * (quantity || data.quantity)} */}$ {total}
+            </span>
+          </div>
+
+          <span className="note">
+            {!paintingNote ? data.paintingNote : paintingNote}
+          </span>
+          <span className="note">
+            {!designerNote ? data.designerNote : designerNote}
+          </span>
+        </div>
+      )}
 
       <div className="product-form">
         <form className="product-form-body">
@@ -162,7 +430,7 @@ const ProductBuyForm = ({ images }) => {
                     >
                       <img
                         id="selected-material-design"
-                        src={product.imageUrl}
+                        src={product.image}
                         alt="Product"
                         className={selectedIndex === index ? "selected" : ""}
                       />
@@ -188,7 +456,7 @@ const ProductBuyForm = ({ images }) => {
                         id="selected-size"
                         className={selectedSizeIndex === index ? "select" : ""}
                       >
-                        {size.s}
+                        {size.size}
                       </span>
                     </div>
                   ))}
@@ -204,46 +472,58 @@ const ProductBuyForm = ({ images }) => {
               name="img"
               accept="image/*"
               className="file-input"
+              onChange={handleFileChange}
             />
             <label htmlFor="img" className="file-input-label">
               Choose Image
             </label>
+            {uploadedImage && (
+              <img
+                src={URL.createObjectURL(uploadedImage)}
+                alt="Preview"
+                style={{ width: "100px", height: "100px", marginRight: "10px" }}
+              />
+            )}
           </div>
           <div className="select-options">
             <div className="number-persons">
               <label htmlFor="persons">Number of Person/Pet</label>
-              <select name="persons" id="persons">
-                <option value="1">1</option>
-                <option value="2">2 (+$7.00)</option>
-                <option value="3">3 (+$14.00)</option>
-                <option value="4">4 (+$21.00)</option>
-                <option value="5">5 or more (+$28.00)</option>
+              <select name="persons" id="persons" onChange={handlePerChange}>
+                {persons.map((per) => (
+                  <option key={per.id} value={per.id}>
+                    {per.name}
+                  </option>
+                ))}
               </select>
             </div>
             {!isPhysical && (
               <div className="digital-image-details">
                 <div className="digital-image-style">
                   <label htmlFor="styles">Style</label>
-                  <select name="styles" id="styles">
-                    <option value="1">Select a style</option>
-                    <option value="2">
-                      head to shoulder (USD 17.00 to USD 108.00)
-                    </option>
-                    <option value="3">
-                      half body (USD 18.00 to USD 140.00)
-                    </option>
-                    <option value="4">full body</option>
+                  <select
+                    name="styles"
+                    id="styles"
+                    onChange={handleStyleChange}
+                  >
+                    {styles.map((st) => (
+                      <option key={st.id} value={st.id}>
+                        {st.type + " " + st.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="digital-image-figures">
                   <label htmlFor="figures">Figures</label>
-                  <select name="figures" id="figures">
-                    <option value="0">Select an option</option>
-                    <option value="1">1 figure (USD 34.00)</option>
-                    <option value="2">2 figure (USD 44.00)</option>
-                    <option value="3">3 figure (USD 54.00)</option>
-                    <option value="4">4 figure (USD 74.00)</option>
-                    <option value="5">5 figure (USD 104.00)</option>
+                  <select
+                    name="figures"
+                    id="figures"
+                    onChange={handleFiguresChange}
+                  >
+                    {figures.map((fig) => (
+                      <option key={fig.id} value={fig.id}>
+                        {fig.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -266,7 +546,7 @@ const ProductBuyForm = ({ images }) => {
             )}
             <div className="designer-note">
               <label htmlFor="designer-note">
-                Note for designer (Optional) {designerNote}
+                Note for designer (Optional)
               </label>
               <textarea
                 id="designer-note"
@@ -279,33 +559,35 @@ const ProductBuyForm = ({ images }) => {
             </div>
           </div>
 
-          <div className="quantity-container">
+          <div className="product-buy-quantity-btn">
             <label htmlFor="q-value">Quantity : {quantity}</label>
-            <div className="quantity-btn">
-              <button
-                id="q-value"
-                className="decrease-btn"
-                onClick={decreaseQuantity}
-              >
-                -
-              </button>
-              <span className="quantity-value">{quantity}</span>
-              <button
-                id="q-value"
-                className="increase-btn"
-                onClick={increaseQuantity}
-              >
-                +
+            <QuantityCounter
+              TotalQuantity={(e) => {
+                setQuantity(e);
+              }}
+              product={() => {}}
+              cartUpdate={false}
+            />
+            <label htmlFor="subtotal-value">
+              Subtotal : $ {total * quantity}
+            </label>
+          </div>
+
+          {!editForm ? (
+            <div className="cart-button">
+              <button className="buy-it-now-btn">Buy it now</button>
+              <button className="add-to-cart-btn" onClick={addTocart}>
+                ADD TO CART
               </button>
             </div>
-            <span>Subtotal : $ {total} </span>
-          </div>
-          <div className="cart-button">
-            <button className="buy-it-now-btn">Buy it now</button>
-            <button className="add-to-cart-btn" onClick={addTocart}>
-              ADD TO CART
-            </button>
-          </div>
+          ) : (
+            <div className="cart-button">
+              {/* <button className="buy-it-now-btn">Remove</button> */}
+              <button className="save-to-cart-btn" onClick={updateCartItem}>
+                Save
+              </button>
+            </div>
+          )}
         </form>
       </div>
     </div>
