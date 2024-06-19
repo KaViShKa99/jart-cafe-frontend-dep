@@ -1,14 +1,14 @@
 .nav-bar
-    background-color: var(--orange)
     width: 100%
+    height: 130px
     display: flex
     justify-content: center
     align-items: center
     padding: 0 5%
-    color: white
+    // color: white
+    border-bottom: 2px solid var(--light-gray)
+
  
-
-
     nav
         display: flex
         align-items: center
@@ -21,6 +21,7 @@
         .home-icon
             // font-size: 15px
             cursor: pointer
+            font-weight: bold
             // margin: 10px
 
         .search
@@ -31,15 +32,10 @@
             z-index: 2
             color: black
             background: white
-            
-                        
-                        
-                        
-            
-            
+
             
         .link-container
-            // background: brown
+            font-weight: bold
             margin: 10px
             ul.links
                 display: flex
@@ -54,31 +50,13 @@
                 align-items: center
                 padding: 5px
                 margin-left: 5px
-                
-                
-                // &:nth-child(2)
-                //     width: 40px
-                //     height: 40px
-                //     &:hover
-                //         background: var(--dark-orange)
-                //         border-radius:50%
-                //         cursor: pointer
-                        
 
-                // &:nth-child(3)
-                //     width: 40px
-                //     height: 40px
-                //     &:hover
-                //         background: var(--dark-orange)
-                //         border-radius:50%
-                //         cursor: pointer
-            
             .sign-in
                 margin: 5px 
                 width: 80px
 
                 &:hover
-                    background: var(--dark-orange)
+                    background: var(--light-gray)
                     margin-left: 5px
                     border-radius: 20px
                     cursor: pointer
@@ -97,7 +75,7 @@
                     justify-content: center
                     align-items: center
                     &:hover
-                        background: var(--dark-orange)
+                        background: var(--light-gray)
                         border-radius:50%
                         cursor: pointer
                     // .cart-icon
@@ -107,12 +85,12 @@
 
                 .cart-counter 
                     position: absolute
-                    top: -2px
-                    right: -6px
-                    background: white
-                    color: var(--orange)
+                    top: -1px
+                    right: -2px
+                    background: var(--orange)
+                    color: white
                     border-radius: 50%
-                    // padding: 2px 6px
+                    border: 2px solid white
                     padding: 1px 7px
                     font-size: 0.8rem
                     font-weight: bold

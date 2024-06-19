@@ -6,8 +6,7 @@ const stateContext = createContext();
 export const StateProvider = ({ children }) => {
   const [selectCategory, setSelectCategory] = useState(null);
   const [selectProduct, setSelectProduct] = useState(null);
-  // const [cartArray, setCartArray] = useState([]);
-
+  const [cartTotalAmount, setCartTotalAmount] = useState(0);
   const [products, setProducts] = useState([]);
 
   const [cartArray, setCartArray] = useState(() => {
@@ -32,6 +31,8 @@ export const StateProvider = ({ children }) => {
       "secretKey"
     ).toString();
     localStorage.setItem("cart-sync", encryptedCart);
+
+    setCartTotalAmount(cartArray.reduce((sum, item) => sum + item.total, 0));
   }, [cartArray]);
 
   const addItemToCart = (item) => {
@@ -66,6 +67,7 @@ export const StateProvider = ({ children }) => {
         addItemToCart,
         clearCart,
         updateQuantity,
+        cartTotalAmount,
       }}
     >
       {children}

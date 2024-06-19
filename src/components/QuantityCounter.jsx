@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { useStateContext } from "./StateContext";
 
-const QuantityCounter = ({ TotalQuantity, product, cartUpdate }) => {
+const QuantityCounter = ({
+  TotalQuantity,
+  initialQuantity,
+  product,
+  cartUpdate,
+}) => {
   const { updateQuantity } = useStateContext();
 
-  const [quantity, setQuantity] = useState(product.quantity || 1);
+  const [quantity, setQuantity] = useState(product.quantity || initialQuantity);
   // const [quantity, setQuantity] = useState(1);
 
   const decreaseQuantity = (e) => {
@@ -33,7 +38,7 @@ const QuantityCounter = ({ TotalQuantity, product, cartUpdate }) => {
         <button className="decrease-btn" onClick={decreaseQuantity}>
           -
         </button>
-        <span className="quantity-value">{quantity}</span>
+        <span className="quantity-value">{initialQuantity}</span>
         <button className="increase-btn" onClick={increaseQuantity}>
           +
         </button>

@@ -84,7 +84,7 @@ const ProductGallery = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   // const [productData, setProductData] = useState([]);
-  const itemsPerPage = 3;
+  const itemsPerPage = 10;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;

@@ -12,7 +12,7 @@ import ProductBuyForm from "../ProductBuyForm";
 Modal.setAppElement("#root");
 
 const Cart = () => {
-  const { cartArray, setCartArray } = useStateContext();
+  const { cartArray, setCartArray, cartTotalAmount } = useStateContext();
   // const cartProducts = [
   //   { image: "/imgs/canvas.jpeg", name: "Product 1", price: 10, quantity: 1 },
   //   { image: "/imgs/poster.jpeg", name: "Product 1", price: 10, quantity: 1 },
@@ -78,26 +78,17 @@ const Cart = () => {
     //setTotal(size.p);
   };
 
-  const addNewItem = () => {
-    // console.log([...cartItem, initialCartItem]);
-    // setCartItem([...cartItem, initialCartItem]);
-  };
-
-  // const removeItem = (index) => {
-  //   const updatedCartItems = cartItem.filter((_, i) => i !== index);
-  //   setCartItem(updatedCartItems);
-  // };
-
   const removeItem = (index) => {
-    // const updatedCartItems = cartItem.filter((product) => product.id !== index);
+    console.log(cartArray);
+    const updatedCartItems = cartArray.filter(
+      (product) => product.artworkId !== index
+    );
+
     setCartArray((prevItem) =>
       prevItem.filter((product) => product.artworkId !== index)
     );
-    setCartItem((prevItem) =>
-      prevItem.filter((product) => product.artworkId !== index)
-    );
-    // console.log(updatedCartItems);
     console.log(index);
+    console.log(updatedCartItems);
   };
 
   useEffect(() => {
@@ -177,6 +168,7 @@ const Cart = () => {
                     <td className="quantity-details-column">
                       <QuantityCounter
                         TotalQuantity={() => {}}
+                        initialQuantity={product.quantity}
                         product={product}
                         cartUpdate={true}
                       />
@@ -200,6 +192,7 @@ const Cart = () => {
 
                         <QuantityCounter
                           TotalQuantity={() => {}}
+                          initialQuantity={product.quantity}
                           product={product}
                           cartUpdate={true}
                         />
@@ -225,12 +218,17 @@ const Cart = () => {
           <div className="divider"></div>
           <div className="sub-total">
             Sub Total:
-            <span className="subTotal-value">$ {total.toFixed(2)}</span>
+            <span className="subTotal-value">
+              $ {cartTotalAmount.toFixed(2)}
+            </span>
           </div>
           <div className="total">
             <div className="gray-divider" />
             <div className="total-content">
-              Total: <span className="total-value">$ {total.toFixed(2)}</span>
+              Total:{" "}
+              <span className="total-value">
+                $ {cartTotalAmount.toFixed(2)}
+              </span>
             </div>
             <div className="gray-divider" />
           </div>

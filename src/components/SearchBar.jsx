@@ -107,7 +107,7 @@ const SearchBar = ({ searchItem }) => {
       <input
         type="text"
         className="search-bar"
-        placeholder="Search for a product..."
+        placeholder="Search for anything"
         value={query}
         onChange={handleInputChange}
       />

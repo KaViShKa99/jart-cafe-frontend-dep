@@ -21,6 +21,9 @@ const SelectedProduct = () => {
       .get(backendUrl + `/artworks/${id}`)
       .then((response) => {
         let product = response.data;
+
+        console.log(product);
+
         setProductImages(product.images);
         setProductDetails(product.description);
 
@@ -32,8 +35,6 @@ const SelectedProduct = () => {
         //   lastPrice: product.lastPrice,
         //   price: product.price,
         // });
-
-        console.log(product);
 
         // images(product.images);
         // setFilteredProducts(product);
