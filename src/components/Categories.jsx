@@ -10,21 +10,39 @@ const Categories = () => {
   const categories = [
     {
       name: "Pop art",
-      imageUrl: "src/assets/c1.jpeg",
+      imageUrl: "imgs/c1.jpeg",
     },
     {
       name: "Vector art",
-      imageUrl: "src/assets/c2.jpeg",
+      imageUrl: "imgs/c2.jpeg",
     },
     {
       name: "Pet portrait",
-      imageUrl: "src/assets/c3.jpeg",
+      imageUrl: "imgs/c3.jpeg",
     },
     {
       name: "Cartoon art",
-      imageUrl: "src/assets/c4.jpeg",
+      imageUrl: "imgs/c4.jpeg",
     },
   ];
+  // const categories = [
+  //   {
+  //     name: "Pop art",
+  //     imageUrl: "src/assets/c1.jpeg",
+  //   },
+  //   {
+  //     name: "Vector art",
+  //     imageUrl: "src/assets/c2.jpeg",
+  //   },
+  //   {
+  //     name: "Pet portrait",
+  //     imageUrl: "src/assets/c3.jpeg",
+  //   },
+  //   {
+  //     name: "Cartoon art",
+  //     imageUrl: "src/assets/c4.jpeg",
+  //   },
+  // ];
   useEffect(() => {
     setSelectCategory("Pop art");
     console.log(activeCategory);

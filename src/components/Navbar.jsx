@@ -137,17 +137,7 @@ const Navbar = () => {
         {/* <SearchBar /> */}
         <div className="search">
           <SearchBar searchItem={(e) => setSearchData(e)} />
-          {/* <ReactSearchBox
-            id="search-box"
-            placeholder="Search in Jart Cafe"
-            value="Doe"
-            data={data}
-            callback={(record) => console.log(record)}
-            leftIcon={<IoSearchOutline />}
-            iconBoxSize="48px"
-            autoFocus
-            dropdownHoverColor="#fff0e8"
-          /> */}
+          
         </div>
         <div className="link-container">
           <ul className="links">
