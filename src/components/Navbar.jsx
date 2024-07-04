@@ -20,7 +20,6 @@ const Navbar = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const navigate = useNavigate();
-  // const { cartArray } = useStateContext();
   const { cartArray } = useSelector((state) => state.cartItems);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -86,29 +85,6 @@ const Navbar = () => {
   //   setIsForgotPassword(true);
   // };
 
-  const data = [
-    {
-      key: "john",
-      value: "John Doe",
-    },
-    {
-      key: "jane",
-      value: "Jane Doe",
-    },
-    {
-      key: "mary",
-      value: "Mary Phillips",
-    },
-    {
-      key: "robert",
-      value: "Robert",
-    },
-    {
-      key: "karius",
-      value: "Karius",
-    },
-  ];
-
   useEffect(() => {
     if (isModalOpen) {
       document.body.classList.add("no-scroll");
@@ -126,10 +102,6 @@ const Navbar = () => {
     console.log(openDropDown);
   }, [openDropDown]);
 
-  useEffect(() => {
-    console.log(serachData);
-  }, [serachData]);
-
   return (
     <div className="nav-bar">
       <nav id="nav-bar">
@@ -138,7 +110,7 @@ const Navbar = () => {
         </span>
         {/* <SearchBar /> */}
         <div className="search">
-          <SearchBar searchItem={(e) => setSearchData(e)} />
+          <SearchBar />
         </div>
         <div className="link-container">
           <ul className="links">

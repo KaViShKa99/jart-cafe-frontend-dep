@@ -23,34 +23,6 @@ const productBuyDetails = createSlice({
       state[isPhysical ? "physicalArt" : "digitalArt"].uploadedImage = imageUrl;
     },
     personChange: (state, action) => {
-      // const { id, isPhysical } = action.payload;
-      // const selectedPersons = persons.find(
-      //   (person) => person.id === parseInt(id)
-      // );
-      // if (!isPhysical) {
-      //   if (!state.digitalArt.numOfPersons) {
-      //     state.digitalArt.eachPrice += selectedPersons.value;
-      //   } else {
-      //     const prvPer = persons.find(
-      //       (per) => per.id === state.digitalArt.numOfPersons.id
-      //     );
-      //     state.digitalArt.eachPrice =
-      //       state.digitalArt.eachPrice - prvPer.value + selectedPersons.value;
-      //   }
-      //   state.digitalArt.numOfPersons = selectedPersons;
-      // } else {
-      //   if (!state.physicalArt.numOfPersons) {
-      //     state.physicalArt.eachPrice += selectedPersons.value;
-      //   } else {
-      //     const prvPer = persons.find(
-      //       (per) => per.id === state.physicalArt.numOfPersons.id
-      //     );
-      //     state.physicalArt.eachPrice =
-      //       state.physicalArt.eachPrice - prvPer.value + selectedPersons.value;
-      //   }
-      //   state.physicalArt.numOfPersons = selectedPersons;
-      // }
-
       const { id, isPhysical } = action.payload;
       const selectedPerson = persons.find(
         (person) => person.id === parseInt(id)

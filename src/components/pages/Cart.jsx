@@ -161,11 +161,6 @@ const Cart = () => {
                     </td>
                     <td className="product-total">
                       <span className="cart-total">
-                        {/* $
-                        {calculateTotal(
-                          product.price,
-                          product.quantity
-                        ).toFixed(2)} */}
                         $ {product.total && product.total.toFixed(2)}
                       </span>
                     </td>
@@ -185,13 +180,7 @@ const Cart = () => {
                           cartUpdate={true}
                         />
                         <div className="c-total">
-                          Total :-
-                          {/* $
-                          {calculateTotal(
-                            product.price,
-                            product.quantity
-                          ).toFixed(2)} */}
-                          {/* &{product.total.toFixed(2)} */}
+                          Total :- $ {product.total && product.total.toFixed(2)}
                         </div>
                       </div>
                     </td>
@@ -206,12 +195,13 @@ const Cart = () => {
           <div className="divider"></div>
           <div className="sub-total">
             Sub Total:
-            <span className="subTotal-value">{subTotal.toFixed(2)}</span>
+            <span className="subTotal-value">$ {subTotal.toFixed(2)}</span>
           </div>
           <div className="total">
             <div className="gray-divider" />
             <div className="total-content">
-              Total: <span className="total-value">{subTotal.toFixed(2)}</span>
+              Total:{" "}
+              <span className="total-value">$ {subTotal.toFixed(2)}</span>
             </div>
             <div className="gray-divider" />
           </div>

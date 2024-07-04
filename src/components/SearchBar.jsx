@@ -1,103 +1,81 @@
 import { useState, useEffect } from "react";
 import { IoSearchOutline } from "react-icons/io5";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProducts } from "../redux/reducers/productsReducer";
+import Fuse from "fuse.js";
+import { addToSearchArray } from "../redux/reducers/searchItemReducer";
+import { useNavigate } from "react-router-dom";
 
-const materialDesign = [
-  {
-    id: 1,
-    type: "Pop art",
-    name: "Canvas",
-    price: 30,
-    imageUrl: "/imgs/canvas.jpeg",
-    size: [
-      { s: '12"x16"', p: 30.0 },
-      { s: '8"x10"', p: 35.0 },
-      { s: '18"x24"', p: 40.0 },
-      { s: '24"x30"', p: 10.0 },
-      { s: '30"x40"', p: 60.0 },
-    ],
-  },
-  {
-    id: 2,
-    type: "Pop art",
-    price: 34,
-    name: "Poster",
-    imageUrl: "/imgs/framed_poster.jpeg",
-    size: [
-      { s: '18"x24"', p: 30.0 },
-      { s: '12"x18"', p: 20.0 },
-      { s: '16"x20"', p: 60.0 },
-      { s: '24"x36"', p: 70.0 },
-    ],
-  },
-  {
-    id: 3,
-    type: "Cartoon art",
-    price: 70,
-    name: "Framed poster",
-    imageUrl: "/imgs/poster.jpeg",
-    size: [
-      { s: '12"x16"', p: 30.0 },
-      { s: '18"x24"', p: 35.0 },
-      { s: '16"x20"', p: 40.0 },
-    ],
-  },
-  {
-    id: 4,
-    type: "Vector art",
-    price: 40,
-    name: "Traditional Frames Canvas",
-    imageUrl: "/imgs/prem_can_poster.jpeg",
-    size: [
-      { s: '8"x10"', p: 25 },
-      { s: '16"x20"', p: 45 },
-      { s: '24"x36"', p: 60 },
-      { s: '11"x14"', p: 35 },
-      { s: '24"x20"', p: 55 },
-    ],
-  },
-  {
-    id: 5,
-    type: "Pet portrait",
-    price: 60,
-    name: "Premium Framed Canvas",
-    imageUrl: "/imgs/trad_can_poster.jpeg",
-    size: [
-      { s: '12"x16"', p: "$50" },
-      { s: '8"x10"', p: "$30" },
-      { s: '18"x24"', p: "$60" },
-      { s: '24"x30"', p: "$70" },
-      { s: '30"x40"', p: "$80" },
-    ],
-  },
-];
-
-const SearchBar = ({ searchItem }) => {
+const SearchBar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { products } = useSelector((state) => state.products);
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const normalizeString = (str) => str.toLowerCase().replace(/\s+/g, "");
 
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setQuery(value);
+  const options = {
+    keys: ["title"],
+    includeMatches: true,
+    threshold: 0.3,
+    matchAllTokens: true,
+    includeScore: true,
+    maxPatternLength: 32,
+    // minMatchCharLength: 3,
+  };
 
-    if (value.length > 0) {
-      const filteredSuggestions = materialDesign.filter((item) =>
-        item.name.toLowerCase().includes(value.toLowerCase())
-      );
-      setSuggestions(filteredSuggestions);
+  useEffect(() => {
+    if (query.length > 0) {
+      const fuse = new Fuse(products, options);
+
+      const normalizedQuery = normalizeString(query);
+      const result = fuse
+        .search(normalizedQuery)
+        .map(({ item }) => {
+          const title = item.title;
+          const normalizedTitle = normalizeString(title);
+
+          const queryIndex = normalizedTitle.indexOf(normalizedQuery);
+
+          if (queryIndex !== -1) {
+            const words = title.split(" ");
+            const normalizedWords = words.map((word) => normalizeString(word));
+
+            const queryWordIndex = normalizedWords.findIndex((normalizedWord) =>
+              normalizedWord.includes(normalizedQuery)
+            );
+
+            if (queryWordIndex !== -1) {
+              const start = queryWordIndex;
+              const end = queryWordIndex + 3;
+              const snippet = words.slice(start, end).join(" ");
+              return { displayText: snippet, product: item };
+            }
+          }
+          return null;
+        })
+        .filter((item) => item !== null);
+
+      setSuggestions(result);
     } else {
       setSuggestions([]);
     }
+  }, [query]);
+
+  const handleInputChange = (e) => {
+    setQuery(e.target.value);
   };
 
   const handleSuggestionClick = (suggestion) => {
-    setQuery(suggestion.name);
+    dispatch(addToSearchArray(suggestion));
+    setQuery(suggestion.displayText);
     setSuggestions([]);
-    searchItem(suggestions);
+    navigate("/search");
   };
 
-  //   useEffect(() => {
-  //     console.log(query);
-  //   }, [query]);
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [query]);
 
   return (
     <div className="search-bar-container">
@@ -111,6 +89,7 @@ const SearchBar = ({ searchItem }) => {
         value={query}
         onChange={handleInputChange}
       />
+
       {suggestions.length > 0 ? (
         <ul className="suggestions-list">
           {suggestions.map((suggestion, index) => (
@@ -119,7 +98,7 @@ const SearchBar = ({ searchItem }) => {
               className="suggestion-item"
               onClick={() => handleSuggestionClick(suggestion)}
             >
-              {suggestion.name}
+              {suggestion.displayText}
             </li>
           ))}
         </ul>

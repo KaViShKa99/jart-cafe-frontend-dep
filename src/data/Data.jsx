@@ -28,18 +28,22 @@ export const materialDesign = [
 
 export const categories = [
   {
+    id: 1,
     name: "Pop art",
     imageUrl: "imgs/c1.jpeg",
   },
   {
+    id: 2,
     name: "Vector art",
     imageUrl: "imgs/c2.jpeg",
   },
   {
+    id: 3,
     name: "Pet portrait",
     imageUrl: "imgs/c3.jpeg",
   },
   {
+    id: 4,
     name: "Cartoon art",
     imageUrl: "imgs/c4.jpeg",
   },
@@ -78,3 +82,14 @@ export const figures = [
   { id: 5, name: "4 figure (USD 74.00)", value: 74 },
   { id: 6, name: "5 figure (USD 104.00)", value: 104 },
 ];
+
+
+export const materials = [
+  { id: 1, name: "Canvas" },
+  { id: 2, name: "Poster" },
+  { id: 3, name: "Framed poster" },
+  { id: 4, name: "Traditional Framed Canvas" },
+  { id: 5, name: "Premium Framed Canvas" },
+];
+
+export const commonSizes = ['12"x16"', '8"x10"', '18"x24"', '24"x30"', '30"x40"'];

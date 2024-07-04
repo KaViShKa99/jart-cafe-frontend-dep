@@ -1,103 +1,261 @@
+// Variables
+$primary-color: #007bff
+$secondary-color: #6c757d
+$success-color: #28a745
+$error-color: #dc3545
+$warning-color: #ffc107
+$dark-color: #343a40
+$light-color: #f8f9fa
+$remove-btn-color: #dc3545
+$remove-btn-hover-color: #c82333
+
+// Main styles
 .admin-container
-  max-width: 600px
+  max-width: 1200px
   margin: 0 auto
   padding: 20px
-  background-color: #f9f9f9
-  border-radius: 10px
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
 
-  h2
-    text-align: center
-    margin-bottom: 20px
-    color: #333
-
-  form
+  .admin-top-row
     display: flex
-    flex-direction: column
-    gap: 15px
+    justify-content: space-between
+    margin-bottom: 20px
 
-    label
-      font-weight: bold
-      margin-bottom: 5px
-      color: #555
-
-    select, input[type="text"], input[type="file"], .new-size-input
-      padding: 10px
-      border: 1px solid #ddd
-      border-radius: 5px
-      font-size: 16px
-      color: #333
-
-    select
+    .admin-form
+      flex: 1
       background-color: #fff
+      padding: 20px
+      border: 1px solid #ccc
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
 
-    .size-input, .new-size-input, .image-preview
-      display: flex
-      justify-content: space-between
-      align-items: center
+      label
+        font-weight: bold
+        margin-bottom: 5px
+        display: block
 
-      input[type="text"]
-        flex: 1
-        margin-right: 10px
+      select,
+      input[type="text"],
+      input[type="number"],
+      textarea
+        width: 100%
+        padding: 8px
+        margin-bottom: 10px
+        border: 1px solid #ccc
+        border-radius: 4px
+        font-size: 14px
 
-      button
-        padding: 5px 10px
-        border: none
-        background-color: #007bff
+      textarea
+        min-height: 100px
+    
+      button[type="submit"],.add-btn
+        background-color: $primary-color
         color: #fff
-        border-radius: 5px
+        border: none
+        padding: 10px 20px
+        border-radius: 4px
+        cursor: pointer
+        font-size: 16px
+        margin: 0 10px 0 10px
+
+      .cancel-btn
+        background-color: $error-color
+        color: #fff
+        border: none
+        padding: 10px 20px
+        border-radius: 4px
+        cursor: pointer
+        font-size: 16px
+
+      .remove-btn
+        background-color: $error-color
+        color: #fff
+        border: none
+        padding: 6px 12px
+        border-radius: 4px
         cursor: pointer
         font-size: 14px
-        transition: background-color 0.3s ease
+        margin: 0 10px 0 10px
+      
+      .added-images-container
+        display: flex
+        flex-wrap: wrap
+        gap: 10px
+        margin-top: 20px
 
-        &:hover
-          background-color: #0056b3
+        .artwork-image
+            max-width: 100px
+            max-height: 100px
+            border-radius: 4px
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
 
-    .new-size-input
-      margin-top: 10px
+        .remove-btn
+            display: inline-block
+            margin-top: 5px
+            padding: 5px 10px
+            background-color: $remove-btn-color
+            color: white
+            border: none
+            border-radius: 4px
+            cursor: pointer
+            font-size: 14px
 
-    .submit-button
-      padding: 10px 20px
-      border: none
-      background-color: #28a745
-      color: #fff
-      border-radius: 5px
-      cursor: pointer
-      font-size: 16px
-      margin-top: 20px
-      transition: background-color 0.3s ease
+            &:hover
+                background-color: $remove-btn-hover-color
 
-      &:hover
-        background-color: #218838
 
-  .preview-section
-    margin-top: 30px
-    padding: 20px
-    background-color: #fff
-    border-radius: 10px
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
+      .material-size-section
+        margin-bottom: 10px
+        border: 1px solid #ccc
+        border-radius: 4px
 
-    h2
-      margin-bottom: 15px
-      color: #007bff
+        .material-header
+          display: flex
+          justify-content: space-between
+          align-items: center
+          background-color: $light-color
+          padding: 8px
+          cursor: pointer
 
-    p, ul
-      margin-bottom: 10px
-      color: #333
+          span
+            font-weight: bold
 
-    .image-previews
-      display: flex
-      flex-wrap: wrap
+        .sizes-list
+          padding: 10px
 
-    img
-      display: block
-      max-width: 100%
-      margin-top: 10px
-      border-radius: 10px
+          .size-item
+            display: flex
+            align-items: center
+            margin-bottom: 5px
 
-    ul
-      padding-left: 20px
-      list-style-type: disc
+            span
+              margin-right: 10px
 
-      li
-        margin-bottom: 5px
+            input[type="number"]
+              width: 80px
+              padding: 6px
+              margin-right: 10px
+
+            button
+              background-color: $error-color
+              color: #fff
+              border: none
+              padding: 6px 12px
+              border-radius: 4px
+              cursor: pointer
+              font-size: 14px
+
+              &:hover
+                background-color: darken($error-color, 10%)
+
+        &.expanded
+          .sizes-list
+            display: block
+
+    .preview-section
+        flex: 1
+        margin-left: 20px
+        background-color: #fff
+        padding: 20px
+        border: 1px solid #ccc
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
+
+        h3
+            margin-bottom: 10px
+        .preview-material-boxes
+            .prev-mat-boxes-container
+                ul
+                    display: flex
+                    flex-wrap: wrap
+                    list-style: none
+                    li
+                        border: solid var(--gray) 1px
+                        margin: 10px
+                        padding: 10px
+
+
+        .image-previews
+            display: flex
+            flex-wrap: wrap
+            margin-top: 10px
+
+            .artwork-image
+                width: 100px
+                height: 100px
+                object-fit: cover
+                margin-right: 10px
+                margin-bottom: 10px
+    
+  .table-section
+    .artworks-table
+      width: 100%
+      border-collapse: collapse
+
+      th,
+      td
+        border: 1px solid #ccc
+        padding: 10px
+        text-align: left
+
+      th
+        background-color: $dark-color
+        color: #fff
+
+      .title-cell
+        max-width: 200px
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+
+      .action-buttons
+        button
+          margin-right: 5px
+          padding: 6px 12px
+          border: none
+          border-radius: 4px
+          cursor: pointer
+          font-size: 14px
+
+          &:first-child
+            background-color: $secondary-color
+            color: #fff
+
+          &:nth-child(2)
+            background-color: $primary-color
+            color: #fff
+
+          &:nth-child(3)
+            background-color: $error-color
+            color: #fff
+
+            &:hover
+              background-color: darken($error-color, 10%)
+
+      .expanded-row
+        background-color: $light-color
+
+        .expanded-details
+            padding: 20px
+
+            p
+                margin-bottom: 10px
+
+            .image-previews
+                display: flex
+                flex-wrap: wrap
+
+                .artwork-image
+                    width: 100px
+                    height: 100px
+                    object-fit: cover
+                    margin-right: 10px
+                    margin-bottom: 10px
+
+            .preview-material-boxes
+                .prev-mat-boxes-container
+                    ul
+                        display: flex
+                        flex-wrap: wrap
+                        list-style: none
+                        li
+                            border: solid var(--gray) 1px
+                            margin: 10px
+                            padding: 10px
