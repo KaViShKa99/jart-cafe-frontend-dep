@@ -33,7 +33,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
 
   const [previousSizePrice, setPreviousSizePrice] = useState(0);
   const [data, setData] = useState([]);
-  
+
   const [isPhysical, setIsPhysical] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
@@ -266,7 +266,6 @@ const ProductBuyForm = ({ props, editForm, close }) => {
     dispatch(addToCart(newItem));
     navigate("/cart");
     dispatch(clearStates());
-
     // setCartArray((prevCartArray) => {
     //   if (prevCartArray.length !== 0) {
     //     const findItem = prevCartArray.find(
@@ -286,8 +285,8 @@ const ProductBuyForm = ({ props, editForm, close }) => {
 
   const updateCartItems = (e) => {
     e.preventDefault();
-    console.log(physicalArt);
     const updateItem = isPhysical ? physicalArt : digitalArt;
+    console.log(updateItem);
     dispatch(updateCartItem(updateItem));
     close(false);
   };
@@ -371,7 +370,9 @@ const ProductBuyForm = ({ props, editForm, close }) => {
               <span className="label">Type</span>
               <span className="value">
                 {isPhysical
-                  ? `${physicalArt.material} / ${physicalArt.size.size}`
+                  ? `${physicalArt.material} / ${
+                      physicalArt.size && physicalArt.size.size
+                    }`
                   : "Digital Artwork"}
               </span>
             </div>
@@ -386,15 +387,21 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                 <div className="detail-item">
                   <span className="label">Figure</span>
                   <span className="value">
-                    {physicalArt.figure
-                      ? physicalArt.figure.name
+                    {physicalArt.figure || digitalArt.figure
+                      ? isPhysical
+                        ? physicalArt.figure.name
+                        : digitalArt.figure.name
                       : "No selected"}
                   </span>
                 </div>
                 <div className="detail-item">
                   <span className="label">Style</span>
                   <span className="value">
-                    {physicalArt.style ? physicalArt.style.type : "No selected"}
+                    {physicalArt.style || digitalArt.style
+                      ? isPhysical
+                        ? physicalArt.style.type
+                        : digitalArt.style.type
+                      : "No selected"}
                   </span>
                 </div>
               </>

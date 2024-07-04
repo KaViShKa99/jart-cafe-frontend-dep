@@ -20,6 +20,21 @@ const loadCartFromStorage = () => {
   return [];
 };
 
+const saveCartToStorage = (cartArray) => {
+  try {
+    const serializedCart = JSON.stringify(cartArray);
+
+    const encryptedCart = CryptoJS.AES.encrypt(
+      serializedCart,
+      secretKey
+    ).toString();
+
+    localStorage.setItem("encryptedCart", encryptedCart);
+  } catch (error) {
+    console.error("Error saving cart to local storage:", error);
+  }
+};
+
 const cartItemSlices = createSlice({
   name: "cart-array",
   initialState: {
@@ -41,18 +56,7 @@ const cartItemSlices = createSlice({
           state.cartArray.push(newItem);
         }
       }
-      try {
-        const serializedCart = JSON.stringify(state.cartArray);
-
-        const encryptedCart = CryptoJS.AES.encrypt(
-          serializedCart,
-          secretKey
-        ).toString();
-
-        localStorage.setItem("encryptedCart", encryptedCart);
-      } catch (error) {
-        console.error("Error saving cart to local storage:", error);
-      }
+      saveCartToStorage(state.cartArray);
     },
     removeCart: (state, action) => {
       const artworkId = action.payload;
@@ -60,6 +64,7 @@ const cartItemSlices = createSlice({
         (product) => product.artworkId !== artworkId
       );
       state.cartArray = updatedCartItems;
+      saveCartToStorage(updatedCartItems);
     },
     updateCartQuntity: (state, action) => {
       const { quantity, id } = action.payload;
@@ -71,6 +76,7 @@ const cartItemSlices = createSlice({
         return product;
       });
       state.cartArray = updatedCartItems;
+      saveCartToStorage(updatedCartItems);
     },
     updateSubTotal: (state) => {
       state.subTotal = state.cartArray.reduce(
@@ -90,6 +96,7 @@ const cartItemSlices = createSlice({
       });
 
       state.cartArray = updatedCartItems;
+      saveCartToStorage(updatedCartItems);
     },
   },
 });
