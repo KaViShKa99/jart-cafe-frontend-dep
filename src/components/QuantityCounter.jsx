@@ -7,10 +7,10 @@ const QuantityCounter = ({
   product,
   cartUpdate,
 }) => {
-  const { updateQuantity } = useStateContext();
+  // const { updateQuantity } = useStateContext();
 
-  const [quantity, setQuantity] = useState(product.quantity || initialQuantity);
-  // const [quantity, setQuantity] = useState(1);
+  // const [quantity, setQuantity] = useState(product.quantity || initialQuantity);
+  const [quantity, setQuantity] = useState(initialQuantity);
 
   const decreaseQuantity = (e) => {
     e.preventDefault();
@@ -25,12 +25,16 @@ const QuantityCounter = ({
 
   useEffect(() => {
     if (cartUpdate) {
-      updateQuantity(product.artworkId, quantity);
+      // updateQuantity(product.artworkId, quantity);
       TotalQuantity(quantity);
     } else {
       TotalQuantity(quantity);
     }
   }, [quantity]);
+
+  useEffect(() => {
+    setQuantity(initialQuantity);
+  }, [initialQuantity]);
 
   return (
     <div className="quantity-container">
@@ -38,7 +42,8 @@ const QuantityCounter = ({
         <button className="decrease-btn" onClick={decreaseQuantity}>
           -
         </button>
-        <span className="quantity-value">{initialQuantity}</span>
+        <span className="quantity-value">{quantity}</span>
+        {/* <span className="quantity-value">{initialQuantity}</span> */}
         <button className="increase-btn" onClick={increaseQuantity}>
           +
         </button>

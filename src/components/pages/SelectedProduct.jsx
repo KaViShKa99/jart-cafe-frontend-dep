@@ -5,65 +5,34 @@ import { useParams } from "react-router-dom";
 import ProductImageGallery from "../ProductImageGallery";
 import ReviewsContainer from "../ReviewsContainer";
 import ProductDetails from "../ProductDetails";
-import ProductBuyForm from "../ProductBuyForm";
+import ProductBuyForm from "../ProductBuyForm1";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSelectedProduct } from "../../redux/reducers/productBuyReducer";
 
 const SelectedProduct = () => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const dispatch = useDispatch();
+  const { selectedProduct } = useSelector((state) => state.selectedProductInfo);
+
   const { id } = useParams();
 
-  //const [mainImages, setMainImages] = useState(null);
-  const [productImages, setProductImages] = useState([]);
-  const [productDetails, setProductDetails] = useState("");
-  const [productBuyerDetails, setProductBuyerDetails] = useState([]);
-
   useEffect(() => {
-    axios
-      .get(backendUrl + `/artworks/${id}`)
-      .then((response) => {
-        let product = response.data;
-
-        console.log(product);
-
-        setProductImages(product.images);
-        setProductDetails(product.description);
-
-        setProductBuyerDetails(product);
-        // setProductBuyerDetails({
-        //   category: product.category,
-        //   title: product.title,
-        //   materials: product.materials,
-        //   lastPrice: product.lastPrice,
-        //   price: product.price,
-        // });
-
-        // images(product.images);
-        // setFilteredProducts(product);
-        // setPrice(product.price);
-      })
-      .catch((error) => {
-        console.log("error fetching data for id", error);
-      });
-  }, []);
-
-  useEffect(() => {
-    // console.log(productBuyerDetails);
-    // console.log(productImages);
-  }, [productImages]);
+    dispatch(fetchSelectedProduct(id));
+  }, [dispatch]);
 
   return (
     <div className="selected-products">
       <Navbar />
       <div className="selected-product-container">
-        <ProductImageGallery images={productImages} />
+        <ProductImageGallery images={selectedProduct.images} />
         <ProductBuyForm
-          props={productBuyerDetails}
+          props={selectedProduct}
           editForm={false}
           close={() => {}}
         />
       </div>
       <div className="reviews-and-shipping">
         <ReviewsContainer />
-        <ProductDetails productDetails={productDetails} />
+        <ProductDetails productDetails={selectedProduct.description} />
       </div>
     </div>
   );

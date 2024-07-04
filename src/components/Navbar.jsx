@@ -12,6 +12,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import SearchBar from "./SearchBar";
+import { useSelector } from "react-redux";
 
 Modal.setAppElement("#root");
 
@@ -19,7 +20,8 @@ const Navbar = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const navigate = useNavigate();
-  const { cartArray } = useStateContext();
+  // const { cartArray } = useStateContext();
+  const { cartArray } = useSelector((state) => state.cartItems);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpenSignUp, setIsOpenSignUp] = useState(false);
@@ -137,7 +139,6 @@ const Navbar = () => {
         {/* <SearchBar /> */}
         <div className="search">
           <SearchBar searchItem={(e) => setSearchData(e)} />
-          
         </div>
         <div className="link-container">
           <ul className="links">
@@ -161,6 +162,7 @@ const Navbar = () => {
               <div className="cart-btn">
                 <FiShoppingCart size="1.2rem" className="cart-icon" />
                 <div className="cart-counter">{cartArray.length}</div>
+                {/* <div className="cart-counter">{0}</div> */}
               </div>
             </li>
           </ul>

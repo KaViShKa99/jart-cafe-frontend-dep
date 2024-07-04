@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useStateContext } from "./StateContext";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import productData from "../data/Data";
+import { materialDesign } from "../data/Data";
 
 import QuantityCounter from "./QuantityCounter";
 
@@ -10,7 +10,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { id } = useParams();
 
-  const { cartArray, setCartArray } = useStateContext();
+  // const { cartArray, setCartArray } = useStateContext();
 
   const [previousSizePrice, setPreviousSizePrice] = useState(0);
   const [data, setData] = useState([]);
@@ -20,6 +20,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
   const [material, setMaterial] = useState("");
   const [sizesArray, setSizesArray] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  1;
   const [price, setPrice] = useState(0);
   const [size, setSize] = useState("");
   const [total, setTotal] = useState(0);
@@ -200,21 +201,21 @@ const ProductBuyForm = ({ props, editForm, close }) => {
 
     const newItem = isPhysical ? physicalArt : digitalArt;
 
-    setCartArray((prevCartArray) => {
-      if (prevCartArray.length !== 0) {
-        const findItem = prevCartArray.find(
-          (product) => product.artworkId == data.artworkId
-        );
-        console.log(findItem);
-        if (findItem) {
-          return [...prevCartArray];
-        } else {
-          return [...prevCartArray, newItem];
-        }
-      } else {
-        return [newItem];
-      }
-    });
+    // setCartArray((prevCartArray) => {
+    //   if (prevCartArray.length !== 0) {
+    //     const findItem = prevCartArray.find(
+    //       (product) => product.artworkId == data.artworkId
+    //     );
+    //     console.log(findItem);
+    //     if (findItem) {
+    //       return [...prevCartArray];
+    //     } else {
+    //       return [...prevCartArray, newItem];
+    //     }
+    //   } else {
+    //     return [newItem];
+    //   }
+    // });
   };
 
   const updateCartItem = (e) => {
@@ -232,19 +233,19 @@ const ProductBuyForm = ({ props, editForm, close }) => {
 
     const updateItem = isPhysical ? physicalArt : digitalArt;
 
-    setCartArray((prevCartArray) => {
-      if (prevCartArray.length !== 0) {
-        const existingItemIndex = prevCartArray.findIndex(
-          (product) => product.artworkId === data.artworkId
-        );
-        console.log(existingItemIndex);
-        if (existingItemIndex !== -1) {
-          const updatedCartArray = [...prevCartArray];
-          updatedCartArray[existingItemIndex] = updateItem;
-          return updatedCartArray;
-        }
-      }
-    });
+    // setCartArray((prevCartArray) => {
+    //   if (prevCartArray.length !== 0) {
+    //     const existingItemIndex = prevCartArray.findIndex(
+    //       (product) => product.artworkId === data.artworkId
+    //     );
+    //     console.log(existingItemIndex);
+    //     if (existingItemIndex !== -1) {
+    //       const updatedCartArray = [...prevCartArray];
+    //       updatedCartArray[existingItemIndex] = updateItem;
+    //       return updatedCartArray;
+    //     }
+    //   }
+    // });
     close(false);
   };
 
@@ -422,11 +423,11 @@ const ProductBuyForm = ({ props, editForm, close }) => {
           {isPhysical && (
             <div className="physical-art-details">
               <label htmlFor="selected-material-design">
-                Material : {productData && material}
+                Material : {materialDesign && material}
               </label>
               <div className="material-sizes">
-                {productData &&
-                  productData.map((product, index) => (
+                {materialDesign &&
+                  materialDesign.map((product, index) => (
                     <div
                       key={index}
                       className="material-image-container"
@@ -445,10 +446,10 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                   ))}
               </div>
               <label htmlFor="selected-size">
-                Size : {productData && size}
+                Size : {materialDesign && size}
               </label>
               <div className="sizes-box">
-                {productData &&
+                {materialDesign &&
                   sizesArray.map((size, index) => (
                     <div
                       key={index}
@@ -572,14 +573,14 @@ const ProductBuyForm = ({ props, editForm, close }) => {
 
           <div className="product-buy-quantity-btn">
             <label htmlFor="q-value">Quantity : {quantity}</label>
-            <QuantityCounter
+            {/* <QuantityCounter
               TotalQuantity={(e) => {
                 setQuantity(e);
               }}
               initialQuantity={quantity}
               product={editForm ? props : []}
               cartUpdate={false}
-            />
+            /> */}
             <label htmlFor="subtotal-value">
               Subtotal :
               {/* {!editForm

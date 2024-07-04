@@ -28,14 +28,16 @@ const ProductDetails = ({ productDetails }) => {
         {activeTab === "details" && (
           <div className="item-more-details">
             {/* <h2 className="product-details-title">Item More Details</h2> */}
-            <div
-              className="product-details"
-              dangerouslySetInnerHTML={{
-                __html: !isExpanded
-                  ? productDetails.substring(0, 700) + "..."
-                  : productDetails,
-              }}
-            />
+            {productDetails && (
+              <div
+                className="product-details"
+                dangerouslySetInnerHTML={{
+                  __html: !isExpanded
+                    ? productDetails.substring(0, 700) + "..."
+                    : productDetails,
+                }}
+              />
+            )}
             <div className="read-more-container">
               <button className="readmore-btn" onClick={toggleExpansion}>
                 {isExpanded ? "Read Less" : "Learn more about this item"}

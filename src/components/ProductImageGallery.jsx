@@ -106,15 +106,16 @@ const ProductImageGallery = ({ images }) => {
         <button onClick={goToPrevious} className="left-arrow">
           <MdOutlineKeyboardArrowLeft />
         </button>
-        {images.map((image, index) => (
-          <img
-            key={index}
-            src={image}
-            alt={`thumbnail ${index}`}
-            className={`thumbnail ${index === currentIndex ? "active" : ""}`}
-            onClick={() => goToImage(index, image)}
-          />
-        ))}
+        {images &&
+          images.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`thumbnail ${index}`}
+              className={`thumbnail ${index === currentIndex ? "active" : ""}`}
+              onClick={() => goToImage(index, image)}
+            />
+          ))}
         <button onClick={goToNext} className="right-arrow">
           <MdOutlineKeyboardArrowRight />
         </button>

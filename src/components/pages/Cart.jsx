@@ -3,33 +3,24 @@ import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import Navbar from "../Navbar";
 import Modal from "react-modal";
-import productData from "../../data/Data";
-import { useStateContext } from "../StateContext";
-
+import { materialDesign } from "../../data/Data";
 import QuantityCounter from "../QuantityCounter";
-import ProductBuyForm from "../ProductBuyForm";
+import ProductBuyForm from "../ProductBuyForm1";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  removeCart,
+  updateCartQuntity,
+  updateSubTotal,
+} from "../../redux/reducers/cartItemReducer";
 
 Modal.setAppElement("#root");
 
 const Cart = () => {
-  const { cartArray, setCartArray, cartTotalAmount } = useStateContext();
-  // const cartProducts = [
-  //   { image: "/imgs/canvas.jpeg", name: "Product 1", price: 10, quantity: 1 },
-  //   { image: "/imgs/poster.jpeg", name: "Product 1", price: 10, quantity: 1 },
-  //   // { name: "Product 2", price: 15, quantity: 2 },
-  //   // { name: "Product 3", price: 20, quantity: 1 },
-  // ];
+  const dispatch = useDispatch();
+  const { cartArray, subTotal } = useSelector((state) => state.cartItems);
 
-  const initialCartItem = {
-    material: "Canvas",
-    image: "/imgs/canvas.jpeg",
-    size: [
-      { s: '12"x16"', p: 30.0 },
-      { s: '8"x10"', p: 35.0 },
-      { s: '18"x24"', p: 40.0 },
-      { s: '24"x30"', p: 10.0 },
-      { s: '30"x40"', p: 60.0 },
-    ],
+  const updateQuantity = (quantity, id) => {
+    dispatch(updateCartQuntity({ quantity: quantity, id: id }));
   };
 
   const calculateTotal = (price, quantity) => price * quantity;
@@ -78,23 +69,17 @@ const Cart = () => {
     //setTotal(size.p);
   };
 
-  const removeItem = (index) => {
-    console.log(cartArray);
-    const updatedCartItems = cartArray.filter(
-      (product) => product.artworkId !== index
-    );
-
-    setCartArray((prevItem) =>
-      prevItem.filter((product) => product.artworkId !== index)
-    );
-    console.log(index);
-    console.log(updatedCartItems);
+  const removeItem = (artworkId) => {
+    dispatch(removeCart(artworkId));
   };
 
   useEffect(() => {
-    setImage(productData[0].image);
+    dispatch(updateSubTotal());
+  }, [cartArray]);
+
+  useEffect(() => {
     console.log(cartArray);
-  }, []);
+  }, [cartArray]);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -103,7 +88,6 @@ const Cart = () => {
       document.body.classList.remove("no-scroll");
     }
 
-    // Cleanup on unmount
     return () => {
       document.body.classList.remove("no-scroll");
     };
@@ -136,13 +120,13 @@ const Cart = () => {
                   <tr key={index}>
                     <td className="product-details-column">
                       <div className="product-details-column-container">
-                        <img src={product.productImage} />
+                        <img src={product.productImage[0]} />
                         <div className="cart-product-details">
                           <span>{product.category}</span>
 
                           <span className="design">
-                            {!product.isDigitalArt
-                              ? `${product.material} / ${product.size}`
+                            {product.isPhysicalArt
+                              ? `${product.material} / ${product.size.size}`
                               : "Digital arts"}
                           </span>
                           <div className="cart-details-btn">
@@ -163,11 +147,13 @@ const Cart = () => {
                       </div>
                     </td>
                     <td className="product-price">
-                      ${product.eachPrice.toFixed(2)}
+                      ${(product.eachPrice + product.price).toFixed(2)}
                     </td>
                     <td className="quantity-details-column">
                       <QuantityCounter
-                        TotalQuantity={() => {}}
+                        TotalQuantity={(q) =>
+                          updateQuantity(q, product.artworkId)
+                        }
                         initialQuantity={product.quantity}
                         product={product}
                         cartUpdate={true}
@@ -191,7 +177,9 @@ const Cart = () => {
                         </div>
 
                         <QuantityCounter
-                          TotalQuantity={() => {}}
+                          TotalQuantity={(q) =>
+                            updateQuantity(q, product.artworkId)
+                          }
                           initialQuantity={product.quantity}
                           product={product}
                           cartUpdate={true}
@@ -218,17 +206,12 @@ const Cart = () => {
           <div className="divider"></div>
           <div className="sub-total">
             Sub Total:
-            <span className="subTotal-value">
-              $ {cartTotalAmount.toFixed(2)}
-            </span>
+            <span className="subTotal-value">{subTotal.toFixed(2)}</span>
           </div>
           <div className="total">
             <div className="gray-divider" />
             <div className="total-content">
-              Total:{" "}
-              <span className="total-value">
-                $ {cartTotalAmount.toFixed(2)}
-              </span>
+              Total: <span className="total-value">{subTotal.toFixed(2)}</span>
             </div>
             <div className="gray-divider" />
           </div>
