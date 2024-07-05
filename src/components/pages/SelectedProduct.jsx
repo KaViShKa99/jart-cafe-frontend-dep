@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import ProductImageGallery from "../ProductImageGallery";
 import ReviewsContainer from "../ReviewsContainer";
 import ProductDetails from "../ProductDetails";
-import ProductBuyForm from "../ProductBuyForm1";
+import ProductBuyForm from "../ProductBuyForm";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSelectedProduct } from "../../redux/reducers/productBuyReducer";
 
@@ -19,6 +19,7 @@ const SelectedProduct = () => {
     dispatch(fetchSelectedProduct(id));
   }, [dispatch]);
 
+ 
   return (
     <div className="selected-products">
       <Navbar />

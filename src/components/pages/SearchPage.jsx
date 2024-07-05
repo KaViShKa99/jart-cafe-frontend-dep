@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Pagination } from "rsuite";
-
+import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import ProductItem from "../ProductItem";
 
 const SearchPage = () => {
-  const { products } = useSelector((state) => state.products);
+  const navigate = useNavigate();
+
   const { searchArray } = useSelector((state) => state.searchItems);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,18 +18,33 @@ const SearchPage = () => {
   //   const filteredProducts = products.filter(
   //     (product) => product.category === category
   //   );
-
   const currentItems =
     searchArray.length > 1
       ? searchArray.slice(indexOfFirstItem, indexOfLastItem)
       : 1;
+
   useEffect(() => {
-    console.log(products);
-    console.log(searchArray);
-  }, [products, searchArray]);
+    const isRefreshed = localStorage.getItem("isRefreshed");
+
+    if (isRefreshed) {
+      localStorage.removeItem("isRefreshed");
+      navigate("/");
+    } else {
+      localStorage.setItem("isRefreshed", "true");
+    }
+
+    return () => {
+      localStorage.removeItem("isRefreshed");
+    };
+  }, [navigate]);
+
+  //   useEffect(() => {
+  //     console.log(products);
+  //     console.log(searchArray);
+  //   }, [products, searchArray]);
 
   return (
-    <div>
+    <div className="home-container">
       <Navbar />
       <div className="product-view">
         <div className="product-details">

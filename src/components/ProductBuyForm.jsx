@@ -1,304 +1,149 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useStateContext } from "./StateContext";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { materialDesign } from "../data/Data";
-
 import QuantityCounter from "./QuantityCounter";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateEditForms,
+  updateProductInfo,
+  uploadImageChange,
+  personChange,
+  styleChange,
+  figureChange,
+  designerNoteChange,
+  clearUploadedImage,
+  updateQuantityChange,
+  updateTotal,
+  materialSizeChange,
+  materialNameChange,
+  paintingNoteChange,
+  clearStates,
+} from "../redux/reducers/productBuyReducer";
+import { addToCart, updateCartItem } from "../redux/reducers/cartItemReducer";
+import { persons, styles, figures, materialDesign } from "../data/Data";
 
 const ProductBuyForm = ({ props, editForm, close }) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { digitalArt } = useSelector((state) => state.selectedProductInfo);
+  const { physicalArt } = useSelector((state) => state.selectedProductInfo);
+  const { cartArray } = useSelector((state) => state.cartItems);
 
-  // const { cartArray, setCartArray } = useStateContext();
-
-  const [previousSizePrice, setPreviousSizePrice] = useState(0);
-  const [data, setData] = useState([]);
   const [isPhysical, setIsPhysical] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
-  const [material, setMaterial] = useState("");
   const [sizesArray, setSizesArray] = useState([]);
-  const [quantity, setQuantity] = useState(1);
-  1;
-  const [price, setPrice] = useState(0);
-  const [size, setSize] = useState("");
-  const [total, setTotal] = useState(0);
-  const [designerNote, setDesignerNote] = useState("");
-  const [paintingNote, setPaintingNote] = useState("");
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const [person, setPerson] = useState(null);
-  const [style, setStyle] = useState(null);
-  const [figure, setFigure] = useState(null);
 
-  const digitalArt = {
-    artworkId: data && data.artworkId,
-    price: data.price,
-    category: data && data.category,
-    productImage:
-      data.images || data.productImage
-        ? !editForm
-          ? data.images[0]
-          : data.productImage
-        : null,
-    uploadedImage: uploadedImage,
-    numOfPersons: person,
-    materials: data && data.materials,
-    style: style,
-    figure: figure,
-    designerNote: designerNote,
-    quantity: quantity,
-    eachPrice: price,
-    total: price * quantity,
-    isDigitalArt: true,
+  const handlePerChange = (e) => {
+    const id = e.target.value;
+    dispatch(personChange({ id: id, isPhysical: isPhysical }));
   };
 
-  const physicalArt = {
-    artworkId: data && data.artworkId,
-    price: data && data.price,
-    category: data && data.category,
-    material: material,
-    size: size,
-    materials: data && data.materials,
-    productImage:
-      data.images || data.productImage
-        ? !editForm
-          ? data.images[0]
-          : data.productImage
-        : null,
-    uploadedImage: uploadedImage,
-    numOfPersons: person,
-    paintingNote: paintingNote,
-    designerNote: designerNote,
-    quantity: quantity,
-    eachPrice: price,
-    total: price * quantity,
-    isDigitalArt: false,
+  const handleStyleChange = (e) => {
+    const id = e.target.value;
+    dispatch(styleChange(id));
   };
 
-  const persons = [
-    { id: 1, name: "1", value: 0 },
-    { id: 2, name: "2 +$7.00", value: 7 },
-    { id: 3, name: "3 +$14.00", value: 14 },
-    { id: 4, name: "4 +$21.00", value: 21 },
-    { id: 5, name: "5 or more +$28.00", value: 28 },
-  ];
-  const styles = [
-    {
-      id: 1,
-      type: "Select a style",
-      name: "",
-      value: 0,
-    },
-    {
-      id: 2,
-      type: "head to shoulder",
-      name: "(USD 17.00 to USD 108.00)",
-      value: 17,
-    },
-    { id: 3, type: "half body", name: "(USD 18.00 to USD 140.00)", value: 18 },
-    { id: 4, type: "full body", name: "(USD 34.00 to USD 210.00)", value: 34 },
-  ];
-
-  const figures = [
-    { id: 1, name: "Select an option", value: 0 },
-    { id: 2, name: "1 figure (USD 34.00)", value: 34 },
-    { id: 3, name: "2 figure (USD 44.00)", value: 44 },
-    { id: 4, name: "3 figure (USD 54.00)", value: 54 },
-    { id: 5, name: "4 figure (USD 74.00)", value: 74 },
-    { id: 6, name: "5 figure (USD 104.00)", value: 104 },
-  ];
-
-  const handleFiguresChange = (event) => {
-    const selectedFigure = figures.find(
-      (fig) => fig.id === parseInt(event.target.value)
-    );
-    if (!figure) {
-      setPrice((pre) => pre + selectedFigure.value);
-      setFigure(selectedFigure);
-    } else {
-      const prvFig = figures.find((fig) => fig.id === figure.id);
-      console.log(figure);
-      setPrice((pre) => pre - prvFig.value + selectedFigure.value);
-      setFigure(selectedFigure);
-    }
-  };
-
-  const handleStyleChange = (event) => {
-    const selectedStyle = styles.find(
-      (sty) => sty.id === parseInt(event.target.value)
-    );
-    console.log(selectedStyle);
-    console.log(selectedStyle.value);
-    console.log(!style);
-    if (!style) {
-      setPrice((pre) => pre + selectedStyle.value);
-      setStyle(selectedStyle);
-    } else {
-      const prvSty = styles.find((sty) => sty.id === style.id);
-      setPrice((pre) => pre - prvSty.value + selectedStyle.value);
-      setStyle(selectedStyle);
-    }
-  };
-  const handlePerChange = (event) => {
-    const selectedPer = persons.find(
-      (per) => per.id === parseInt(event.target.value)
-    );
-    if (!person) {
-      setPrice((pre) => pre + selectedPer.value);
-      setPerson(selectedPer);
-    } else {
-      const prvPer = persons.find((per) => per.id === person.id);
-      setPrice((pre) => pre - prvPer.value + selectedPer.value);
-      setPerson(selectedPer);
-    }
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setUploadedImage(file);
-    }
-  };
-
-  const paintingInputTextChange = (e) => {
-    setPaintingNote(e.target.value);
+  const handleFiguresChange = (e) => {
+    const id = e.target.value;
+    dispatch(figureChange(id));
   };
 
   const designerInputTextChange = (e) => {
-    setDesignerNote(e.target.value);
+    dispatch(
+      designerNoteChange({ note: e.target.value, isPhysical: isPhysical })
+    );
   };
 
-  const handleImageClick = (index, product) => {
-    const matArry = data.materials;
-    const sizeArray = matArry.filter((e) => e.material === product.material);
-    setSizesArray(sizeArray[0].sizes);
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const imageUrl = URL.createObjectURL(file);
+    dispatch(uploadImageChange({ imageUrl: imageUrl, isPhysical: isPhysical }));
+  };
 
-    setSelectedSizeIndex(null);
+  const handleClearImage = (e) => {
+    e.preventDefault();
+    dispatch(clearUploadedImage());
+  };
+
+  const updateQuantity = (q) => {
+    dispatch(updateQuantityChange({ quantity: q, isPhysical: isPhysical }));
+  };
+
+  const handleMaterialImageClick = (index, product) => {
     setSelectedIndex(index);
-    setMaterial(product.material);
-    //setPrice(!editForm ? data.price : data.eachPrice);
-    setTotal(!editForm ? data.price : data.total);
+    const sizes = physicalArt.materials
+      .filter((e, ind) => ind === product.id)
+      .map((e) => e.sizes);
+    setSizesArray(sizes[0]);
+    dispatch(materialNameChange(product.material));
   };
 
   const handleSizeClick = (index, size) => {
-    console.log(size);
     setSelectedSizeIndex(index);
-
-    setSize(size.size);
-    setTotal(size.price);
-
-    setPreviousSizePrice(size.price);
-    setPrice((prev) =>
-      !editForm ? size.price : prev - previousSizePrice + size.price
-    );
+    dispatch(materialSizeChange(size));
   };
 
-  const addTocart = (e) => {
-    e.preventDefault();
-
-    console.log(digitalArt);
-
-    const newItem = isPhysical ? physicalArt : digitalArt;
-
-    // setCartArray((prevCartArray) => {
-    //   if (prevCartArray.length !== 0) {
-    //     const findItem = prevCartArray.find(
-    //       (product) => product.artworkId == data.artworkId
-    //     );
-    //     console.log(findItem);
-    //     if (findItem) {
-    //       return [...prevCartArray];
-    //     } else {
-    //       return [...prevCartArray, newItem];
-    //     }
-    //   } else {
-    //     return [newItem];
-    //   }
-    // });
-  };
-
-  const updateCartItem = (e) => {
-    e.preventDefault();
-
-    console.log(data);
-    console.log(
-      data.image || data.productImage
-        ? !editForm
-          ? data.images[0]
-          : data.productImage
-        : null
-    );
-    console.log(physicalArt);
-
-    const updateItem = isPhysical ? physicalArt : digitalArt;
-
-    // setCartArray((prevCartArray) => {
-    //   if (prevCartArray.length !== 0) {
-    //     const existingItemIndex = prevCartArray.findIndex(
-    //       (product) => product.artworkId === data.artworkId
-    //     );
-    //     console.log(existingItemIndex);
-    //     if (existingItemIndex !== -1) {
-    //       const updatedCartArray = [...prevCartArray];
-    //       updatedCartArray[existingItemIndex] = updateItem;
-    //       return updatedCartArray;
-    //     }
-    //   }
-    // });
-    close(false);
+  const paintingInputTextChange = (e) => {
+    dispatch(paintingNoteChange(e.target.value));
+    // setPaintingNote(e.target.value);
   };
 
   useEffect(() => {
-    console.log(props);
-    setData(props);
-    if (props) {
-      setTotal(editForm ? props.total : props.price);
-      setQuantity(editForm ? props.quantity : 1);
-      setPerson(props.numOfPersons ? props.numOfPersons : null);
-      setStyle(props.style ? props.style : null);
-      setFigure(props.figure ? props.figure : null);
-      setPrice(props.eachPrice ? props.eachPrice : props.price);
-    }
+    dispatch(updateProductInfo({ props: props, editForm: editForm }));
   }, [props]);
 
   useEffect(() => {
-    let imageUrl;
-    if (uploadedImage) {
-      imageUrl = URL.createObjectURL(uploadedImage);
-    }
+    dispatch(updateTotal(isPhysical));
+  }, [props, isPhysical, digitalArt, physicalArt]);
 
-    return () => {
-      if (imageUrl) {
-        URL.revokeObjectURL(imageUrl);
-      }
-    };
-  }, [uploadedImage]);
+  // useEffect(() => {
+  //   console.log(cartArray);
+  // }, [cartArray]);
+
+  // useEffect(() => {
+  //   console.log("digitalArt", digitalArt);
+  // }, [digitalArt]);
+  // useEffect(() => {
+  //   console.log("physicalArt", physicalArt);
+  // }, [physicalArt]);
+
+  const addTocart = (e) => {
+    e.preventDefault();
+    const newItem = isPhysical ? physicalArt : digitalArt;
+    dispatch(addToCart(newItem));
+    navigate("/cart");
+    dispatch(clearStates());
+  };
+
+  const updateCartItems = (e) => {
+    e.preventDefault();
+    const updateItem = isPhysical ? physicalArt : digitalArt;
+    console.log(updateItem);
+    dispatch(updateCartItem(updateItem));
+    close(false);
+  };
+
+  // useEffect(() => {
+  //   let imageUrl;
+  //   if (uploadedImage) {
+  //     imageUrl = URL.createObjectURL(uploadedImage);
+  //   }
+
+  //   return () => {
+  //     if (imageUrl) {
+  //       URL.revokeObjectURL(imageUrl);
+  //     }
+  //   };
+  // }, [uploadedImage]);
 
   useEffect(() => {
-    console.log(editForm);
-    if (data.isDigitalArt) {
-      setIsPhysical(!data.isDigitalArt);
+    if (editForm) {
+      dispatch(updateEditForms(props));
     }
   }, [editForm]);
-
-  useEffect(() => {
-    console.log(isPhysical);
-    if (isPhysical) {
-      setPrice(
-        (props.price ? props.price : props.price) +
-          (props.numOfPersons ? props.numOfPersons.value : 0) +
-          previousSizePrice
-      );
-    } else {
-      setPrice(
-        (props.price ? props.price : props.price) +
-          (props.figure ? props.figure.value : 0) +
-          (props.style ? props.style.value : 0) +
-          (props.numOfPersons ? props.numOfPersons.value : 0)
-      );
-    }
-  }, [isPhysical]);
 
   return (
     <div
@@ -307,42 +152,51 @@ const ProductBuyForm = ({ props, editForm, close }) => {
       {!editForm && (
         <>
           <div className="product-category">
-            {data ? data.category : "category"}
+            {props ? props.category : "category"}
           </div>
           <div className="product-price">
             <span className="original-price">
-              <del>${data ? data.lastPrice : "100"}</del>
+              <del>${props ? props.lastPrice : "0.00"}</del>
             </span>
             <span className="discount-price">
-              ${!price ? (data ? data.price : "50") : price}
+              ${props ? props.price : "0.00"}
             </span>
           </div>
           <div className="product-pharagraph">
-            {data ? data.title : "title"}
+            {props ? props.title : "title"}
           </div>
         </>
       )}
 
-      {editForm && data && (
+      {editForm && (
         <div className="new-product-details-edit">
-          <img src={data.productImage} alt="Product Image" />
-          <span className="category">{data.category}</span>
+          <img
+            src={
+              isPhysical
+                ? physicalArt.productImage[0]
+                : digitalArt.productImage[0]
+            }
+            alt="Product Image"
+          />
+          <span className="category">
+            {isPhysical ? physicalArt.category : digitalArt.category}
+          </span>
 
           <div className="details">
             <div className="detail-item">
               <span className="label">Type</span>
               <span className="value">
-                {!isPhysical
-                  ? "Digital Artwork"
-                  : data.material
-                  ? `${data.material} / ${data.size}`
-                  : `${material} / ${size}`}
+                {isPhysical
+                  ? `${physicalArt.material} / ${
+                      physicalArt.size && physicalArt.size.size
+                    }`
+                  : "Digital Artwork"}
               </span>
             </div>
             <div className="detail-item">
               <span className="label">Quantity</span>
               <span className="value">
-                {!quantity ? data.quantity : quantity}
+                {isPhysical ? physicalArt.quantity : digitalArt.quantity}
               </span>
             </div>
             {!isPhysical && (
@@ -350,13 +204,21 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                 <div className="detail-item">
                   <span className="label">Figure</span>
                   <span className="value">
-                    {figure ? figure.name : "No selected"}
+                    {physicalArt.figure || digitalArt.figure
+                      ? isPhysical
+                        ? physicalArt.figure.name
+                        : digitalArt.figure.name
+                      : "No selected"}
                   </span>
                 </div>
                 <div className="detail-item">
                   <span className="label">Style</span>
                   <span className="value">
-                    {style ? style.type : "No selected"}
+                    {physicalArt.style || digitalArt.style
+                      ? isPhysical
+                        ? physicalArt.style.type
+                        : digitalArt.style.type
+                      : "No selected"}
                   </span>
                 </div>
               </>
@@ -364,31 +226,37 @@ const ProductBuyForm = ({ props, editForm, close }) => {
             <div className="detail-item">
               <span className="label">Persons</span>
               <span className="value">
-                {person ? person.name : "No selected"}
+                {physicalArt.numOfPersons || digitalArt.numOfPersons
+                  ? isPhysical
+                    ? physicalArt.numOfPersons.name
+                    : digitalArt.numOfPersons.name
+                  : "No selected"}
               </span>
             </div>
-
             <div className="detail-item">
               <span className="label">Price</span>
-              <span className="price">$ {price}</span>
+              <span className="price">
+                $
+                {isPhysical
+                  ? physicalArt.price + physicalArt.eachPrice
+                  : digitalArt.price + digitalArt.eachPrice}
+              </span>
             </div>
           </div>
 
           <div className="total">
             <span className="label">Total</span>
             <span className="value">
-              {/* {data.eachPrice
-                ? data.eachPrice * (quantity || data.quantity)
-                : 0} */}
-              {price * quantity}
+              {" "}
+              $ {isPhysical ? physicalArt.total : digitalArt.total}
             </span>
           </div>
 
           <span className="note">
-            {!paintingNote ? data.paintingNote : paintingNote}
+            {isPhysical ? physicalArt.paintingNote : digitalArt.paintingNote}
           </span>
           <span className="note">
-            {!designerNote ? data.designerNote : designerNote}
+            {isPhysical ? physicalArt.designerNote : digitalArt.designerNote}
           </span>
         </div>
       )}
@@ -408,6 +276,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
             <div
               className={`toggle-option ${isPhysical ? "active-digital" : ""}`}
               onClick={() => setIsPhysical(false)}
+              // onClick={() => console.log("222")}
             >
               Digital Art
             </div>
@@ -416,6 +285,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                 !isPhysical ? "active-physical" : ""
               }`}
               onClick={() => setIsPhysical(true)}
+              // onClick={() => console.log("111")}
             >
               Physical Art
             </div>
@@ -423,7 +293,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
           {isPhysical && (
             <div className="physical-art-details">
               <label htmlFor="selected-material-design">
-                Material : {materialDesign && material}
+                Material : {physicalArt.material}
               </label>
               <div className="material-sizes">
                 {materialDesign &&
@@ -431,7 +301,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                     <div
                       key={index}
                       className="material-image-container"
-                      onClick={() => handleImageClick(index, product)}
+                      onClick={() => handleMaterialImageClick(index, product)}
                     >
                       <img
                         id="selected-material-design"
@@ -446,7 +316,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                   ))}
               </div>
               <label htmlFor="selected-size">
-                Size : {materialDesign && size}
+                Size : {physicalArt.size ? physicalArt.size.size : ""}
               </label>
               <div className="sizes-box">
                 {materialDesign &&
@@ -457,7 +327,6 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                       onClick={() => handleSizeClick(index, size)}
                     >
                       <span
-                        // key={index}
                         id="selected-size"
                         className={selectedSizeIndex === index ? "select" : ""}
                       >
@@ -479,16 +348,26 @@ const ProductBuyForm = ({ props, editForm, close }) => {
               className="file-input"
               onChange={handleFileChange}
             />
+
             <label htmlFor="img" className="file-input-label">
               Choose Image
             </label>
-            {uploadedImage && (
-              <img
-                src={URL.createObjectURL(uploadedImage)}
-                alt="Preview"
-                style={{ width: "100px", height: "100px", marginRight: "10px" }}
-              />
-            )}
+            {physicalArt.uploadedImage ||
+              (digitalArt.uploadedImage && (
+                <div className="uploaded-image-preview">
+                  <img
+                    src={physicalArt.uploadedImage || digitalArt.uploadedImage}
+                    alt="Preview"
+                    style={{ width: "100px", marginRight: "10px" }}
+                  />
+                  <button
+                    className="image-close-button"
+                    onClick={handleClearImage}
+                  >
+                    &#10005;
+                  </button>
+                </div>
+              ))}
           </div>
           <div className="select-options">
             <div className="number-persons">
@@ -497,7 +376,12 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                 name="persons"
                 id="persons"
                 onChange={handlePerChange}
-                value={person ? person.id : 1}
+                // value={person ? person.id : 1}
+                value={
+                  (isPhysical
+                    ? physicalArt.numOfPersons?.id
+                    : digitalArt.numOfPersons?.id) || 1
+                }
               >
                 {persons.map((per) => (
                   <option key={per.id} value={per.id}>
@@ -514,7 +398,8 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                     name="styles"
                     id="styles"
                     onChange={handleStyleChange}
-                    value={style ? style.id : 1}
+                    // value={style ? style.id : 1}
+                    value={digitalArt.style ? digitalArt.style.id : 1}
                   >
                     {styles.map((st) => (
                       <option key={st.id} value={st.id}>
@@ -529,7 +414,8 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                     name="figures"
                     id="figures"
                     onChange={handleFiguresChange}
-                    value={figure ? figure.id : 1}
+                    // value={figure ? figure.id : 1}
+                    value={digitalArt.figure ? digitalArt.figure.id : 1}
                   >
                     {figures.map((fig) => (
                       <option key={fig.id} value={fig.id}>
@@ -551,7 +437,8 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                   id="text-on-painting"
                   type="text"
                   name="Text on the painting"
-                  value={paintingNote}
+                  // value={paintingNote}
+                  value={physicalArt.paintingNote}
                   onChange={paintingInputTextChange}
                 />
               </div>
@@ -565,30 +452,33 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                 name="designer-note"
                 rows="4"
                 cols="50"
-                value={designerNote}
+                // value={designerNote}
+                value={
+                  isPhysical
+                    ? physicalArt.designerNote
+                    : digitalArt.designerNote
+                }
                 onChange={designerInputTextChange}
               ></textarea>
             </div>
           </div>
 
           <div className="product-buy-quantity-btn">
-            <label htmlFor="q-value">Quantity : {quantity}</label>
-            {/* <QuantityCounter
-              TotalQuantity={(e) => {
-                setQuantity(e);
-              }}
-              initialQuantity={quantity}
+            <label htmlFor="q-value">
+              Quantity :{" "}
+              {isPhysical ? physicalArt.quantity : digitalArt.quantity}
+            </label>
+
+            <QuantityCounter
+              TotalQuantity={updateQuantity}
+              initialQuantity={
+                isPhysical ? physicalArt.quantity : digitalArt.quantity
+              }
               product={editForm ? props : []}
               cartUpdate={false}
-            /> */}
+            />
             <label htmlFor="subtotal-value">
-              Subtotal :
-              {/* {!editForm
-                ? (total * quantity).toFixed(2)
-                : data.eachPrice
-                ? (data.eachPrice * quantity).toFixed(2)
-                : total} */}
-              {price * quantity}
+              Subtotal :{isPhysical ? physicalArt.total : digitalArt.total}
             </label>
           </div>
 
@@ -601,8 +491,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
             </div>
           ) : (
             <div className="cart-button">
-              {/* <button className="buy-it-now-btn">Remove</button> */}
-              <button className="save-to-cart-btn" onClick={updateCartItem}>
+              <button className="save-to-cart-btn" onClick={updateCartItems}>
                 Save
               </button>
             </div>

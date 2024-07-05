@@ -81,11 +81,7 @@ const productBuyDetails = createSlice({
     updateQuantityChange: (state, action) => {
       const { quantity, isPhysical } = action.payload;
       state[isPhysical ? "physicalArt" : "digitalArt"].quantity = quantity;
-      console.log(
-        quantity,
-        isPhysical,
-        isPhysical ? "physicalArt" : "digitalArt"
-      );
+     
     },
     updateTotal: (state, action) => {
       const isPhysical = action.payload;
@@ -93,7 +89,6 @@ const productBuyDetails = createSlice({
         state[isPhysical ? "physicalArt" : "digitalArt"];
       state[isPhysical ? "physicalArt" : "digitalArt"].total =
         (eachPrice + price) * quantity;
-      console.log((eachPrice + price) * quantity, isPhysical);
     },
     updateProductInfo: (state, action) => {
       const { props, editForm } = action.payload;

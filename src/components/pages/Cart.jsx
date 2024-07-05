@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import Navbar from "../Navbar";
 import Modal from "react-modal";
-import { materialDesign } from "../../data/Data";
 import QuantityCounter from "../QuantityCounter";
-import ProductBuyForm from "../ProductBuyForm1";
+import ProductBuyForm from "../ProductBuyForm";
 import { useSelector, useDispatch } from "react-redux";
 import {
   removeCart,
@@ -16,14 +16,13 @@ import {
 Modal.setAppElement("#root");
 
 const Cart = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { cartArray, subTotal } = useSelector((state) => state.cartItems);
 
   const updateQuantity = (quantity, id) => {
     dispatch(updateCartQuntity({ quantity: quantity, id: id }));
   };
-
-  const calculateTotal = (price, quantity) => price * quantity;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -41,15 +40,17 @@ const Cart = () => {
     setIsModalOpen(false);
   };
 
+  const goHome = (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
+
   const openCartEdit = (index) => {
     const filteredProducts = cartArray.filter(
       (product) => product.artworkId === index
     );
-    console.log(index);
-    console.log(filteredProducts);
 
     setCartItem(filteredProducts);
-    //setSizesArray(filteredProducts.sizeArray);
     setIsModalOpen(true);
   };
 
@@ -75,10 +76,6 @@ const Cart = () => {
 
   useEffect(() => {
     dispatch(updateSubTotal());
-  }, [cartArray]);
-
-  useEffect(() => {
-    console.log(cartArray);
   }, [cartArray]);
 
   useEffect(() => {
@@ -206,7 +203,9 @@ const Cart = () => {
             <div className="gray-divider" />
           </div>
           <button className="checkout-btn">PROCEED TO CHECKOUT</button>
-          <button className="continue-shopping">CONTINUE SHOPPING</button>
+          <button className="continue-shopping" onClick={goHome}>
+            CONTINUE SHOPPING
+          </button>
         </div>
       </div>
       <Modal
@@ -229,13 +228,6 @@ const Cart = () => {
               close={(e) => setIsModalOpen(e)}
             />
           </div>
-
-          {/* <div className="edit-container-btns">
-            <button className="add-item-btn" onClick={addNewItem}>
-              UPDATE CART
-            </button>
-            <button className="edit-add-to-cart">CLEAR CART</button>
-          </div> */}
         </div>
       </Modal>
     </div>

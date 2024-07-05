@@ -98,9 +98,9 @@ const Navbar = () => {
     };
   }, [isModalOpen]);
 
-  useEffect(() => {
-    console.log(openDropDown);
-  }, [openDropDown]);
+  // useEffect(() => {
+  //   console.log(openDropDown);
+  // }, [openDropDown]);
 
   return (
     <div className="nav-bar">
