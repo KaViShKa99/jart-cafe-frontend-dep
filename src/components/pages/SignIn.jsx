@@ -82,6 +82,7 @@ const SignIn = ({ openSignup, openForogotpwd, openDropDown, close }) => {
   };
 
   const fetchUserProfile = (token) => {
+    console.log(token);
     axios
       .get(`${backendUrl}/user/profile`, {
         headers: { Authorization: `Bearer ${token}` },

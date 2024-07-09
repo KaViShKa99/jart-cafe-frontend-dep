@@ -1,4 +1,4 @@
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useEffect } from "react";
 import { Dropdown, Popover, Whisper, IconButton } from "rsuite";
 import { FaRegUser } from "react-icons/fa";
 
@@ -6,10 +6,14 @@ const RenderMenu = forwardRef(
   ({ close, left, top, className, content }, ref) => {
     const handleSelect = (eventKey) => {
       if (eventKey === "signOut") {
-        close(false); // Close the menu when sign out is selected
+        close(false);
         localStorage.removeItem("jwtToken");
       }
     };
+    useEffect(() => {
+      console.log(content);
+    }, []);
+
     return (
       <Popover ref={ref} className={className} style={{ left, top }} full>
         <Dropdown.Menu onSelect={handleSelect}>
@@ -36,7 +40,6 @@ const DropdownMenu = ({ profile, close }) => {
     >
       <IconButton icon={<FaRegUser />} className="icon-button-hover" circle />
     </Whisper>
-    // <div className="test">{profile}</div>
   );
 };
 
