@@ -1,5 +1,6 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
+import "rsuite/dist/rsuite.min.css";
 import Home from "./components/pages/Home";
 import SelectedProduct from "./components/pages/SelectedProduct";
 import Cart from "./components/pages/Cart";
@@ -7,7 +8,7 @@ import { Admin } from "./components/pages/Admin";
 import NewPasswordPage from "./components/pages/NewPasswordPage";
 import AdminLogin from "./components/pages/AdminLogin";
 import SearchPage from "./components/pages/SearchPage";
-import "rsuite/dist/rsuite.min.css";
+import Checkout from "./components/pages/Checkout";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
       <Route path="/password-reset" element={<NewPasswordPage />} />
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/search" element={<SearchPage />} />
+      <Route path="/checkout" element={<Checkout />} />
     </Routes>
   );
 };
