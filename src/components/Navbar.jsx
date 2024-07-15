@@ -1,26 +1,26 @@
 import { useState, useEffect } from "react";
-import ReactSearchBox from "react-search-box";
 import { FiShoppingCart } from "react-icons/fi";
 import { IoSearchOutline } from "react-icons/io5";
 import Modal from "react-modal";
-import { useNavigate, Link } from "react-router-dom";
-import { useStateContext } from "./StateContext";
-import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import SearchBar from "./SearchBar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  signOut,
+  fetchUserProfile,
+} from "../redux/reducers/userProfileReducer";
 
 Modal.setAppElement("#root");
 
 const Navbar = () => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { cartArray } = useSelector((state) => state.cartItems);
+  const { token, signIn } = useSelector((state) => state.userProfile);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpenSignUp, setIsOpenSignUp] = useState(false);
@@ -33,9 +33,13 @@ const Navbar = () => {
   const [sEmail, setSEmail] = useState("");
   const [sPassword, setSPassword] = useState("");
   const [openDropDown, setOpenDropDown] = useState(false);
-  const [profileDetails, setProfileDetails] = useState([]);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
-  const [serachData, setSearchData] = useState([]);
+
+  useEffect(() => {
+    if (signIn) {
+      dispatch(fetchUserProfile(token));
+    }
+  }, [signIn]);
 
   useEffect(() => {
     setEmailError("");
@@ -49,29 +53,7 @@ const Navbar = () => {
     setIsModalOpen(false);
   };
 
-  // const fetchUserProfile = (token) => {
-  //   axios
-  //     .get(`${backendUrl}/user/profile`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     })
-  //     .then((response) => {
-  //       response.data;
-  //       console.log(response.data);
-  //       setProfileDetails(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error:", error);
-  //       // Handle token expiry or invalid token
-  //       localStorage.removeItem("jwtToken");
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   fetchUserProfile(localStorage.getItem("jwtToken"));
-  // }, []);
-
   const openModel = () => {
-    // setOpenDropDown(true);
     setIsModalOpen(true);
   };
   const openCart = () => {
@@ -80,10 +62,6 @@ const Navbar = () => {
   const openHome = () => {
     navigate("/");
   };
-
-  // const openForgotPassword = () => {
-  //   setIsForgotPassword(true);
-  // };
 
   useEffect(() => {
     if (isModalOpen) {
@@ -98,35 +76,24 @@ const Navbar = () => {
     };
   }, [isModalOpen]);
 
-  // useEffect(() => {
-  //   console.log(openDropDown);
-  // }, [openDropDown]);
-
   return (
     <div className="nav-bar">
       <nav id="nav-bar">
         <span className="home-icon" onClick={openHome}>
           Jart-cafe
         </span>
-        {/* <SearchBar /> */}
         <div className="search">
           <SearchBar />
         </div>
         <div className="link-container">
           <ul className="links">
-            {!openDropDown ? (
-              <li
-                className={!openDropDown ? "sign-in" : ""}
-                onClick={openModel}
-              >
+            {!signIn ? (
+              <li className={!signIn ? "sign-in" : ""} onClick={openModel}>
                 <span>Sign in</span>
               </li>
             ) : (
-              <li className={!openDropDown ? "user-profile" : ""}>
-                <DropdownMenu
-                  profile={profileDetails.name}
-                  close={(e) => setOpenDropDown(e)}
-                />
+              <li className={!token ? "user-profile" : ""}>
+                <DropdownMenu close={() => dispatch(signOut())} />
               </li>
             )}
 
@@ -134,7 +101,6 @@ const Navbar = () => {
               <div className="cart-btn">
                 <FiShoppingCart size="1.2rem" className="cart-icon" />
                 <div className="cart-counter">{cartArray.length}</div>
-                {/* <div className="cart-counter">{0}</div> */}
               </div>
             </li>
           </ul>

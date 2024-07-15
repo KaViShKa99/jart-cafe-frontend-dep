@@ -202,7 +202,9 @@ const Cart = () => {
             </div>
             <div className="gray-divider" />
           </div>
-          <button className="checkout-btn">PROCEED TO CHECKOUT</button>
+          <button className="checkout-btn">
+            PROCEED TO CHECKOUT {subTotal ? `( $ ${subTotal.toFixed(2)} )` : ""}
+          </button>
           <button className="continue-shopping" onClick={goHome}>
             CONTINUE SHOPPING
           </button>

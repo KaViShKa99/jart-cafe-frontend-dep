@@ -133,35 +133,38 @@
         button
             padding: 15px
             font-size: 15px
-            font-weight: 500
             background: none
             border: none
             cursor: pointer
             color: white
-            // border-radius: 50px
+            height: 50px
+            border-radius: 5px
+            // font-weight: 600
+
             
 
         .checkout-btn
             margin-bottom: 20px
             background: var(--green)
-            // transition: transform 0.3s, background 0.3s
-
             &:hover
-                border: solid 1px black
-                color: black
-                background: white
-                // transform: var(--btn-scale)
+                // border: solid 1px black
+                // color: black
+                // background: white
+                // transform: scale(1.02)
+                transform: var(--btn-scale)
+            
+
         .continue-shopping
-            color: black
-            border: solid 1px black
-            // background: var(--green)
+            color: white
+            // border: solid 1px black
+            background: var(--orange)
             // transition: transform 0.3s, background 0.3s
 
             &:hover
-                border: solid 1px black
-                color: white
-                background: var(--black)
-                // transform: var(--btn-scale)
+                // border: solid 1px black
+                // color: white
+                // background: var(--black)
+                transform: var(--btn-scale)
 
 body.no-scroll
   overflow: hidden

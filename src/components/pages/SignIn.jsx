@@ -1,14 +1,25 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Loader } from "rsuite";
 import AlertBox from "../AlertBox";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  userAuthenticate,
+  emailChange,
+  passwordChange,
+  fetchUserProfile,
+} from "../../redux/reducers/userProfileReducer";
 
 const SignIn = ({ openSignup, openForogotpwd, openDropDown, close }) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const dispatch = useDispatch();
+  const {
+    userDetails,
+    token,
+    emailError,
+    passwordError,
+    userPwdFlag,
+    userEmailFlag,
+  } = useSelector((state) => state.userProfile);
+
   const [loginLoading, setLoginLoading] = useState(false);
 
   useEffect(() => {
@@ -22,53 +33,14 @@ const SignIn = ({ openSignup, openForogotpwd, openDropDown, close }) => {
     return () => clearTimeout(timer);
   }, [loginLoading, close]);
 
-  const emailChange = (e) => {
-    const emailValue = e.target.value;
-    setEmail(emailValue);
-    setEmailError("");
-  };
-
-  const passwordChange = (e) => {
-    const passwordValue = e.target.value;
-    setPassword(passwordValue);
-    setPasswordError("");
-  };
-
-  const loginBtn = async (e) => {
+  const loginBtn = (e) => {
     e.preventDefault();
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let valid = true;
-
-    if (!emailPattern.test(email)) {
-      setEmailError("*Invalid email address");
-      valid = false;
-    }
-
-    if (password.length < 8) {
-      setPasswordError("*Password must be at least 8 characters long");
-      valid = false;
-    }
-
-    if (valid) {
+    if (userPwdFlag && userEmailFlag) {
+      dispatch(userAuthenticate(userDetails));
       setLoginLoading(true);
-
-      try {
-        const response = await axios.post(`${backendUrl}/user/authenticate`, {
-          email: email,
-          password: password,
-        });
-
-        console.log("Response:", response);
-        const token = response.data.jwtToken;
-        localStorage.setItem("jwtToken", token);
-        fetchUserProfile(token);
-        setEmail("");
-        setPassword("");
-        openDropDown(true);
-      } catch (error) {
-        AlertBox("error", "Error", error.response.data);
-        console.log("Error:", error.response.data);
-      }
+      dispatch(fetchUserProfile(token));
+    } else {
+      AlertBox("error", "Error", "Please enter your email and password ");
     }
   };
 
@@ -80,29 +52,6 @@ const SignIn = ({ openSignup, openForogotpwd, openDropDown, close }) => {
     e.preventDefault();
     openSignup(true);
   };
-
-  const fetchUserProfile = (token) => {
-    console.log(token);
-    axios
-      .get(`${backendUrl}/user/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        response.data;
-        console.log(response.data);
-        // setProfileDetails(response.data);
-      })
-      .catch((error) => {
-        console.log("Error:", error);
-        // Handle token expiry or invalid token
-        localStorage.removeItem("jwtToken");
-      });
-  };
-
-  useEffect(() => {
-    setEmailError("");
-    setPasswordError("");
-  }, [email, password]);
 
   if (loginLoading) {
     return (
@@ -122,9 +71,9 @@ const SignIn = ({ openSignup, openForogotpwd, openDropDown, close }) => {
             id="email"
             type="text"
             name="email"
-            value={email}
+            value={userDetails.email}
             placeholder="Email"
-            onChange={emailChange}
+            onChange={(e) => dispatch(emailChange(e.target.value))}
           />
           {emailError && <div className="error">{emailError}</div>}
         </div>
@@ -135,9 +84,9 @@ const SignIn = ({ openSignup, openForogotpwd, openDropDown, close }) => {
             className="password"
             type="password"
             name="password"
-            value={password}
+            value={userDetails.password}
             placeholder="Password"
-            onChange={passwordChange}
+            onChange={(e) => dispatch(passwordChange(e.target.value))}
           />
           {passwordError && <div className="error">{passwordError}</div>}
         </div>

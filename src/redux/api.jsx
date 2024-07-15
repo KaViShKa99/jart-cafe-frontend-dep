@@ -2,11 +2,14 @@ import axios from "axios";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-const apiRequest = async (url, method, data = null) => {
+const apiRequest = async (url, method, data = null, token = null) => {
   const config = {
     method: method,
     url: `${backendUrl}${url}`,
     data: data,
+    headers: {
+      Authorization: token ? `Bearer ${token}` : undefined,
+    },
   };
 
   try {
