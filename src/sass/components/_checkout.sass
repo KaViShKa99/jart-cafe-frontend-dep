@@ -1,51 +1,78 @@
-form
-  max-width: 400px
-  margin: 50px auto
+// Variables
+$primary-color: #4a90e2
+$error-color: #e74c3c
+$success-color: #2ecc71
+$input-border-color: #ccc
+$input-focus-border-color: $primary-color
+$button-background-color: $primary-color
+$button-hover-background-color: darken($primary-color, 10%)
+$button-disabled-background-color: lighten($primary-color, 30%)
+
+// Mixins
+@mixin flex-center
+  display: flex
+  justify-content: center
+  align-items: center
+
+.checkout-form
+  width: 100%
+  max-width: 500px
+  margin: 0 auto
   padding: 20px
-  border: 1px solid #ccc
-  border-radius: 10px
-  background-color: #f9f9f9
+  border: 1px solid $input-border-color
+  border-radius: 8px
+  background-color: #fff
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
 
-button
-  display: block
-  width: 100%
-  padding: 10px
-  margin-top: 10px
-  border: none
-  border-radius: 5px
-  background-color: #6772e5
-  color: white
-  font-size: 16px
-  cursor: pointer
-  transition: background-color 0.3s ease
+  h2
+    text-align: center
+    margin-bottom: 20px
 
-  &:hover
-    background-color: #5561c9
+  .input-field
+    width: 100%
+    margin-bottom: 15px
 
-  &:disabled
-    background-color: #ccc
-    cursor: not-allowed
+    input
+      width: 100%
+      padding: 10px
+      border: 1px solid $input-border-color
+      border-radius: 4px
+      transition: border-color 0.3s ease
 
-.error-message, .success-message
-  margin-top: 10px
-  padding: 10px
-  border-radius: 5px
-  text-align: center
+      &:focus
+        border-color: $input-focus-border-color
+        outline: none
 
-.error-message
-  color: red
-  background-color: #ffe5e5
-  border: 1px solid red
+  .CardElement
+    width: 100%
+    padding: 10px
+    border: 1px solid $input-border-color
+    border-radius: 4px
+    margin-bottom: 15px
 
-.success-message
-  color: green
-  background-color: #e5ffe5
-  border: 1px solid green
+  button
+    width: 100%
+    padding: 10px 15px
+    background-color: $button-background-color
+    color: #fff
+    border: none
+    border-radius: 4px
+    cursor: pointer
+    transition: background-color 0.3s ease
 
-.CardElement
-  padding: 10px
-  border: 1px solid #ccc
-  border-radius: 5px
-  margin-top: 10px
-  background-color: white
+    &:hover
+      background-color: $button-hover-background-color
+
+    &:disabled
+      background-color: $button-disabled-background-color
+      cursor: not-allowed
+
+  .error-message
+    margin-top: 10px
+    color: $error-color
+    text-align: center
+
+  .success-message
+    margin-top: 10px
+    color: $success-color
+    text-align: center

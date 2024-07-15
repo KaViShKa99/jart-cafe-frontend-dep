@@ -122,7 +122,7 @@ const Navbar = () => {
                 <span>Sign in</span>
               </li>
             ) : (
-              <li className={!openDropDown ? "sign-in" : ""}>
+              <li className={!openDropDown ? "user-profile" : ""}>
                 <DropdownMenu
                   profile={profileDetails.name}
                   close={(e) => setOpenDropDown(e)}

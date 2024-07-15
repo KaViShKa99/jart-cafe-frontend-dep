@@ -68,86 +68,107 @@ const CheckoutForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="firstName"
-        placeholder="First Name"
-        value={formData.firstName}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="text"
-        name="lastName"
-        placeholder="Last Name"
-        value={formData.lastName}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email Address"
-        value={formData.email}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="tel"
-        name="phone"
-        placeholder="Phone Number"
-        value={formData.phone}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="text"
-        name="address1"
-        placeholder="Address Line 1"
-        value={formData.address1}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="text"
-        name="address2"
-        placeholder="Address Line 2"
-        value={formData.address2}
-        onChange={handleInputChange}
-      />
-      <input
-        type="text"
-        name="city"
-        placeholder="City"
-        value={formData.city}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="text"
-        name="state"
-        placeholder="State/Province"
-        value={formData.state}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="text"
-        name="postalCode"
-        placeholder="Postal Code"
-        value={formData.postalCode}
-        onChange={handleInputChange}
-        required
-      />
-      <input
-        type="text"
-        name="country"
-        placeholder="Country"
-        value={formData.country}
-        onChange={handleInputChange}
-        required
-      />
+    <form className="checkout-form" onSubmit={handleSubmit}>
+      <h2>Checkout</h2>
+      <div className="input-field">
+        <input
+          type="text"
+          name="firstName"
+          placeholder="First Name"
+          value={formData.firstName}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+      <div className="input-field">
+        <input
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          value={formData.lastName}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+      <div className="input-field">
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          value={formData.email}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+      <div className="input-field">
+        <input
+          type="tel"
+          name="phone"
+          placeholder="Phone Number"
+          value={formData.phone}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+      <div className="input-field">
+        <input
+          type="text"
+          name="address1"
+          placeholder="Address Line 1"
+          value={formData.address1}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+      <div className="input-field">
+        <input
+          type="text"
+          name="address2"
+          placeholder="Address Line 2"
+          value={formData.address2}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className="input-field">
+        <input
+          type="text"
+          name="city"
+          placeholder="City"
+          value={formData.city}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+      <div className="input-field">
+        <input
+          type="text"
+          name="state"
+          placeholder="State/Province"
+          value={formData.state}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+      <div className="input-field">
+        <input
+          type="text"
+          name="postalCode"
+          placeholder="Postal Code"
+          value={formData.postalCode}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
+      <div className="input-field">
+        <input
+          type="text"
+          name="country"
+          placeholder="Country"
+          value={formData.country}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
       <CardElement className="CardElement" />
       <button type="submit" disabled={!stripe}>
         Pay
