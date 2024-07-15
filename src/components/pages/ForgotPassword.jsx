@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import AlertBox from "../AlertBox";
+import { closeModel } from "../../redux/reducers/signModelReducer";
+import { useDispatch } from "react-redux";
 
-const ForgotPassword = ({ close }) => {
+const ForgotPassword = () => {
+  const dispatch = useDispatch();
+
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [emailError, setEmailError] = useState("");
@@ -10,13 +14,8 @@ const ForgotPassword = ({ close }) => {
 
   const emailChange = (e) => {
     const email = e.target.value;
-    console.log(email);
     setEmail(email);
   };
-
-  useEffect(() => {
-    console.log(email);
-  }, [email]);
 
   const resetPassword = (e) => {
     e.preventDefault();
@@ -38,6 +37,7 @@ const ForgotPassword = ({ close }) => {
           // setMessage("Password has been reset successfully");
           //   setLoading(false);
           AlertBox("success", "Success", response.data);
+          dispatch(closeModel());
         })
         .catch((error) => {
           console.log("Error:", error);

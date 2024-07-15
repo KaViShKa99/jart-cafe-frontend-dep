@@ -34,7 +34,6 @@ const DropdownMenu = ({ profile, close }) => {
       placement="bottomEnd"
       trigger="click"
       speaker={<RenderMenu close={close} />}
-      // speaker={<RenderMenu content={profile} close={close} />}
       enterable
     >
       <IconButton icon={<FaRegUser />} className="icon-button-hover" circle />

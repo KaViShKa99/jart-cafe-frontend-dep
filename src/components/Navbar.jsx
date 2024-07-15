@@ -13,6 +13,8 @@ import {
   signOut,
   fetchUserProfile,
 } from "../redux/reducers/userProfileReducer";
+import SignModel from "./SignModel";
+import { closeModel, setIsModalOpen } from "../redux/reducers/signModelReducer";
 
 Modal.setAppElement("#root");
 
@@ -21,18 +23,9 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const { cartArray } = useSelector((state) => state.cartItems);
   const { token, signIn } = useSelector((state) => state.userProfile);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isModalOpen } = useSelector((state) => state.signModel);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpenSignUp, setIsOpenSignUp] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fNameError, setFNameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [sfName, setSfName] = useState("");
-  const [sEmail, setSEmail] = useState("");
-  const [sPassword, setSPassword] = useState("");
-  const [openDropDown, setOpenDropDown] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   useEffect(() => {
@@ -41,20 +34,15 @@ const Navbar = () => {
     }
   }, [signIn]);
 
-  useEffect(() => {
-    setEmailError("");
-    setPasswordError("");
-  }, [email, password, sfName, sEmail, sPassword]);
-
-  const closeModal = (e) => {
-    e.preventDefault();
-    setIsForgotPassword(false);
-    setIsOpenSignUp(false);
-    setIsModalOpen(false);
-  };
+  // const closeModal = (e) => {
+  //   e.preventDefault();
+  //   setIsForgotPassword(false);
+  //   setIsOpenSignUp(false);
+  //   setIsModalOpen(false);
+  // };
 
   const openModel = () => {
-    setIsModalOpen(true);
+    dispatch(setIsModalOpen());
   };
   const openCart = () => {
     navigate("/cart");
@@ -106,7 +94,9 @@ const Navbar = () => {
           </ul>
         </div>
       </nav>
-      <Modal
+      <SignModel />
+
+      {/* <Modal
         isOpen={isModalOpen}
         contentLabel="Signin Modal"
         className="signup-modal"
@@ -120,7 +110,6 @@ const Navbar = () => {
             <SignIn
               openSignup={(e) => setIsOpenSignUp(e)}
               openForogotpwd={(e) => setIsForgotPassword(e)}
-              openDropDown={(e) => setOpenDropDown(e)}
               close={(e) => setIsModalOpen(e)}
             />
           ) : isOpenSignUp ? (
@@ -129,7 +118,7 @@ const Navbar = () => {
             <ForgotPassword close={(e) => closeModal(e)} />
           )}
         </div>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

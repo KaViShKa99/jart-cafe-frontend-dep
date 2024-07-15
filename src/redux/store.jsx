@@ -5,6 +5,7 @@ import productBuyReducer from "./reducers/productBuyReducer";
 import cartItemReducer from "./reducers/cartItemReducer";
 import searchItemReducer from "./reducers/searchItemReducer";
 import userProfileReducer from "./reducers/userProfileReducer";
+import signModelReducer from "./reducers/signModelReducer";
 
 const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
     selectedProductInfo: productBuyReducer,
     cartItems: cartItemReducer,
     searchItems: searchItemReducer,
-    userProfile:userProfileReducer
+    userProfile: userProfileReducer,
+    signModel: signModelReducer,
   },
 });
 

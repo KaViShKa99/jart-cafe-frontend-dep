@@ -25,15 +25,6 @@ const Cart = () => {
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
-  const [material, setMaterial] = useState("");
-  const [sizesArray, setSizesArray] = useState([]);
-  const [quantity, setQuantity] = useState(1);
-  const [price, setPrice] = useState("0.00");
-  const [size, setSize] = useState("");
-  const [total, setTotal] = useState(0);
-  const [image, setImage] = useState("");
   const [cartItem, setCartItem] = useState(null);
 
   const closeModal = () => {
@@ -52,22 +43,6 @@ const Cart = () => {
 
     setCartItem(filteredProducts);
     setIsModalOpen(true);
-  };
-
-  const handleImageClick = (index, product) => {
-    setSelectedSizeIndex(null);
-    setSelectedIndex(index);
-    setMaterial(product.name);
-    setSizesArray(product.size);
-    //setTotal(0);
-    setImage(product.imageUrl);
-  };
-
-  const handleSizeClick = (index, size) => {
-    setSelectedSizeIndex(index);
-    setPrice(size.p);
-    setSize(size.s);
-    //setTotal(size.p);
   };
 
   const removeItem = (artworkId) => {
