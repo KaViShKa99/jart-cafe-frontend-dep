@@ -9,6 +9,7 @@ const apiRequest = async (url, method, data = null, token = null) => {
     data: data,
     headers: {
       Authorization: token ? `Bearer ${token}` : undefined,
+      "Content-Type": "application/json",
     },
   };
 

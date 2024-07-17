@@ -96,6 +96,8 @@ const userSlice = createSlice({
     signOut: (state) => {
       localStorage.removeItem("tkn");
       state.signIn = false;
+      state.userPwdFlag = false;
+      state.userEmailFlag = false;
     },
   },
   extraReducers: (builder) => {

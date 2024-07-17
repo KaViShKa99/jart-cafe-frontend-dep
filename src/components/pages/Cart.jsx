@@ -12,6 +12,11 @@ import {
   updateCartQuntity,
   updateSubTotal,
 } from "../../redux/reducers/cartItemReducer";
+import { setIsModalOpen } from "../../redux/reducers/signModelReducer";
+import {
+  openCardPayment,
+  userPayment,
+} from "../../redux/reducers/paymentReducer";
 
 Modal.setAppElement("#root");
 
@@ -19,16 +24,17 @@ const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { cartArray, subTotal } = useSelector((state) => state.cartItems);
+  const { signIn } = useSelector((state) => state.userProfile);
 
   const updateQuantity = (quantity, id) => {
     dispatch(updateCartQuntity({ quantity: quantity, id: id }));
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCartModalOpen, setIsCartModelOpen] = useState(false);
   const [cartItem, setCartItem] = useState(null);
 
   const closeModal = () => {
-    setIsModalOpen(false);
+    setIsCartModelOpen(false);
   };
 
   const goHome = (e) => {
@@ -42,11 +48,26 @@ const Cart = () => {
     );
 
     setCartItem(filteredProducts);
-    setIsModalOpen(true);
+    setIsCartModelOpen(true);
   };
 
   const removeItem = (artworkId) => {
     dispatch(removeCart(artworkId));
+  };
+
+  const openCheckoutPage = (e) => {
+    e.preventDefault();
+    if (!signIn) {
+      dispatch(setIsModalOpen());
+    } else {
+      // dispatch(
+      //   userPayment({
+      //     currency: "usd",
+      //     amount: 4000, // amount in cents
+      //   })
+      // );
+      navigate("/checkout");
+    }
   };
 
   useEffect(() => {
@@ -54,7 +75,7 @@ const Cart = () => {
   }, [cartArray]);
 
   useEffect(() => {
-    if (isModalOpen) {
+    if (isCartModalOpen) {
       document.body.classList.add("no-scroll");
     } else {
       document.body.classList.remove("no-scroll");
@@ -63,7 +84,7 @@ const Cart = () => {
     return () => {
       document.body.classList.remove("no-scroll");
     };
-  }, [isModalOpen]);
+  }, [isCartModalOpen]);
 
   return (
     <div className="cart-container">
@@ -177,7 +198,7 @@ const Cart = () => {
             </div>
             <div className="gray-divider" />
           </div>
-          <button className="checkout-btn">
+          <button className="checkout-btn" onClick={openCheckoutPage}>
             PROCEED TO CHECKOUT {subTotal ? `( $ ${subTotal.toFixed(2)} )` : ""}
           </button>
           <button className="continue-shopping" onClick={goHome}>
@@ -186,7 +207,7 @@ const Cart = () => {
         </div>
       </div>
       <Modal
-        isOpen={isModalOpen}
+        isOpen={isCartModalOpen}
         // onRequestClose={closeModal}
         contentLabel="cart edit Modal"
         className="cart-edit-modal"
@@ -202,7 +223,7 @@ const Cart = () => {
             <ProductBuyForm
               props={cartItem ? cartItem[0] : []}
               editForm={true}
-              close={(e) => setIsModalOpen(e)}
+              close={(e) => setIsCartModelOpen(e)}
             />
           </div>
         </div>

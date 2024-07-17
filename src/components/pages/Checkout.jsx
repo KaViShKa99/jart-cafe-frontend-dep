@@ -1,188 +1,88 @@
-import React, { useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
-  Elements,
-  CardElement,
-  useStripe,
-  useElements,
+  EmbeddedCheckoutProvider,
+  EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+const public_key = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
 
-const stripePromise = loadStripe("your-publishable-key");
+const stripePromise = loadStripe(public_key);
 
 const CheckoutForm = () => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    postalCode: "",
-    country: "",
-  });
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    const cardElement = elements.getElement(CardElement);
-
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: cardElement,
-      billing_details: {
-        name: `${formData.firstName} ${formData.lastName}`,
-        email: formData.email,
-        phone: formData.phone,
-        address: {
-          line1: formData.address1,
-          line2: formData.address2,
-          city: formData.city,
-          state: formData.state,
-          postal_code: formData.postalCode,
-          country: formData.country,
-        },
-      },
+  const fetchClientSecret = useCallback(async () => {
+    // Create a Checkout Session
+    const res = await fetch("/checkout/create-checkout-session", {
+      method: "POST",
     });
+    const data = await res.json();
+    return data;
+  }, []);
 
-    if (error) {
-      setError(error.message);
-    } else {
-      // Handle the successful creation of the payment method
-      setSuccess(true);
-    }
-  };
+  const options = { fetchClientSecret };
 
   return (
-    <form className="checkout-form" onSubmit={handleSubmit}>
-      <h2>Checkout</h2>
-      <div className="input-field">
-        <input
-          type="text"
-          name="firstName"
-          placeholder="First Name"
-          value={formData.firstName}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div className="input-field">
-        <input
-          type="text"
-          name="lastName"
-          placeholder="Last Name"
-          value={formData.lastName}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div className="input-field">
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div className="input-field">
-        <input
-          type="tel"
-          name="phone"
-          placeholder="Phone Number"
-          value={formData.phone}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div className="input-field">
-        <input
-          type="text"
-          name="address1"
-          placeholder="Address Line 1"
-          value={formData.address1}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div className="input-field">
-        <input
-          type="text"
-          name="address2"
-          placeholder="Address Line 2"
-          value={formData.address2}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div className="input-field">
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          value={formData.city}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div className="input-field">
-        <input
-          type="text"
-          name="state"
-          placeholder="State/Province"
-          value={formData.state}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div className="input-field">
-        <input
-          type="text"
-          name="postalCode"
-          placeholder="Postal Code"
-          value={formData.postalCode}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div className="input-field">
-        <input
-          type="text"
-          name="country"
-          placeholder="Country"
-          value={formData.country}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <CardElement className="CardElement" />
-      <button type="submit" disabled={!stripe}>
-        Pay
-      </button>
-      {error && <div className="error-message">{error}</div>}
-      {success && <div className="success-message">Payment successful!</div>}
-    </form>
+    <div id="checkout">
+      <EmbeddedCheckoutProvider stripe={stripePromise} options={options}>
+        <EmbeddedCheckout />
+      </EmbeddedCheckoutProvider>
+    </div>
   );
 };
 
-const Checkout = () => (
-  <Elements stripe={stripePromise}>
-    <CheckoutForm />
-  </Elements>
-);
+const Return = () => {
+  const [status, setStatus] = useState(null);
+  const [customerEmail, setCustomerEmail] = useState("");
+
+  useEffect(() => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const sessionId = urlParams.get("session_id");
+
+    fetch(`/session-status?session_id=${sessionId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setStatus(data.status);
+        setCustomerEmail(data.customer_email);
+      });
+  }, []);
+
+  if (status === "open") {
+    return <Navigate to="/checkout" />;
+  }
+
+  if (status === "complete") {
+    return (
+      <section id="success">
+        <p>
+          We appreciate your business! A confirmation email will be sent to{" "}
+          {customerEmail}. If you have any questions, please email{" "}
+          <a href="mailto:orders@example.com">orders@example.com</a>.
+        </p>
+      </section>
+    );
+  }
+
+  return null;
+};
+
+const Checkout = () => {
+  return (
+    <div className="App">
+      <CheckoutForm />
+      {/* <Router>
+        <Routes>
+          <Route path="/checkout" element={<CheckoutForm />} />
+          <Route path="/return" element={<Return />} />
+        </Routes>
+      </Router> */}
+    </div>
+  );
+};
 
 export default Checkout;

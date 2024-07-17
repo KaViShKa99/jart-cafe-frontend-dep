@@ -25,6 +25,7 @@ const SignIn = () =>
       passwordError,
       userPwdFlag,
       userEmailFlag,
+      SignIn,
     } = useSelector((state) => state.userProfile);
 
     const [loginLoading, setLoginLoading] = useState(false);
@@ -47,6 +48,7 @@ const SignIn = () =>
         dispatch(userAuthenticate(userDetails));
         setLoginLoading(true);
         dispatch(fetchUserProfile(token));
+        dispatch(closeModel());
       } else {
         AlertBox("error", "Error", "Please enter your email and password ");
       }

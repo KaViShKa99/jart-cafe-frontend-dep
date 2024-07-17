@@ -9,6 +9,8 @@ import NewPasswordPage from "./components/pages/NewPasswordPage";
 import AdminLogin from "./components/pages/AdminLogin";
 import SearchPage from "./components/pages/SearchPage";
 import Checkout from "./components/pages/Checkout";
+import Success from "./components/pages/Success";
+import Cancel from "./components/pages/Cancel";
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/success" element={<Success />} />
+      <Route path="/cancel" element={<Cancel />} />
     </Routes>
   );
 };

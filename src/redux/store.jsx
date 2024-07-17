@@ -6,6 +6,7 @@ import cartItemReducer from "./reducers/cartItemReducer";
 import searchItemReducer from "./reducers/searchItemReducer";
 import userProfileReducer from "./reducers/userProfileReducer";
 import signModelReducer from "./reducers/signModelReducer";
+import paymentReducer from "./reducers/paymentReducer";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     searchItems: searchItemReducer,
     userProfile: userProfileReducer,
     signModel: signModelReducer,
+    userPayment: paymentReducer
   },
 });
 
