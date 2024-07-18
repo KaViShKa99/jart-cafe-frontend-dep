@@ -60,18 +60,39 @@ const Cart = () => {
     if (!signIn) {
       dispatch(setIsModalOpen());
     } else {
+      console.log(cartArray);
+      const formatCartItemsForPayment = (cartArray) => {
+        return cartArray.map((item) => ({
+          category: item.category,
+          designerNote: item.designerNote,
+          eachPrice: item.eachPrice,
+          isPhysicalArt: item.isPhysicalArt,
+          material: item.material,
+          materials: item.materials,
+          price: item.price,
+          total: item.total,
+          uploadedImage: item.uploadedImage,
+          productImage: item.productImage,
+          quantity: item.quantity,
+        }));
+      };
+      const items = formatCartItemsForPayment(cartArray);
+
+      // const arr = cartArray.map((item) => item.quantity);
+      dispatch(userPayment({ items: items }));
       // dispatch(
       //   userPayment({
       //     currency: "usd",
       //     amount: 4000, // amount in cents
       //   })
       // );
-      navigate("/checkout");
+      // navigate("/checkout");
     }
   };
 
   useEffect(() => {
     dispatch(updateSubTotal());
+    console.log(cartArray);
   }, [cartArray]);
 
   useEffect(() => {

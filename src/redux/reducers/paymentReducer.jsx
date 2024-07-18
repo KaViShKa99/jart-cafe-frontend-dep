@@ -9,12 +9,15 @@ export const userPayment = createAsyncThunk(
   "user/payment",
   async (userCredentials, { rejectWithValue }) => {
     try {
+      console.log(userCredentials);
+
       const response = await apiRequest(
         "/checkout/create-session",
         "POST",
         userCredentials,
         null
       );
+      console.log(response);
       return response;
     } catch (error) {
       return rejectWithValue(error);
