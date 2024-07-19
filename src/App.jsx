@@ -11,6 +11,7 @@ import SearchPage from "./components/pages/SearchPage";
 import Checkout from "./components/pages/Checkout";
 import Success from "./components/pages/Success";
 import Cancel from "./components/pages/Cancel";
+import OrderdItems from "./components/pages/OrderdItems";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/success" element={<Success />} />
       <Route path="/cancel" element={<Cancel />} />
+      <Route path="/ordered-items" element={<OrderdItems />} />
     </Routes>
   );
 };

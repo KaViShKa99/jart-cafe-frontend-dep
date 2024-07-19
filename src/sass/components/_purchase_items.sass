@@ -1,0 +1,170 @@
+.purchase-body
+    // background: var(--light-orange)
+    display: flex
+    // flex-direction: column
+    height: 700px
+    width: 100%
+    flex-direction: column
+    align-items: center
+    // justify-content: center
+    // margin-top: 20px
+
+    .purchase-list
+        width: 50%
+        // margin-top: 100px
+        padding: 20px
+
+        .purchase-heading
+            font-size: 25px
+            font-weight: 500
+        
+
+        .purchase-table
+            width: 100%
+            border-collapse: separate
+            border-spacing: 0 10px
+            margin-top: 20px
+
+            .purchase-total
+                .cart-total
+                    font-size: 15px 
+                    // font-weight: 500
+
+            .purchase-details-column
+                .purchase-details-column-container
+                    display: flex
+                    flex-direction: row
+                    flex-wrap: wrap
+                    gap: 10px
+                    // .cart-details-edit
+                    //     // background: var(--gray)
+                    //     width: 20px
+                    //     &:hover
+                    //         cursor: pointer
+                    //         color: var(--green)
+                    // .cart-remove-item
+                    //     // background: var(--gray)
+                    //     margin: 10px
+                    //     cursor: pointer
+
+                    //     &:hover
+                    //         color: var(--red)
+
+            tbody tr 
+                //background: yellow
+                
+                td
+                    font-size: 15px
+                    border: 1px solid var(--light-gray)
+                    padding: 20px
+                    // padding: 0px 10px 0px 10px
+
+                    .cart-purchase-details
+                        display: flex
+                        flex-direction: column
+                        //padding: 10px 20px 10px 20px
+
+                        .design
+                            font-style: oblique
+
+                        span
+                            font-size: 15px
+                            margin-bottom: 8px
+
+                    img
+                        width: 100px
+                        height: 100px
+
+                    &:nth-child(1)     
+                        // border-right: none
+                    &:nth-child(2)      
+                        border-right: none
+                        border-left: none
+                    &:nth-child(3)      
+                        border-right: none
+                        border-left: none
+                    &:nth-child(4)      
+                        border-left: none
+
+            th
+                font-size: 15px
+                font-weight: 500
+                background-color: var(--light-gray)
+                text-align: left
+                padding: 10px
+        
+        .purchase-combined-column
+            display: none 
+            //visibility: hidden 
+
+@media (max-width: 1200px) 
+    .purchase-body
+        display: flex
+        flex-direction: column
+        align-items: center
+        padding: 20px 0px 0px 0px
+
+        .purchase-list
+            width: 80%
+// @media (max-width: 780px) 
+//     .purchase-body
+//         display: flex
+//         flex-direction: column
+//         align-items: center
+//         padding: 20px 10px 0px 0px
+
+//         .purchase-list
+//             // margin-top: 80px
+//             width: 80%
+// @media (max-width: 730px) 
+//     .purchase-body
+//         display: flex
+//         flex-direction: column
+//         align-items: center
+//         padding: 20px 10px 0px 0px
+
+//         .purchase-list
+//             // margin-top: 80px
+//             width: 80%
+
+@media (max-width: 580px) 
+    .purchase-body
+        padding: 20px 10px 0px 0px
+        .purchase-list
+            width: 100%
+            .purchase-table
+                border: 1px solid var(--light-gray)
+                tbody tr 
+                    td
+                        &:nth-child(1)    
+                            border-left: none 
+                            border-right: none
+                            border-bottom: none
+                        &:nth-child(5) 
+                            border-left: none 
+                            border-right: none
+                            border-bottom: none
+            
+                .q-hide,.t-hide
+                    display: none
+                .purchase-price,
+                .quantity-details-column,
+                .purchase-total
+                    display: none
+                .purchase-details-column
+                    .purchase-details-column-container
+                            width: 100px
+
+                .purchase-combined-column    
+                    display: flex
+                    .combined-column-container
+                        flex: 1
+                        display: flex
+                        flex-direction: column
+                        flex-wrap: wrap
+                        gap: 10px
+                        
+                        .c-total,
+                        .c-price
+                            font-size: 15px
+            

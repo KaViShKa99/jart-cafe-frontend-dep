@@ -17,10 +17,11 @@ import {
   openCardPayment,
   userPayment,
 } from "../../redux/reducers/paymentReducer";
+import { format } from "date-fns";
 
 Modal.setAppElement("#root");
 
-const Cart = () => {
+const PurchaseItems = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { cartArray, subTotal } = useSelector((state) => state.cartItems);
@@ -103,12 +104,12 @@ const Cart = () => {
   }, [isCartModalOpen]);
 
   return (
-    <div className="cart-container">
+    <div className="purchase-container">
       <Navbar />
-      <div className="cart-body">
-        <div className="cart-list">
-          <span className="cart-heading">My Cart</span>
-          <table className="product-table">
+      <div className="purchase-body">
+        <div className="purchase-list">
+          <span className="purchase-heading">Ordered Items</span>
+          <table className="purchase-table">
             <thead>
               <tr>
                 <th>PRODUCTS</th>
@@ -127,10 +128,10 @@ const Cart = () => {
               ) : (
                 cartArray.map((product, index) => (
                   <tr key={index}>
-                    <td className="product-details-column">
-                      <div className="product-details-column-container">
+                    <td className="purchase-details-column">
+                      <div className="purchase-details-column-container">
                         <img src={product.productImage[0]} />
-                        <div className="cart-product-details">
+                        <div className="cart-purchase-details">
                           <span>{product.category}</span>
 
                           <span className="design">
@@ -138,7 +139,7 @@ const Cart = () => {
                               ? `${product.material} / ${product.size.size}`
                               : "Digital arts"}
                           </span>
-                          <div className="cart-details-btn">
+                          {/* <div className="cart-details-btn">
                             <span
                               className="cart-details-edit"
                               onClick={() => openCartEdit(product.artworkId)}
@@ -151,46 +152,44 @@ const Cart = () => {
                             >
                               <AiOutlineDelete />
                             </span>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </td>
-                    <td className="product-price">
+                    <td className="purchase-price">
                       ${(product.eachPrice + product.price).toFixed(2)}
                     </td>
                     <td className="quantity-details-column">
-                      <QuantityCounter
+                      {product.quantity}
+                      {/* <QuantityCounter
                         TotalQuantity={(q) =>
                           updateQuantity(q, product.artworkId)
                         }
                         initialQuantity={product.quantity}
                         product={product}
                         cartUpdate={true}
-                      />
+                      /> */}
                     </td>
-                    <td className="product-total">
+                    <td className="purchase-total">
                       <span className="cart-total">
                         $ {product.total && product.total.toFixed(2)}
                       </span>
                     </td>
 
-                    <td className="combined-column">
+                    <td className="purchase-combined-column">
                       <div className="combined-column-container">
                         <div className="c-price">
                           Price :- $
                           {(product.eachPrice + product.price).toFixed(2)}{" "}
                         </div>
-
-                        <QuantityCounter
-                          TotalQuantity={(q) =>
-                            updateQuantity(q, product.artworkId)
-                          }
-                          initialQuantity={product.quantity}
-                          product={product}
-                          cartUpdate={true}
-                        />
+                        <div className="c-price">
+                          Quantity :- {product.quantity}
+                        </div>
                         <div className="c-total">
                           Total :- $ {product.total && product.total.toFixed(2)}
+                        </div>
+                        <div className="c-total">
+                          Date: {format(new Date(), "MMMM do, yyyy")}
                         </div>
                       </div>
                     </td>
@@ -200,7 +199,7 @@ const Cart = () => {
             </tbody>
           </table>
         </div>
-        <div className="order-summary">
+        {/* <div className="order-summary">
           <div className="summary-heading">ORDER SUMMARY</div>
           <div className="divider"></div>
           <div className="sub-total">
@@ -221,32 +220,10 @@ const Cart = () => {
           <button className="continue-shopping" onClick={goHome}>
             CONTINUE SHOPPING
           </button>
-        </div>
+        </div> */}
       </div>
-      <Modal
-        isOpen={isCartModalOpen}
-        // onRequestClose={closeModal}
-        contentLabel="cart edit Modal"
-        className="cart-edit-modal"
-        overlayClassName="cart-overlay"
-      >
-        <div className="cart-edit-container">
-          <button className="close-button" onClick={closeModal}>
-            &times;
-          </button>
-          <span className="cart-heading">Edit item</span>
-
-          <div className="cart-edit-scrollbar">
-            <ProductBuyForm
-              props={cartItem ? cartItem[0] : []}
-              editForm={true}
-              close={(e) => setIsCartModelOpen(e)}
-            />
-          </div>
-        </div>
-      </Modal>
     </div>
   );
 };
 
-export default Cart;
+export default PurchaseItems;
