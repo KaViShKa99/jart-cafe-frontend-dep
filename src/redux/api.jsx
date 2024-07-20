@@ -13,8 +13,6 @@ const apiRequest = async (url, method, data = null, token = null) => {
     },
   };
 
-  console.log(data);
-
   try {
     const response = await axios(config);
     return response.data;

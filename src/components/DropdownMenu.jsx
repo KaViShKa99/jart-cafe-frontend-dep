@@ -1,14 +1,24 @@
 import { useState, forwardRef, useEffect } from "react";
 import { Dropdown, Popover, Whisper, IconButton } from "rsuite";
 import { FaRegUser } from "react-icons/fa";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "../redux/reducers/userProfileReducer";
 const RenderMenu = forwardRef(({ close, left, top, className }, ref) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { userProfile } = useSelector((state) => state.userProfile);
   const handleSelect = (eventKey) => {
     if (eventKey === "signOut") {
-      close(false);
-      localStorage.removeItem("jwtToken");
+      // close(false);
+      dispatch(signOut());
+      navigate("/");
+
+      // localStorage.removeItem("jwtToken");
+    }
+    if (eventKey === "ordered") {
+      // close(false);
+      navigate("/ordered-items");
     }
   };
 
@@ -17,11 +27,10 @@ const RenderMenu = forwardRef(({ close, left, top, className }, ref) => {
       <Dropdown.Menu onSelect={handleSelect}>
         <Dropdown.Item panel style={{ padding: 10, width: 160 }}>
           <p>Signed in as</p>
-          {/* <strong>{content}</strong> */}
           <strong>{userProfile.name}</strong>
         </Dropdown.Item>
         <Dropdown.Separator />
-        <Dropdown.Item>Purchase item</Dropdown.Item>
+        <Dropdown.Item eventKey="ordered">Ordered item</Dropdown.Item>
         <Dropdown.Separator />
         <Dropdown.Item eventKey="signOut">Sign out</Dropdown.Item>
       </Dropdown.Menu>
@@ -33,7 +42,8 @@ const DropdownMenu = ({ profile, close }) => {
     <Whisper
       placement="bottomEnd"
       trigger="click"
-      speaker={<RenderMenu close={close} />}
+      // speaker={<RenderMenu close={close} />}
+      speaker={<RenderMenu />}
       enterable
     >
       <IconButton icon={<FaRegUser />} className="icon-button-hover" circle />

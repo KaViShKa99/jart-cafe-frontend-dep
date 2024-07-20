@@ -19,21 +19,28 @@ const SelectedProduct = () => {
     dispatch(fetchSelectedProduct(id));
   }, [dispatch]);
 
- 
   return (
     <div className="selected-products">
       <Navbar />
-      <div className="selected-product-container">
-        <ProductImageGallery images={selectedProduct.images} />
-        <ProductBuyForm
+      <div className="selected-product-body">
+        <div className="selected-product-container">
+          <ProductImageGallery images={selectedProduct.images} />
+          <ReviewsContainer />
+          {/* <ProductBuyForm
           props={selectedProduct}
           editForm={false}
           close={() => {}}
-        />
-      </div>
-      <div className="reviews-and-shipping">
-        <ReviewsContainer />
-        <ProductDetails productDetails={selectedProduct.description} />
+        /> */}
+        </div>
+        <div className="reviews-and-shipping">
+          {/* <ReviewsContainer /> */}
+          <ProductBuyForm
+            props={selectedProduct}
+            editForm={false}
+            close={() => {}}
+          />
+          <ProductDetails productDetails={selectedProduct.description} />
+        </div>
       </div>
     </div>
   );

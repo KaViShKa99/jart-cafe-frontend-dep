@@ -4,19 +4,36 @@ import { storage } from "../../config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { categories, materials, commonSizes } from "../../data/Data";
 import JoditEditor from "jodit-react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchProducts,
+  categoryChange,
+  titleChange,
+  descriptionChange,
+  lastPriceChange,
+  priceChange,
+  fileChange,
+} from "../../redux/reducers/adminReducer";
+import { uploadFiles } from "../../redux/ImageUpload";
 
-export const Admin = () => {
+export const Admin1 = () => {
+  const dispatch = useDispatch();
+  const { artworks, previewState } = useSelector((state) => state.admin);
+  const { category, title, images } = useSelector(
+    (state) => state.admin.previewState
+  );
+
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-  const previewState = {
-    category: "",
-    title: "",
-    description: "",
-    price: "",
-    lastPrice: 0,
-    images: [],
-    materials: [],
-  };
+  // const previewState = {
+  //   category: "",
+  //   title: "",
+  //   description: "",
+  //   price: "",
+  //   lastPrice: 0,
+  //   images: [],
+  //   materials: [],
+  // };
   const initializeMaterialsSizes = () => {
     return materials.map((material) => ({
       material: material.name,
@@ -25,73 +42,86 @@ export const Admin = () => {
     }));
   };
 
-  const [category, setCategory] = useState("");
+  // const [category, setCategory] = useState("");
   const [categoryName, setCategoryName] = useState("");
-  const [title, setTitle] = useState("");
+  // const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
   const [lastPrice, setLastPrice] = useState(0);
-  const [images, setImages] = useState([]);
+  // const [images, setImages] = useState([]);
   const [imageLinks, setImageLinks] = useState("");
   const [imageUrl, setImageUrl] = useState([]);
   const [materialsSizes, setMaterialsSizes] = useState(
     initializeMaterialsSizes()
   );
-  const [artworks, setArtworks] = useState([]);
+  // const [artworks, setArtworks] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [newProductPreview, setNewProductPreview] = useState(previewState);
   const [expandedArtworkId, setExpandedArtworkId] = useState(null);
 
   useEffect(() => {
-    fetchArtworks();
+    console.log(previewState);
+  }, [previewState]);
+
+  useEffect(() => {
+    // fetchArtworks();
+    dispatch(fetchProducts());
   }, []);
 
   const fetchArtworks = async () => {
     try {
       const response = await axios.get(`${backendUrl}/artworks`);
-      setArtworks(response.data);
+      // setArtworks(response.data);
     } catch (error) {
       console.error("Error fetching artworks:", error);
     }
   };
 
   const handleCategoryChange = (event) => {
-    const selectedCategory = categories.find(
-      (cat) => cat.id === parseInt(event.target.value)
-    );
-    setCategory(selectedCategory.id);
-    setCategoryName(selectedCategory.name);
-    updatePreview("category", selectedCategory.name);
+    dispatch(categoryChange(event.target.value));
+    // const selectedCategory = categories.find(
+    //   (cat) => cat.id === parseInt(event.target.value)
+    // );
+    // setCategory(selectedCategory.id);
+    // setCategoryName(selectedCategory.name);
+    // updatePreview("category", selectedCategory.name);
   };
 
   const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-    updatePreview("title", event.target.value);
+    dispatch(titleChange(event.target.value));
+    // setTitle(event.target.value);
+    // updatePreview("title", event.target.value);
   };
 
   const handleDescriptionChange = (value) => {
-    setDescription(value);
-    updatePreview("description", value);
+    dispatch(descriptionChange(value));
+    // setDescription(value);
+    // updatePreview("description", value);
   };
 
   const handleLastPriceChange = (event) => {
-    setLastPrice(event.target.value);
-    updatePreview("lastPrice", event.target.value);
+    dispatch(lastPriceChange(event.target.value));
+    // setLastPrice(event.target.value);
+    // updatePreview("lastPrice", event.target.value);
   };
 
   const handlePriceChange = (event) => {
-    setPrice(event.target.value);
-    updatePreview("price", event.target.value);
+    dispatch(priceChange(event.target.value));
+    // setPrice(event.target.value);
+    // updatePreview("price", event.target.value);
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const files = Array.from(event.target.files);
-    setImages([...images, ...files]);
-    if (files[0]) {
-      const previewURL = URL.createObjectURL(files[0]);
-      setImageUrl((prev) => [...prev, previewURL]);
-    }
+    const urls = await uploadFiles(files);
+
+    dispatch(fileChange(urls));
+    // setImages([...images, ...files]);
+    // if (files[0]) {
+    //   const previewURL = URL.createObjectURL(files[0]);
+    //   setImageUrl((prev) => [...prev, previewURL]);
+    // }
   };
 
   const imageLinkAdd = (e) => {
@@ -169,7 +199,6 @@ export const Admin = () => {
           console.error("Error uploading image:", error);
         }
       });
-
       await Promise.all(uploadPromises);
     }
 
@@ -240,7 +269,7 @@ export const Admin = () => {
     setEditingId(artwork.artworkId);
     setNewProductPreview(artwork); // Set preview for editing product
   };
-  
+
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${backendUrl}/artworks/delete/${id}`);
@@ -256,7 +285,7 @@ export const Admin = () => {
 
   const config = useMemo(
     () => ({
-      readonly: false, 
+      readonly: false,
       toolbarSticky: false,
     }),
     []
@@ -274,10 +303,10 @@ export const Admin = () => {
           <select
             name="category"
             id="category"
-            value={category}
+            value={category && category.id}
             onChange={handleCategoryChange}
           >
-            <option value="">Select a category</option>
+            <option value="0">Select a category</option>
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
@@ -421,8 +450,9 @@ export const Admin = () => {
         {/* {newProductPreview && ( */}
         <div className="preview-section">
           <h3>Preview:</h3>
-          <p>Category: {newProductPreview.category}</p>
-          <p>Title: {newProductPreview.title}</p>
+          <p>Category: {category && category.name}</p>
+          {/* <p>Category: {newProductPreview.category}</p> */}
+          <p>Title: {title}</p>
           {/* <p>Description: {newProductPreview.description}</p> */}
           <p>Price: ${newProductPreview.price}</p>
           <p>Last Price: ${newProductPreview.lastPrice}</p>

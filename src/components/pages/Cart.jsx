@@ -87,7 +87,6 @@ const Cart = () => {
 
   useEffect(() => {
     dispatch(updateSubTotal());
-    console.log(cartArray);
   }, [cartArray]);
 
   useEffect(() => {

@@ -83,7 +83,6 @@ export const figures = [
   { id: 6, name: "5 figure (USD 104.00)", value: 104 },
 ];
 
-
 export const materials = [
   { id: 1, name: "Canvas" },
   { id: 2, name: "Poster" },
@@ -92,4 +91,10 @@ export const materials = [
   { id: 5, name: "Premium Framed Canvas" },
 ];
 
-export const commonSizes = ['12"x16"', '8"x10"', '18"x24"', '24"x30"', '30"x40"'];
+export const commonSizes = [
+  '12"x16"',
+  '8"x10"',
+  '18"x24"',
+  '24"x30"',
+  '30"x40"',
+];

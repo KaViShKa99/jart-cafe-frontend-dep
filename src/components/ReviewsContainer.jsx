@@ -93,7 +93,7 @@ const ReviewsContainer = () => {
 
   return (
     <div className="product-review">
-      <h2>Reviews</h2>
+      {/* <h2>Reviews</h2> */}
       <div className="filter-sort-options">
         <label htmlFor="sort">Sort by: </label>
         <Dropdown

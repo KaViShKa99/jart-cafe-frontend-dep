@@ -1,33 +1,40 @@
-.selected-product-container
-    // background: grey
+.selected-product-body    
     display: flex
     flex-direction: row
-    margin: 10px
-.reviews-and-shipping
-    margin: 10px
-    // background: yellow
-    display: flex
-    flex-direction: row
-    justify-content: center
+    .selected-product-container
+        // background: grey
+        display: flex
+        flex-direction: column
+        margin: 10px
+    .reviews-and-shipping
+        margin: 10px
+        // background: yellow
+        display: flex
+        flex-direction: column
+        justify-content: center
 
 /* Media Queries for Mobile Responsiveness */
 @media (max-width: 1200px) 
-    .selected-product-container 
-        .gallery-container
-            // background: pink
-            margin: 20px 0px 0px 100px
-            .thumbnail-container
-                margin-top: 10px
-        .product-description
-            margin: 20px 100px 0px 30px
+    .selected-product-body
+        flex-direction: column
+        .selected-product-container 
+            align-items: center
+            .gallery-container
+                // background: pink
+                margin: 20px 0px 0px 0px
+                .thumbnail-container
+                    margin-top: 10px
+            .product-description
+                margin: 20px 100px 0px 30px
 
-    .reviews-and-shipping
-        flex-direction: column-reverse
-        align-items: center
-        .product-review
-            width: 80%
-        .product-and-shipping-details
-            width: 80%
+        .reviews-and-shipping
+            //flex-direction: column-reverse
+            align-items: center
+            // .product-review
+            //     margin: 20px 0px 0px 0px
+            //     width: 80%
+            // .product-and-shipping-details
+            //     width: 80%
         
 @media (max-width: 1000px) 
     .selected-product-container 

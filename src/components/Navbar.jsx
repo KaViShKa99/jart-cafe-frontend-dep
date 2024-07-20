@@ -81,7 +81,8 @@ const Navbar = () => {
               </li>
             ) : (
               <li className={!token ? "user-profile" : ""}>
-                <DropdownMenu close={() => dispatch(signOut())} />
+                {/* <DropdownMenu close={() => dispatch(signOut())} /> */}
+                <DropdownMenu  />
               </li>
             )}
 

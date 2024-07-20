@@ -478,13 +478,13 @@ const ProductBuyForm = ({ props, editForm, close }) => {
               cartUpdate={false}
             />
             <label htmlFor="subtotal-value">
-              Subtotal :{isPhysical ? physicalArt.total : digitalArt.total}
+              Subtotal : $ {isPhysical ? physicalArt.total : digitalArt.total}
             </label>
           </div>
 
           {!editForm ? (
             <div className="cart-button">
-              <button className="buy-it-now-btn">Buy it now</button>
+              <button className="buy-it-now-btn">BUY IT NOW</button>
               <button className="add-to-cart-btn" onClick={addTocart}>
                 ADD TO CART
               </button>
