@@ -6,22 +6,31 @@ import { categories, materials, commonSizes } from "../../data/Data";
 import JoditEditor from "jodit-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  cancelEdit,
+  deleteArtwork,
+  handleEditChange,
+  handleRemoveSize,
+  toggleSizeChange,
+  handleSizePrice,
+  handleLinkChange,
   fetchProducts,
   categoryChange,
   titleChange,
   descriptionChange,
   lastPriceChange,
   priceChange,
-  fileChange,
+  uploadImages,
+  removeImages,
+  handleRemove,
 } from "../../redux/reducers/adminReducer";
-import { uploadFiles } from "../../redux/ImageUpload";
 
 export const Admin1 = () => {
   const dispatch = useDispatch();
-  const { artworks, previewState } = useSelector((state) => state.admin);
-  const { category, title, images } = useSelector(
-    (state) => state.admin.previewState
+  const { artworks, previewState, setEdit } = useSelector(
+    (state) => state.admin
   );
+  const { category, title, images, price, lastPrice, materials, description } =
+    useSelector((state) => state.admin.previewState);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -34,26 +43,26 @@ export const Admin1 = () => {
   //   images: [],
   //   materials: [],
   // };
-  const initializeMaterialsSizes = () => {
-    return materials.map((material) => ({
-      material: material.name,
-      sizes: commonSizes.map((size) => ({ size, price: "" })),
-      expanded: false,
-    }));
-  };
+  // const initializeMaterialsSizes = () => {
+  //   return materials.map((material) => ({
+  //     material: material.name,
+  //     sizes: commonSizes.map((size) => ({ size, price: "" })),
+  //     expanded: false,
+  //   }));
+  // };
 
   // const [category, setCategory] = useState("");
   const [categoryName, setCategoryName] = useState("");
   // const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
-  const [lastPrice, setLastPrice] = useState(0);
+  // const [description, setDescription] = useState("");
+  // const [price, setPrice] = useState(0);
+  // const [lastPrice, setLastPrice] = useState(0);
   // const [images, setImages] = useState([]);
   const [imageLinks, setImageLinks] = useState("");
   const [imageUrl, setImageUrl] = useState([]);
-  const [materialsSizes, setMaterialsSizes] = useState(
-    initializeMaterialsSizes()
-  );
+  // const [materialsSizes, setMaterialsSizes] = useState(
+  //   initializeMaterialsSizes()
+  // );
   // const [artworks, setArtworks] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -79,6 +88,7 @@ export const Admin1 = () => {
   };
 
   const handleCategoryChange = (event) => {
+    event.preventDefault();
     dispatch(categoryChange(event.target.value));
     // const selectedCategory = categories.find(
     //   (cat) => cat.id === parseInt(event.target.value)
@@ -89,6 +99,7 @@ export const Admin1 = () => {
   };
 
   const handleTitleChange = (event) => {
+    event.preventDefault();
     dispatch(titleChange(event.target.value));
     // setTitle(event.target.value);
     // updatePreview("title", event.target.value);
@@ -101,22 +112,49 @@ export const Admin1 = () => {
   };
 
   const handleLastPriceChange = (event) => {
+    event.preventDefault();
     dispatch(lastPriceChange(event.target.value));
     // setLastPrice(event.target.value);
     // updatePreview("lastPrice", event.target.value);
   };
 
   const handlePriceChange = (event) => {
+    event.preventDefault();
     dispatch(priceChange(event.target.value));
     // setPrice(event.target.value);
     // updatePreview("price", event.target.value);
   };
 
   const handleFileChange = async (event) => {
-    const files = Array.from(event.target.files);
-    const urls = await uploadFiles(files);
+    event.preventDefault();
+    // const files = Array.from(event.target.files[0]);
+    // const urls = await uploadFiles(files);
 
-    dispatch(fileChange(urls));
+    // const files = event.target.files[0];
+
+    // const formData = new FormData();
+    // formData.append("file", files);
+    dispatch(uploadImages(event.target.files[0]));
+
+    // try {
+    //   const response = await axios.post(
+    //     "https://localhost:8080/api/images/upload",
+    //     formData,
+    //     {
+    //       headers: {
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     }
+    //   );
+    //   console.log(response.data);
+    //   console.log("File uploaded successfully.");
+    //   // setFileUrl(response.data);
+    //   // setMessage("File uploaded successfully.");
+    // } catch (error) {
+    //   console.log("Failed to upload file: " + error.message);
+    // }
+
+    // dispatch(fileChange(urls));
     // setImages([...images, ...files]);
     // if (files[0]) {
     //   const previewURL = URL.createObjectURL(files[0]);
@@ -126,40 +164,58 @@ export const Admin1 = () => {
 
   const imageLinkAdd = (e) => {
     e.preventDefault();
+    dispatch(handleLinkChange(imageLinks));
     console.log(imageLinks);
-    if (imageLinks.trim() !== "") {
-      setImageLinks("");
-      setImageUrl((prev) => [...prev, imageLinks]);
-    }
+    setImageLinks("");
+    // if (imageLinks.trim() !== "") {
+    //   setImageUrl((prev) => [...prev, imageLinks]);
+    // }
   };
 
   const handleRemoveImage = (e, index) => {
     e.preventDefault();
-    setImageUrl(imageUrl.filter((url, id) => id !== index));
+    const url = images.filter((url, id) => id === index);
+    console.log(url[0]);
+    dispatch(removeImages(url[0]));
+    dispatch(handleRemove(index));
+    // e.preventDefault();
+
+    // setImageUrl(imageUrl.filter((url, id) => id !== index));
   };
 
   const handleSizePriceChange = (material, size, value) => {
-    setMaterialsSizes((prevSizes) =>
-      prevSizes.map((mat) =>
-        mat.material === material
-          ? {
-              ...mat,
-              sizes: mat.sizes.map((s) =>
-                s.size === size ? { ...s, price: value } : s
-              ),
-            }
-          : mat
-      )
+    dispatch(
+      handleSizePrice({
+        material: material,
+        size: size,
+        value: value,
+      })
     );
-    updatePreview("materials", materialsSizes); // Update materials in preview
+
+    // setMaterialsSizes(
+    //   (prevSizes) =>
+    //   prevSizes.map((mat) =>
+    //     mat.material === material
+    //       ? {
+    //           ...mat,
+    //           sizes: mat.sizes.map((s) =>
+    //             s.size === size ? { ...s, price: value } : s
+    //           ),
+    //         }
+    //       : mat
+    //   )
+    // );
+    // updatePreview("materials", materialsSizes); // Update materials in preview
   };
 
   const toggleSizeSection = (materialIndex) => {
-    setMaterialsSizes((prevSizes) =>
-      prevSizes.map((mat, index) =>
-        index === materialIndex ? { ...mat, expanded: !mat.expanded } : mat
-      )
-    );
+    dispatch(toggleSizeChange({ materialIndex }));
+
+    // setMaterialsSizes((prevSizes) =>
+    //   prevSizes.map((mat, index) =>
+    //     index === materialIndex ? { ...mat, expanded: !mat.expanded } : mat
+    //   )
+    // );
   };
 
   const updatePreview = (field, value) => {
@@ -171,112 +227,108 @@ export const Admin1 = () => {
   };
 
   const removeSize = (material, index) => {
-    setMaterialsSizes((prevSizes) => {
-      const updatedSizes = prevSizes.map((mat) => {
-        if (mat.material === material) {
-          mat.sizes = mat.sizes.filter((_, i) => i !== index);
-        }
-        return mat;
-      });
-      return updatedSizes.filter((mat) => mat.sizes.length > 0);
-    });
-    updatePreview("materials", materialsSizes); // Update materials in preview
+    dispatch(
+      handleRemoveSize({
+        material: material,
+        index: index,
+      })
+    );
+    // setMaterialsSizes((prevSizes) => {
+    //   const updatedSizes = prevSizes.map((mat) => {
+    //     if (mat.material === material) {
+    //       mat.sizes = mat.sizes.filter((_, i) => i !== index);
+    //     }
+    //     return mat;
+    //   });
+    //   return updatedSizes.filter((mat) => mat.sizes.length > 0);
+    // });
+    // updatePreview("materials", materialsSizes); // Update materials in preview
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = (event)=>{
+    dispatch(updateItem())
+  }
 
-    let imageUrls = [];
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
 
-    if (images.length > 0) {
-      const uploadPromises = images.map(async (file) => {
-        const storageRef = ref(storage, `images/${file.name}`);
-        try {
-          const snapshot = await uploadBytes(storageRef, file);
-          const url = await getDownloadURL(snapshot.ref);
-          imageUrls.push(url);
-        } catch (error) {
-          console.error("Error uploading image:", error);
-        }
-      });
-      await Promise.all(uploadPromises);
-    }
+  //   let imageUrls = [];
 
-    if (imageLinks.trim() !== "") {
-      const links = imageLinks
-        .split("\n")
-        .map((link) => link.trim())
-        .filter((link) => link !== "");
-      imageUrls = [...imageUrls, ...links];
-    }
+  //   if (images.length > 0) {
+  //     const uploadPromises = images.map(async (file) => {
+  //       const storageRef = ref(storage, `images/${file.name}`);
+  //       try {
+  //         const snapshot = await uploadBytes(storageRef, file);
+  //         const url = await getDownloadURL(snapshot.ref);
+  //         imageUrls.push(url);
+  //       } catch (error) {
+  //         console.error("Error uploading image:", error);
+  //       }
+  //     });
+  //     await Promise.all(uploadPromises);
+  //   }
 
-    const filteredMaterialsSizes = materialsSizes.map((mat) => ({
-      ...mat,
-      sizes: mat.sizes.filter((s) => s.price !== "" && s.price !== null),
-    }));
+  //   if (imageLinks.trim() !== "") {
+  //     const links = imageLinks
+  //       .split("\n")
+  //       .map((link) => link.trim())
+  //       .filter((link) => link !== "");
+  //     imageUrls = [...imageUrls, ...links];
+  //   }
 
-    const formData = {
-      category: categoryName,
-      title: title,
-      description: description,
-      price: price,
-      lastPrice: lastPrice,
-      //mages: imageUrls,
-      images: imageUrl,
-      materials: filteredMaterialsSizes,
-    };
+  //   const filteredMaterialsSizes = materialsSizes.map((mat) => ({
+  //     ...mat,
+  //     sizes: mat.sizes.filter((s) => s.price !== "" && s.price !== null),
+  //   }));
 
-    try {
-      if (isEditing) {
-        await axios.put(`${backendUrl}/artworks/update/${editingId}`, formData);
-      } else {
-        const response = await axios.post(`${backendUrl}/artworks`, formData);
-        console.log(response.data);
-        setNewProductPreview(response.data); // Set preview for new product
-      }
-      fetchArtworks();
-      resetForm();
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
-  };
+  //   const formData = {
+  //     category: categoryName,
+  //     title: title,
+  //     description: description,
+  //     price: price,
+  //     lastPrice: lastPrice,
+  //     //mages: imageUrls,
+  //     images: imageUrl,
+  //     materials: filteredMaterialsSizes,
+  //   };
 
-  const resetForm = () => {
-    setCategory("");
-    setCategoryName("");
-    setTitle("");
-    setDescription("");
-    setPrice(0);
-    setLastPrice(0);
-    setImages([]);
-    setImageLinks("");
-    setImageUrl("");
-    setMaterialsSizes(initializeMaterialsSizes());
-    setIsEditing(false);
-    setEditingId(null);
-    setNewProductPreview(previewState); // Clear preview after submission
-  };
+  //   try {
+  //     if (isEditing) {
+  //       await axios.put(`${backendUrl}/artworks/update/${editingId}`, formData);
+  //     } else {
+  //       const response = await axios.post(`${backendUrl}/artworks`, formData);
+  //       console.log(response.data);
+  //       setNewProductPreview(response.data); // Set preview for new product
+  //     }
+  //     fetchArtworks();
+  //     // resetForm();
+  //   } catch (error) {
+  //     console.error("Error submitting form:", error);
+  //   }
+  // };
+
+  // const cancelEdit = () => {
+  //   setIsEditing(false);
+
+  // };
 
   const handleEdit = (artwork) => {
-    setCategoryName(artwork.category);
-    setTitle(artwork.title);
-    setDescription(artwork.description);
-    setPrice(artwork.price);
-    setLastPrice(artwork.lastPrice);
-    setImageUrl(artwork.images);
-    setMaterialsSizes(artwork.materials);
-    setIsEditing(true);
-    setEditingId(artwork.artworkId);
-    setNewProductPreview(artwork); // Set preview for editing product
+    // setIsEditing(true)
+    dispatch(handleEditChange(artwork));
+    // window.scrollTo({
+    //   top: 0,
+    //   behavior: 'smooth',
+    // });
   };
 
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(`${backendUrl}/artworks/delete/${id}`);
-      fetchArtworks();
-    } catch (error) {
-      console.error("Error deleting artwork:", error);
-    }
+    dispatch(deleteArtwork(id));
+    // try {
+    //   await axios.delete(`${backendUrl}/artworks/delete/${id}`);
+    //   fetchArtworks();
+    // } catch (error) {
+    //   console.error("Error deleting artwork:", error);
+    // }
   };
 
   const toggleExpand = (artworkId) => {
@@ -313,7 +365,6 @@ export const Admin1 = () => {
               </option>
             ))}
           </select>
-
           <label htmlFor="title">Title</label>
           <input
             id="title"
@@ -322,15 +373,12 @@ export const Admin1 = () => {
             value={title}
             onChange={handleTitleChange}
           />
-
           <label htmlFor="description">Description</label>
-
           <JoditEditor
             value={description}
             onChange={handleDescriptionChange}
             config={config}
           />
-
           <label htmlFor="price">Price</label>
           <input
             id="price"
@@ -340,7 +388,6 @@ export const Admin1 = () => {
             onChange={handlePriceChange}
             min={0}
           />
-
           <label htmlFor="lastPrice">Last Price</label>
           <input
             id="lastPrice"
@@ -350,7 +397,6 @@ export const Admin1 = () => {
             onChange={handleLastPriceChange}
             min={0}
           />
-
           <label htmlFor="images">Images</label>
           <input
             id="images"
@@ -359,7 +405,6 @@ export const Admin1 = () => {
             multiple
             onChange={handleFileChange}
           />
-
           <label htmlFor="imageLinks">Image Links (One per line)</label>
           {/* <textarea
             id="imageLinks"
@@ -367,7 +412,6 @@ export const Admin1 = () => {
             value={imageLinks}
             onChange={handleImageLinksChange}
           ></textarea> */}
-
           <input
             id="imageLinks"
             name="imageLinks"
@@ -377,10 +421,9 @@ export const Admin1 = () => {
           <button className="add-btn" onClick={imageLinkAdd}>
             Add
           </button>
-
           <div className="added-images-container">
-            {imageUrl &&
-              imageUrl.map((url, index) => (
+            {images &&
+              images.map((url, index) => (
                 <div key={index}>
                   <img
                     key={index}
@@ -397,9 +440,8 @@ export const Admin1 = () => {
                 </div>
               ))}
           </div>
-
           <label>Materials and Sizes</label>
-          {materialsSizes.map((material, materialIndex) => (
+          {materials.map((material, materialIndex) => (
             <div key={materialIndex} className="material-size-section">
               <div
                 className="material-header"
@@ -436,11 +478,12 @@ export const Admin1 = () => {
               )}
             </div>
           ))}
-
-          <button type="submit">{isEditing ? "Update" : "Submit"}</button>
-
-          {isEditing && (
-            <button className="cancel-btn" onClick={() => resetForm()}>
+          <button type="submit">{setEdit ? "Update" : "Submit"}</button>
+          {setEdit && (
+            <button
+              className="cancel-btn"
+              onClick={() => dispatch(cancelEdit())}
+            >
               Cancel
             </button>
           )}
@@ -451,16 +494,14 @@ export const Admin1 = () => {
         <div className="preview-section">
           <h3>Preview:</h3>
           <p>Category: {category && category.name}</p>
-          {/* <p>Category: {newProductPreview.category}</p> */}
           <p>Title: {title}</p>
-          {/* <p>Description: {newProductPreview.description}</p> */}
-          <p>Price: ${newProductPreview.price}</p>
-          <p>Last Price: ${newProductPreview.lastPrice}</p>
+          <p>Price: ${price}</p>
+          <p>Last Price: ${lastPrice}</p>
           <div>
             <strong>Images:</strong>
             <div className="image-previews">
-              {newProductPreview.images &&
-                newProductPreview.images.map((url, index) => (
+              {images &&
+                images.map((url, index) => (
                   <img
                     key={index}
                     src={url}
@@ -472,8 +513,8 @@ export const Admin1 = () => {
           </div>
           <div className="preview-material-boxes">
             <strong>Materials and Sizes:</strong>
-            {newProductPreview.materials &&
-              newProductPreview.materials.map((mat, matIndex) => (
+            {materials &&
+              materials.map((mat, matIndex) => (
                 <div key={matIndex} className="prev-mat-boxes-container">
                   <h3>{mat.material}</h3>
                   <ul>
