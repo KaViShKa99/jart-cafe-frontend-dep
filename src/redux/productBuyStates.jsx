@@ -14,6 +14,7 @@ export const DIGITAL_ART = {
   eachPrice: 0,
   total: 0,
   isPhysicalArt: false,
+  size: null,
 };
 
 export const PHISICAL_ART = {

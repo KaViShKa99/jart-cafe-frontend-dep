@@ -19,6 +19,7 @@ const apiRequest = async (url, method, data = null, token = null) => {
     const response = await axios(config);
     return response.data;
   } catch (error) {
+    console.log(error);
     throw error.response ? error.response.data : error;
   }
 };

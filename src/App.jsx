@@ -13,6 +13,7 @@ import Success from "./components/pages/Success";
 import Cancel from "./components/pages/Cancel";
 import OrderdItems from "./components/pages/OrderdItems";
 import { Admin1 } from "./components/pages/Admin1";
+import AdminManageOrders from "./components/pages/AdminManageOrders";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
       <Route path="/success" element={<Success />} />
       <Route path="/cancel" element={<Cancel />} />
       <Route path="/ordered-items" element={<OrderdItems />} />
+      <Route path="/admin/ordered-items" element={<AdminManageOrders />} />
     </Routes>
   );
 };

@@ -5,8 +5,21 @@ import { categories } from "../../data/Data";
 
 export const updateItem = createAsyncThunk(
   "admin/updateItem",
-  async (id, { rejectWithValue }) => {
-    return await apiRequest(`/artworks/update/${id}`, "PUT");
+  async (data, { getState, rejectWithValue }) => {
+    const state = getState();
+    const id = state.admin.editId;
+    const formData = {
+      ...data,
+      category: data.category.name,
+    };
+    try {
+      await apiRequest(`/artworks/update/${id}`, "PUT", formData);
+      return await apiRequest("/artworks", "GET");
+    } catch (error) {
+      return rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
+    }
   }
 );
 export const deleteArtwork = createAsyncThunk(
@@ -46,6 +59,7 @@ const adminSlices = createSlice({
     previewState: PREVIEW_STATE,
     artworks: [],
     setEdit: false,
+    editId: 0,
   },
   reducers: {
     categoryChange: (state, action) => {
@@ -131,6 +145,7 @@ const adminSlices = createSlice({
         (cat) => artwork.category === artwork.category
       );
       state.previewState.category = selectedCategory;
+      state.editId = artwork.artworkId;
       state.previewState.title = artwork.title;
       state.previewState.description = artwork.description;
       state.previewState.lastPrice = artwork.lastPrice;
@@ -142,7 +157,12 @@ const adminSlices = createSlice({
       state.setEdit = false;
       state.previewState = PREVIEW_STATE;
     },
-    handleSubmit: (state, action) => {},
+    enableEdit: (state, action) => {
+      state.setEdit = action.payload;
+    },
+    handleReset: (state, action) => {
+      state.previewState = PREVIEW_STATE;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
@@ -161,17 +181,18 @@ const adminSlices = createSlice({
     builder.addCase(removeImages.fulfilled, (state, action) => {
       console.log(action.payload);
     });
-    // builder.addCase(deleteArtwork.fulfilled, (state, action) => {
-    //   fetchProducts();
-    // });
-    builder.addcase(updateItem.fulfilled,(state,action)=>{
-
+    builder.addCase(deleteArtwork.fulfilled, (state, action) => {
+      fetchProducts();
+    });
+    builder.addCase(updateItem.fulfilled, (state, action) => {
+      state.artworks = action.payload;
     });
   },
 });
 
 export const {
-  handleSubmit,
+  handleReset,
+  enableEdit,
   cancelEdit,
   handleEditChange,
   handleRemoveSize,

@@ -24,7 +24,7 @@ const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { cartArray, subTotal } = useSelector((state) => state.cartItems);
-  const { signIn } = useSelector((state) => state.userProfile);
+  const { signIn, userProfile } = useSelector((state) => state.userProfile);
 
   const updateQuantity = (quantity, id) => {
     dispatch(updateCartQuntity({ quantity: quantity, id: id }));
@@ -60,28 +60,38 @@ const Cart = () => {
     if (!signIn) {
       dispatch(setIsModalOpen());
     } else {
-      console.log(cartArray);
       const formatCartItemsForPayment = (cartArray) => {
         return cartArray.map((item) => ({
+          // size: item.size ? item.size.size : null,
           category: item.category,
           designerNote: item.designerNote,
           eachPrice: item.eachPrice,
+          figure: item.figure ? item.figure.name : null,
+          numOfPersons: item.numOfPersons ? item.numOfPersons.name : null,
+          style: item.style ? item.style.type : null,
           isPhysicalArt: item.isPhysicalArt,
-          material: item.material,
-          materials: item.materials,
+          // material: item.material,
+          // materials: item.materials,
           price: item.price,
           total: item.total,
           uploadedImage: item.uploadedImage,
           productImage: item.productImage,
           quantity: item.quantity,
+          materialAndSize:
+            (item.material ? item.material : null) +
+            " " +
+            (item.size ? item.size.size : null),
         }));
       };
       const items = formatCartItemsForPayment(cartArray);
-
-      // const arr = cartArray.map((item) => item.quantity);
-      dispatch(userPayment({ items: items }));
-
-      // navigate("/checkout");
+      console.log(items);
+      dispatch(
+        userPayment({
+          customerName: userProfile.name,
+          customerEmail: userProfile.email,
+          items: items,
+        })
+      );
     }
   };
 

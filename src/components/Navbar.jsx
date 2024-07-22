@@ -24,22 +24,12 @@ const Navbar = () => {
   const { cartArray } = useSelector((state) => state.cartItems);
   const { token, signIn } = useSelector((state) => state.userProfile);
   const { isModalOpen } = useSelector((state) => state.signModel);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isOpenSignUp, setIsOpenSignUp] = useState(false);
-  const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   useEffect(() => {
     if (signIn) {
       dispatch(fetchUserProfile(token));
     }
   }, [signIn]);
-
-  // const closeModal = (e) => {
-  //   e.preventDefault();
-  //   setIsForgotPassword(false);
-  //   setIsOpenSignUp(false);
-  //   setIsModalOpen(false);
-  // };
 
   const openModel = () => {
     dispatch(setIsModalOpen());
@@ -82,7 +72,7 @@ const Navbar = () => {
             ) : (
               <li className={!token ? "user-profile" : ""}>
                 {/* <DropdownMenu close={() => dispatch(signOut())} /> */}
-                <DropdownMenu  />
+                <DropdownMenu />
               </li>
             )}
 
