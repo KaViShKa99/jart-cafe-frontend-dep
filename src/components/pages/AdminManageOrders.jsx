@@ -1,9 +1,25 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { fetchOrderedDetails } from "../../redux/reducers/orderReducer";
 
 const AdminManageOrders = () => {
-  const { cartArray } = useSelector((state) => state.cartItems);
+  const dispatch = useDispatch();
+  const { orders } = useSelector((state) => state.order);
+  const { artworks, previewState, setEdit } = useSelector(
+    (state) => state.admin
+  );
+  useEffect(() => {
+    console.log(orders);
+    console.log(artworks);
+  }, [orders]);
+
+  useEffect(() => {
+    dispatch(fetchOrderedDetails());
+  }, []);
+  // const click = (e) => {
+  //   dispatch(fetchOrderedDetails());
+  // };
 
   return (
     <div className="ordered-products-container">
@@ -22,18 +38,14 @@ const AdminManageOrders = () => {
           </tr>
         </thead>
         <tbody>
-          {cartArray.map((order, index) => (
+          {/* {orders.map((order, index) => (
             <tr key={index}>
               <td>{order.category}</td>
               <td>{order.category}</td>
               <td>{order.category}</td>
               <td>{order.category}</td>
-              {/* <td>{order.customerEmail}</td>
-              <td>{order.orderedDate}</td>
-              <td>{order.status}</td>
-              <td>{order.completeDate}</td> */}
             </tr>
-          ))}
+          ))} */}
         </tbody>
       </table>
     </div>

@@ -8,6 +8,7 @@ import userProfileReducer from "./reducers/userProfileReducer";
 import signModelReducer from "./reducers/signModelReducer";
 import paymentReducer from "./reducers/paymentReducer";
 import adminReducer from "./reducers/adminReducer";
+import orderReducer from "./reducers/orderReducer";
 
 const store = configureStore({
   reducer: {
@@ -19,7 +20,8 @@ const store = configureStore({
     userProfile: userProfileReducer,
     signModel: signModelReducer,
     userPayment: paymentReducer,
-    admin:adminReducer
+    admin: adminReducer,
+    order: orderReducer,
   },
 });
 
