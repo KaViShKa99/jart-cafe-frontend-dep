@@ -15,7 +15,7 @@ const ProductDetails = ({ productDetails }) => {
           className={`tab ${activeTab === "details" ? "active" : ""}`}
           onClick={() => setActiveTab("details")}
         >
-          Item More Details
+          More Details
         </button>
         <button
           className={`tab ${activeTab === "shipping" ? "active" : ""}`}

@@ -348,7 +348,7 @@ export const Admin1 = () => {
           <tbody>
             {artworks.map((artwork) => (
               <React.Fragment key={artwork.artworkId}>
-                <tr className="artwork-row">
+                <tr className="artwork-row" key={artwork.artworkId}>
                   <td>{artwork.category}</td>
                   <td className="title-cell">{artwork.title}</td>
                   <td>{artwork.price}</td>
