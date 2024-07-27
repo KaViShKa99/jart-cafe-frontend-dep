@@ -36,6 +36,11 @@ const ProductBuyForm = ({ props, editForm, close }) => {
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
   const [sizesArray, setSizesArray] = useState([]);
 
+  useEffect(() => {
+    console.log(physicalArt);
+    console.log(digitalArt);
+  }, [digitalArt, physicalArt]);
+
   const handlePerChange = (e) => {
     const id = e.target.value;
     dispatch(personChange({ id: id, isPhysical: isPhysical }));
@@ -352,7 +357,27 @@ const ProductBuyForm = ({ props, editForm, close }) => {
             <label htmlFor="img" className="file-input-label">
               Choose Image
             </label>
-            {physicalArt.uploadedImage ||
+            <div className="uploaded-image-preview">
+              <img
+                src={physicalArt.uploadedImage}
+                style={{ width: "100px", marginRight: "10px" }}
+              />
+              <button className="image-close-button" onClick={handleClearImage}>
+                &#10005;
+              </button>
+            </div>
+            {/* <div className="uploaded-image-preview">
+              <img
+                src={digitalArt.uploadedImage}
+                alt="Preview"
+                style={{ width: "100px", marginRight: "10px" }}
+              />
+              <button className="image-close-button" onClick={handleClearImage}>
+                &#10005;
+              </button>
+            </div> */}
+
+            {/* {physicalArt.uploadedImage ||
               (digitalArt.uploadedImage && (
                 <div className="uploaded-image-preview">
                   <img
@@ -367,7 +392,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                     &#10005;
                   </button>
                 </div>
-              ))}
+              ))} */}
           </div>
           <div className="select-options">
             <div className="number-persons">

@@ -20,7 +20,14 @@ const productBuyDetails = createSlice({
   reducers: {
     uploadImageChange: (state, action) => {
       const { imageUrl, isPhysical } = action.payload;
-      state[isPhysical ? "physicalArt" : "digitalArt"].uploadedImage = imageUrl;
+      // console.log(imageUrl);
+      // console.log(isPhysical);
+      // state[isPhysical ? "physicalArt" : "digitalArt"].uploadedImage = imageUrl;
+      if (isPhysical) {
+        state.physicalArt.uploadedImage = imageUrl;
+      } else {
+        state.digitalArt.uploadedImage = imageUrl;
+      }
     },
     personChange: (state, action) => {
       const { id, isPhysical } = action.payload;
@@ -75,13 +82,12 @@ const productBuyDetails = createSlice({
       state[isPhysical ? "physicalArt" : "digitalArt"].designerNote = note;
     },
     clearUploadedImage: (state) => {
-      state.digitalArt.uploadedImage = null;
+      state.digitalArt.uploadedImage = "";
       state.physicalArt.uploadedImage = null;
     },
     updateQuantityChange: (state, action) => {
       const { quantity, isPhysical } = action.payload;
       state[isPhysical ? "physicalArt" : "digitalArt"].quantity = quantity;
-     
     },
     updateTotal: (state, action) => {
       const isPhysical = action.payload;
