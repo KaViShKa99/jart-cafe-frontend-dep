@@ -20,9 +20,6 @@ const productBuyDetails = createSlice({
   reducers: {
     uploadImageChange: (state, action) => {
       const { imageUrl, isPhysical } = action.payload;
-      // console.log(imageUrl);
-      // console.log(isPhysical);
-      // state[isPhysical ? "physicalArt" : "digitalArt"].uploadedImage = imageUrl;
       if (isPhysical) {
         state.physicalArt.uploadedImage = imageUrl;
       } else {

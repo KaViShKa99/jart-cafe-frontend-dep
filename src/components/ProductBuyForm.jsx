@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useStateContext } from "./StateContext";
-import axios from "axios";
-import { useParams } from "react-router-dom";
 import QuantityCounter from "./QuantityCounter";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -36,10 +33,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
   const [sizesArray, setSizesArray] = useState([]);
 
-  useEffect(() => {
-    console.log(physicalArt);
-    console.log(digitalArt);
-  }, [digitalArt, physicalArt]);
+  const uploadedImage = physicalArt.uploadedImage || digitalArt.uploadedImage;
 
   const handlePerChange = (e) => {
     const id = e.target.value;
@@ -64,8 +58,13 @@ const ProductBuyForm = ({ props, editForm, close }) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    const imageUrl = URL.createObjectURL(file);
-    dispatch(uploadImageChange({ imageUrl: imageUrl, isPhysical: isPhysical }));
+
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      dispatch(
+        uploadImageChange({ imageUrl: imageUrl, isPhysical: isPhysical })
+      );
+    }
   };
 
   const handleClearImage = (e) => {
@@ -93,7 +92,6 @@ const ProductBuyForm = ({ props, editForm, close }) => {
 
   const paintingInputTextChange = (e) => {
     dispatch(paintingNoteChange(e.target.value));
-    // setPaintingNote(e.target.value);
   };
 
   useEffect(() => {
@@ -130,19 +128,6 @@ const ProductBuyForm = ({ props, editForm, close }) => {
     dispatch(updateCartItem(updateItem));
     close(false);
   };
-
-  // useEffect(() => {
-  //   let imageUrl;
-  //   if (uploadedImage) {
-  //     imageUrl = URL.createObjectURL(uploadedImage);
-  //   }
-
-  //   return () => {
-  //     if (imageUrl) {
-  //       URL.revokeObjectURL(imageUrl);
-  //     }
-  //   };
-  // }, [uploadedImage]);
 
   useEffect(() => {
     if (editForm) {
@@ -357,31 +342,11 @@ const ProductBuyForm = ({ props, editForm, close }) => {
             <label htmlFor="img" className="file-input-label">
               Choose Image
             </label>
-            <div className="uploaded-image-preview">
-              <img
-                src={physicalArt.uploadedImage}
-                style={{ width: "100px", marginRight: "10px" }}
-              />
-              <button className="image-close-button" onClick={handleClearImage}>
-                &#10005;
-              </button>
-            </div>
-            {/* <div className="uploaded-image-preview">
-              <img
-                src={digitalArt.uploadedImage}
-                alt="Preview"
-                style={{ width: "100px", marginRight: "10px" }}
-              />
-              <button className="image-close-button" onClick={handleClearImage}>
-                &#10005;
-              </button>
-            </div> */}
-
-            {/* {physicalArt.uploadedImage ||
-              (digitalArt.uploadedImage && (
+            <>
+              {uploadedImage && (
                 <div className="uploaded-image-preview">
                   <img
-                    src={physicalArt.uploadedImage || digitalArt.uploadedImage}
+                    src={uploadedImage}
                     alt="Preview"
                     style={{ width: "100px", marginRight: "10px" }}
                   />
@@ -392,7 +357,8 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                     &#10005;
                   </button>
                 </div>
-              ))} */}
+              )}
+            </>
           </div>
           <div className="select-options">
             <div className="number-persons">
