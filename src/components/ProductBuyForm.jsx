@@ -60,10 +60,14 @@ const ProductBuyForm = ({ props, editForm, close }) => {
     const file = e.target.files[0];
 
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
       dispatch(
-        uploadImageChange({ imageUrl: imageUrl, isPhysical: isPhysical })
+        uploadImageChange({ file: file, isPhysical: isPhysical })
+        // uploadImageChange({ imageUrl: file, isPhysical: isPhysical })
       );
+      // const imageUrl = URL.createObjectURL(file);
+      // dispatch(
+      //   uploadImageChange({ imageUrl: imageUrl, isPhysical: isPhysical })
+      // );
     }
   };
 
@@ -117,8 +121,8 @@ const ProductBuyForm = ({ props, editForm, close }) => {
     e.preventDefault();
     const newItem = isPhysical ? physicalArt : digitalArt;
     dispatch(addToCart(newItem));
-    navigate("/cart");
     dispatch(clearStates());
+    navigate("/cart");
   };
 
   const updateCartItems = (e) => {
@@ -132,8 +136,11 @@ const ProductBuyForm = ({ props, editForm, close }) => {
   useEffect(() => {
     if (editForm) {
       dispatch(updateEditForms(props));
+    } else {
+      dispatch(clearStates());
     }
   }, [editForm]);
+
 
   return (
     <div
@@ -347,6 +354,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                 <div className="uploaded-image-preview">
                   <img
                     src={uploadedImage}
+                    // src={uploadedImage}
                     alt="Preview"
                     style={{ width: "100px", marginRight: "10px" }}
                   />

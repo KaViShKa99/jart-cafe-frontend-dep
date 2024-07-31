@@ -10,6 +10,18 @@ export const fetchSelectedProduct = createAsyncThunk(
   }
 );
 
+export const uploadImage = createAsyncThunk(
+  "user/uploadImage",
+  async ({ file, isPhysicalArt }, { rejectWithValue }) => {
+    console.log(file);
+    console.log(isPhysicalArt);
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await apiRequest("/images/upload/user", "POST", formData);
+    return { imageUrl: response, isPhysicalArt };
+  }
+);
+
 const productBuyDetails = createSlice({
   name: "product-buy-details",
   initialState: {
@@ -19,12 +31,25 @@ const productBuyDetails = createSlice({
   },
   reducers: {
     uploadImageChange: (state, action) => {
-      const { imageUrl, isPhysical } = action.payload;
+      const { file, isPhysical } = action.payload;
+      const imageUrl = URL.createObjectURL(file);
+      console.log(file);
+      console.log(isPhysical);
       if (isPhysical) {
+        console.log("true");
         state.physicalArt.uploadedImage = imageUrl;
+        // state.physicalArt.uploadImgObj = file;
       } else {
+        console.log("false");
         state.digitalArt.uploadedImage = imageUrl;
+        // state.digitalArt.uploadImgObj = file;
       }
+      // const { imageUrl, isPhysical } = action.payload;
+      // if (isPhysical) {
+      //   state.physicalArt.uploadedImage = imageUrl;
+      // } else {
+      //   state.digitalArt.uploadedImage = imageUrl;
+      // }
     },
     personChange: (state, action) => {
       const { id, isPhysical } = action.payload;
@@ -126,6 +151,7 @@ const productBuyDetails = createSlice({
       state.physicalArt.paintingNote = action.payload;
     },
     clearStates: (state) => {
+      console.log("clear states");
       state.digitalArt = DIGITAL_ART;
       state.physicalArt = PHISICAL_ART;
     },
@@ -137,6 +163,16 @@ const productBuyDetails = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchSelectedProduct.fulfilled, (state, action) => {
       state.selectedProduct = action.payload;
+    });
+    builder.addCase(uploadImage.fulfilled, (state, action) => {
+      console.log(action.payload);
+      const { imageUrl, isPhysicalArt } = action.payload;
+      console.log(imageUrl);
+      if (isPhysicalArt) {
+        state.physicalArt.uploadImgObj = imageUrl;
+      } else {
+        state.digitalArt.uploadImgObj = imageUrl;
+      }
     });
   },
 });

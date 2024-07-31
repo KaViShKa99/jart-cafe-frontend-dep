@@ -15,6 +15,7 @@ export const DIGITAL_ART = {
   total: 0,
   isPhysicalArt: false,
   size: null,
+  uploadImgObj: null,
 };
 
 export const PHISICAL_ART = {
@@ -33,4 +34,5 @@ export const PHISICAL_ART = {
   eachPrice: 0,
   total: 0,
   isPhysicalArt: true,
+  uploadImgObj: null,
 };

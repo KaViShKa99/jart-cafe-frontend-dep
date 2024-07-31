@@ -38,11 +38,12 @@ export const removeImages = createAsyncThunk(
   }
 );
 export const uploadImages = createAsyncThunk(
-  "admin/uploadImages",
+  "admin/uploadImage",
   async (file, { rejectWithValue }) => {
     const formData = new FormData();
     formData.append("file", file);
-    return await apiRequest("/images/upload", "POST", formData);
+    // return await apiRequest("/images/upload", "POST", formData);
+    return await apiRequest("/images/upload/artwork", "POST", formData);
   }
 );
 

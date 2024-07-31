@@ -23,6 +23,10 @@ const store = configureStore({
     admin: adminReducer,
     order: orderReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;

@@ -94,6 +94,7 @@ const cartItemSlices = createSlice({
         }
         return product;
       });
+      console.log(updatedCartItems);
 
       state.cartArray = updatedCartItems;
       saveCartToStorage(updatedCartItems);
