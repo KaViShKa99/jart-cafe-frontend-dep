@@ -69,12 +69,22 @@ const AdminManageOrders = () => {
                       {artwork.items.map((item, index) => (
                         <div key={index} className="expanded-details">
                           <div>
-                            <strong>Images:</strong>
+                            {/* <strong>Images:</strong> */}
                             <div className="image-previews">
+                              <strong>Design </strong>
+
                               <img
                                 key={1}
                                 src={item.productImage[0]}
                                 alt={`Artwork ${1}`}
+                                className="artwork-image"
+                              />
+                              <strong>sketch</strong>
+
+                              <img
+                                key={2}
+                                src={item.productImage[1]}
+                                alt={`Artwork ${2}`}
                                 className="artwork-image"
                               />
                               {/* {item.productImage.map((url, imgIndex) => (
@@ -88,14 +98,105 @@ const AdminManageOrders = () => {
                             </div>
                           </div>
                           <div className="preview-material-boxes">
-                            <strong>Materials and Sizes:</strong>
+                            <strong>Details</strong>
                             <div className="prev-mat-boxes-container">
+                              <div className="details">
+                                <div className="detail-item">
+                                  {/* <span className="label">Type</span>
+                                  <span className="value">
+                                    {artwork.physicalArt
+                                      ? `${physicalArt.material} / ${
+                                          physicalArt.size &&
+                                          physicalArt.size.size
+                                        }`
+                                      : "Digital Artwork"}
+                                  </span> */}
+                                </div>
+                                <div className="detail-item">
+                                  <span className="label">Quantity</span>
+                                  <span className="value">{item.quantity}</span>
+                                </div>
+                                {!item.physicalArt && (
+                                  <>
+                                    <div className="detail-item">
+                                      <span className="label">Figure</span>
+                                      <span className="value">
+                                        {item.figure
+                                          ? item.figure
+                                          : "No selected"}
+                                      </span>
+                                    </div>
+                                    <div className="detail-item">
+                                      <span className="label">Style</span>
+                                      <span className="value">
+                                        {item.style
+                                          ? item.style
+                                          : "No selected"}
+                                        {/* {physicalArt.style || digitalArt.style
+                                          ? isPhysical
+                                            ? physicalArt.style.type
+                                            : digitalArt.style.type
+                                          : "No selected"} */}
+                                      </span>
+                                    </div>
+                                  </>
+                                )}
+                                <div className="detail-item">
+                                  <span className="label">Persons</span>
+                                  <span className="value">
+                                    {item.numOfPersons
+                                      ? item.numOfPersons
+                                      : "No selected"}
+                                    {/* {physicalArt.numOfPersons ||
+                                    digitalArt.numOfPersons
+                                      ? isPhysical
+                                        ? physicalArt.numOfPersons.name
+                                        : digitalArt.numOfPersons.name
+                                      : "No selected"} */}
+                                  </span>
+                                </div>
+                                <div className="detail-item">
+                                  <span className="label">Price</span>
+                                  <span className="price">
+                                    $ {item.price + item.eachPrice}
+                                    {/* {isPhysical
+                                      ? physicalArt.price +
+                                        physicalArt.eachPrice
+                                      : digitalArt.price + digitalArt.eachPrice} */}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className="total">
+                                <span className="label">Total</span>
+                                <span className="value">
+                                  ${item.total}
+                                  {/* {isPhysical
+                                    ? physicalArt.total
+                                    : digitalArt.total} */}
+                                </span>
+                              </div>
+
+                              <span className="note">
+                                {item.paintingNote}
+                                {/* {isPhysical
+                                  ? physicalArt.paintingNote
+                                  : digitalArt.paintingNote} */}
+                              </span>
+                              <span className="note">
+                                {item.designerNote}
+
+                                {/* {isPhysical
+                                  ? physicalArt.designerNote
+                                  : digitalArt.designerNote} */}
+                              </span>
+                              {/* 
                               <h3>{item.materialAndSize}</h3>
                               <ul>
                                 <li>
                                   {item.materialAndSize} - ${item.price}
                                 </li>
-                              </ul>
+                              </ul> */}
                             </div>
                           </div>
                         </div>

@@ -18,7 +18,6 @@ import {
   userPayment,
 } from "../../redux/reducers/paymentReducer";
 
-import { uploadImage } from "../../redux/reducers/productBuyReducer";
 Modal.setAppElement("#root");
 
 const Cart = () => {
@@ -61,38 +60,38 @@ const Cart = () => {
     if (!signIn) {
       dispatch(setIsModalOpen());
     } else {
-      // const formatCartItemsForPayment = (cartArray) => {
-      //   return cartArray.map((item) => ({
-      //     // size: item.size ? item.size.size : null,
-      //     category: item.category,
-      //     designerNote: item.designerNote,
-      //     eachPrice: item.eachPrice,
-      //     figure: item.figure ? item.figure.name : null,
-      //     numOfPersons: item.numOfPersons ? item.numOfPersons.name : null,
-      //     style: item.style ? item.style.type : null,
-      //     isPhysicalArt: item.isPhysicalArt,
-      //     // material: item.material,
-      //     // materials: item.materials,
-      //     price: item.price,
-      //     total: item.total,
-      //     uploadedImage: item.uploadedImage,
-      //     productImage: item.productImage,
-      //     quantity: item.quantity,
-      //     materialAndSize:
-      //       (item.material ? item.material : null) +
-      //       " " +
-      //       (item.size ? item.size.size : null),
-      //   }));
-      // };
-      // const items = formatCartItemsForPayment(cartArray);
-      // console.log(items);
-      // dispatch(
-      //   userPayment({
-      //     customerName: userProfile.name,
-      //     customerEmail: userProfile.email,
-      //     items: items,
-      //   })
-      // );
+      const formatCartItemsForPayment = (cartArray) => {
+        return cartArray.map((item) => ({
+          // size: item.size ? item.size.size : null,
+          category: item.category,
+          designerNote: item.designerNote,
+          eachPrice: item.eachPrice,
+          figure: item.figure ? item.figure.name : null,
+          numOfPersons: item.numOfPersons ? item.numOfPersons.name : null,
+          style: item.style ? item.style.type : null,
+          isPhysicalArt: item.isPhysicalArt,
+          // material: item.material,
+          // materials: item.materials,
+          price: item.price,
+          total: item.total,
+          uploadedImage: item.uploadedImage,
+          productImage: item.productImage,
+          quantity: item.quantity,
+          materialAndSize:
+            (item.material ? item.material : null) +
+            " " +
+            (item.size ? item.size.size : null),
+        }));
+      };
+      const items = formatCartItemsForPayment(cartArray);
+      console.log(items);
+      dispatch(
+        userPayment({
+          customerName: userProfile.name,
+          customerEmail: userProfile.email,
+          items: items,
+        })
+      );
       //////////////////////////
       // const processCartArray = async (cartArray) => {
       //   const processedCartArray = await Promise.all(
@@ -145,16 +144,6 @@ const Cart = () => {
       // };
       // const items = processCartArray(cartArray);
       // console.log(items);
-
-      console.log(cartArray);
-
-      // const uploadedImageUrl = dispatch(
-      //   uploadImage({
-      //     file: cartArray[0].uploadImgObj,
-      //     isPhysicalArt: true,
-      //   })
-      // );
-      // console.log(uploadedImageUrl);
     }
   };
 

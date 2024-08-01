@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   updateEditForms,
   updateProductInfo,
-  uploadImageChange,
+  uploadUserImage,
   personChange,
   styleChange,
   figureChange,
@@ -60,10 +60,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
     const file = e.target.files[0];
 
     if (file) {
-      dispatch(
-        uploadImageChange({ file: file, isPhysical: isPhysical })
-        // uploadImageChange({ imageUrl: file, isPhysical: isPhysical })
-      );
+      dispatch(uploadUserImage({ file: file, isPhysical: isPhysical }));
       // const imageUrl = URL.createObjectURL(file);
       // dispatch(
       //   uploadImageChange({ imageUrl: imageUrl, isPhysical: isPhysical })
@@ -140,7 +137,6 @@ const ProductBuyForm = ({ props, editForm, close }) => {
       dispatch(clearStates());
     }
   }, [editForm]);
-
 
   return (
     <div

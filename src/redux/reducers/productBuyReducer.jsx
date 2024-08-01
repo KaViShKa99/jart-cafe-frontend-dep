@@ -10,7 +10,7 @@ export const fetchSelectedProduct = createAsyncThunk(
   }
 );
 
-export const uploadImage = createAsyncThunk(
+export const uploadUserImage = createAsyncThunk(
   "user/uploadImage",
   async ({ file, isPhysicalArt }, { rejectWithValue }) => {
     console.log(file);
@@ -164,14 +164,14 @@ const productBuyDetails = createSlice({
     builder.addCase(fetchSelectedProduct.fulfilled, (state, action) => {
       state.selectedProduct = action.payload;
     });
-    builder.addCase(uploadImage.fulfilled, (state, action) => {
+    builder.addCase(uploadUserImage.fulfilled, (state, action) => {
       console.log(action.payload);
       const { imageUrl, isPhysicalArt } = action.payload;
       console.log(imageUrl);
       if (isPhysicalArt) {
-        state.physicalArt.uploadImgObj = imageUrl;
+        state.physicalArt.uploadedImage = imageUrl;
       } else {
-        state.digitalArt.uploadImgObj = imageUrl;
+        state.digitalArt.uploadedImage = imageUrl;
       }
     });
   },
