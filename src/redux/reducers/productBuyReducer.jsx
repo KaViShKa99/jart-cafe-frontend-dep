@@ -12,13 +12,13 @@ export const fetchSelectedProduct = createAsyncThunk(
 
 export const uploadUserImage = createAsyncThunk(
   "user/uploadImage",
-  async ({ file, isPhysicalArt }, { rejectWithValue }) => {
+  async ({ file, isPhysical }, { rejectWithValue }) => {
     console.log(file);
-    console.log(isPhysicalArt);
+    console.log(isPhysical);
     const formData = new FormData();
     formData.append("file", file);
     const response = await apiRequest("/images/upload/user", "POST", formData);
-    return { imageUrl: response, isPhysicalArt };
+    return { imageUrl: response, isPhysical: isPhysical };
   }
 );
 
@@ -159,16 +159,23 @@ const productBuyDetails = createSlice({
       const { isPhysicalArt } = action.payload;
       state[isPhysicalArt ? "physicalArt" : "digitalArt"] = action.payload;
     },
+    updateArtworkState: (state, action) => {
+      const isPhysical = action.payload;
+      console.log(isPhysical);
+      // if (isPhysical) {
+      //   state.physicalArt.isPhysicalArt = isPhysical;
+      // } else {
+      //   state.digitalArt.isPhysicalArt = isPhysical;
+      // }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchSelectedProduct.fulfilled, (state, action) => {
       state.selectedProduct = action.payload;
     });
     builder.addCase(uploadUserImage.fulfilled, (state, action) => {
-      console.log(action.payload);
-      const { imageUrl, isPhysicalArt } = action.payload;
-      console.log(imageUrl);
-      if (isPhysicalArt) {
+      const { imageUrl, isPhysical } = action.payload;
+      if (isPhysical) {
         state.physicalArt.uploadedImage = imageUrl;
       } else {
         state.digitalArt.uploadedImage = imageUrl;
@@ -178,6 +185,7 @@ const productBuyDetails = createSlice({
 });
 
 export const {
+  updateArtworkState,
   updateEditForms,
   updateProductInfo,
   uploadImageChange,

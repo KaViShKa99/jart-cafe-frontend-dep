@@ -1,30 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { fetchOrderedDetails } from "../../redux/reducers/orderReducer";
+import {
+  fetchOrderedDetails,
+  updateCompletedDate,
+  updateStatus,
+  orderStatusChange,
+  orderCompleteDateChange,
+} from "../../redux/reducers/orderReducer";
 import { format } from "date-fns";
 
 const AdminManageOrders = () => {
   const dispatch = useDispatch();
-  const { orders } = useSelector((state) => state.order);
-  const { artworks, previewState, setEdit } = useSelector(
-    (state) => state.admin
+  const { orders, orderStatus, orderCompleteDate } = useSelector(
+    (state) => state.order
   );
+
   const [expandedArtworkId, setExpandedArtworkId] = useState(null);
+
+  const toggleStatus = (e, id) => {
+    e.preventDefault();
+    dispatch(updateStatus({ id: id, status: orderStatus }));
+    dispatch(orderStatusChange(orderStatus));
+  };
+
+  const handleDateChange = (e, date, id) => {
+    e.preventDefault();
+    dispatch(updateCompletedDate({ id: id, date: date }));
+    dispatch(orderCompleteDateChange(date));
+  };
 
   const toggleExpand = (artworkId) => {
     setExpandedArtworkId((prevId) => (prevId === artworkId ? null : artworkId));
   };
+
   useEffect(() => {
     console.log(orders);
-  }, []);
+  }, [orders]);
 
   useEffect(() => {
     dispatch(fetchOrderedDetails());
   }, []);
-  // const click = (e) => {
-  //   dispatch(fetchOrderedDetails());
-  // };
 
   return (
     <div className="ordered-products-container">
@@ -44,15 +60,42 @@ const AdminManageOrders = () => {
         </thead>
         <tbody>
           {orders.map((artwork, index) => (
-            <React.Fragment key={artwork.artworkId + index}>
+            <React.Fragment key={artwork.orderId}>
               <tr className="artwork-row" key={index}>
-                <td> {format(new Date(), "MMMM do, yyyy")}</td>
+                <td>
+                  {artwork.orderedDate &&
+                    format(artwork.orderedDate, "MMMM do, yyyy")}
+                </td>
                 <td className="title-cell">{artwork.customerEmail}</td>
-                <td> Complete</td>
-                <td> {format(new Date(), "MMMM do, yyyy")}</td>
+                <td className="progress-btn">
+                  <button
+                    className={`status-button ${
+                      orderStatus === "Complete" ? "complete" : "progress"
+                    }`}
+                    onClick={(e) => toggleStatus(e, artwork.orderId)}
+                  >
+                    {orderStatus}
+                  </button>
+                </td>
+                <td>
+                  <input
+                    type="date"
+                    className="date-picker"
+                    value={format(
+                      !orderCompleteDate
+                        ? artwork.completedDate
+                        : orderCompleteDate,
+                      "yyyy-MM-dd"
+                    )}
+                    min={new Date().toLocaleDateString("en-CA")}
+                    onChange={(e) =>
+                      handleDateChange(e, e.target.value, artwork.orderId)
+                    }
+                  />
+                </td>
                 <td className="action-buttons">
-                  <button onClick={() => toggleExpand(artwork.artworkId)}>
-                    {expandedArtworkId === artwork.artworkId
+                  <button onClick={() => toggleExpand(artwork.orderId)}>
+                    {expandedArtworkId === artwork.orderId
                       ? "Collapse"
                       : "Expand"}
                   </button>
@@ -62,60 +105,58 @@ const AdminManageOrders = () => {
                   </button> */}
                 </td>
               </tr>
-              {expandedArtworkId === artwork.artworkId && (
-                <tr className="expanded-row" key={artwork.artworkId}>
+              {expandedArtworkId === artwork.orderId && (
+                <tr className="expanded-row" key={artwork.orderId}>
                   <td colSpan="5">
                     <div className="artwork-details">
                       {artwork.items.map((item, index) => (
                         <div key={index} className="expanded-details">
-                          <div>
-                            {/* <strong>Images:</strong> */}
-                            <div className="image-previews">
-                              <strong>Design </strong>
-
-                              <img
-                                key={1}
-                                src={item.productImage[0]}
-                                alt={`Artwork ${1}`}
-                                className="artwork-image"
-                              />
-                              <strong>sketch</strong>
-
-                              <img
-                                key={2}
-                                src={item.productImage[1]}
-                                alt={`Artwork ${2}`}
-                                className="artwork-image"
-                              />
-                              {/* {item.productImage.map((url, imgIndex) => (
-                                <img
-                                  key={imgIndex}
-                                  src={url}
-                                  alt={`Artwork ${imgIndex}`}
-                                  className="artwork-image"
-                                />
-                              ))} */}
-                            </div>
-                          </div>
-                          <div className="preview-material-boxes">
-                            <strong>Details</strong>
-                            <div className="prev-mat-boxes-container">
+                          <div className="preview-box">
+                            <strong>Order Details</strong>
+                            <div className="prev-box-container">
                               <div className="details">
                                 <div className="detail-item">
-                                  {/* <span className="label">Type</span>
+                                  <span className="label">Design</span>
                                   <span className="value">
-                                    {artwork.physicalArt
-                                      ? `${physicalArt.material} / ${
-                                          physicalArt.size &&
-                                          physicalArt.size.size
-                                        }`
+                                    <img
+                                      key={2}
+                                      src={item.productImage[0]}
+                                      alt={`Artwork ${2}`}
+                                      className="artwork-image"
+                                    />
+                                  </span>
+                                </div>
+
+                                <div className="detail-item">
+                                  <span className="label">
+                                    Sketch
+                                    <button className="download-button">
+                                      Download
+                                    </button>
+                                  </span>
+                                  <span className="value">
+                                    <img
+                                      key={2}
+                                      src={item.uploadedImage}
+                                      alt={`Artwork ${2}`}
+                                      className="artwork-image"
+                                    />
+                                  </span>
+                                </div>
+
+                                <div className="detail-item">
+                                  <span className="label">Type</span>
+                                  <span className="value">
+                                    {item.physicalArt
+                                      ? item.materialAndSize
                                       : "Digital Artwork"}
-                                  </span> */}
+                                  </span>
                                 </div>
                                 <div className="detail-item">
                                   <span className="label">Quantity</span>
                                   <span className="value">{item.quantity}</span>
                                 </div>
+
                                 {!item.physicalArt && (
                                   <>
                                     <div className="detail-item">
@@ -190,13 +231,6 @@ const AdminManageOrders = () => {
                                   ? physicalArt.designerNote
                                   : digitalArt.designerNote} */}
                               </span>
-                              {/* 
-                              <h3>{item.materialAndSize}</h3>
-                              <ul>
-                                <li>
-                                  {item.materialAndSize} - ${item.price}
-                                </li>
-                              </ul> */}
                             </div>
                           </div>
                         </div>

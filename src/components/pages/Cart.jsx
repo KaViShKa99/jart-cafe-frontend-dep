@@ -60,6 +60,7 @@ const Cart = () => {
     if (!signIn) {
       dispatch(setIsModalOpen());
     } else {
+      console.log(cartArray[0].isPhysicalArt);
       const formatCartItemsForPayment = (cartArray) => {
         return cartArray.map((item) => ({
           // size: item.size ? item.size.size : null,
@@ -69,7 +70,7 @@ const Cart = () => {
           figure: item.figure ? item.figure.name : null,
           numOfPersons: item.numOfPersons ? item.numOfPersons.name : null,
           style: item.style ? item.style.type : null,
-          isPhysicalArt: item.isPhysicalArt,
+          physicalArt: item.isPhysicalArt,
           // material: item.material,
           // materials: item.materials,
           price: item.price,
@@ -84,66 +85,23 @@ const Cart = () => {
         }));
       };
       const items = formatCartItemsForPayment(cartArray);
-      console.log(items);
+      console.log(items[0]);
+
+      const orderedDate = new Date().toISOString();
+      const completedDate = new Date();
+      completedDate.setDate(completedDate.getDate() + 5);
+      const completedDateISO = completedDate.toISOString();
+
       dispatch(
         userPayment({
+          orderStatus: "Progress",
+          orderedDate: orderedDate,
+          completedDate: completedDateISO,
           customerName: userProfile.name,
           customerEmail: userProfile.email,
           items: items,
         })
       );
-      //////////////////////////
-      // const processCartArray = async (cartArray) => {
-      //   const processedCartArray = await Promise.all(
-      //     cartArray.map(async (item) => {
-      //       let uploadedImageUrl;
-      //       // console.log(item.uploadImgObj);
-
-      //       // // Check if the image needs to be uploaded
-      //       if (item.uploadImgObj && item.uploadImgObj instanceof File) {
-      //         console.log(item.uploadImgObj);
-      //         try {
-      //           dispatch(
-      //             uploadImage({
-      //               file: item.uploadImgObj,
-      //               isPhysicalArt: item.isPhysicalArt,
-      //             })
-      //           );
-      //         } catch (error) {
-      //           console.error("Failed to upload image for item", item, error);
-      //         }
-      //       }
-
-      //       // console.log(cartArray);
-
-      //       return {
-      //         // size: item.size ? item.size.size : null,
-      //         category: item.category,
-      //         designerNote: item.designerNote,
-      //         eachPrice: item.eachPrice,
-      //         figure: item.figure ? item.figure.name : null,
-      //         numOfPersons: item.numOfPersons ? item.numOfPersons.name : null,
-      //         style: item.style ? item.style.type : null,
-      //         isPhysicalArt: item.isPhysicalArt,
-      //         // material: item.material,
-      //         // materials: item.materials,
-      //         price: item.price,
-      //         total: item.total,
-      //         uploadedImage: uploadedImageUrl,
-      //         productImage: item.productImage,
-      //         quantity: item.quantity,
-      //         materialAndSize:
-      //           (item.material ? item.material : "") +
-      //           " " +
-      //           (item.size ? item.size.size : ""),
-      //       };
-      //     })
-      //   );
-
-      //   return processedCartArray;
-      // };
-      // const items = processCartArray(cartArray);
-      // console.log(items);
     }
   };
 

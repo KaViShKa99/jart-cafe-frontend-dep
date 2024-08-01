@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import QuantityCounter from "./QuantityCounter";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  updateArtworkState,
   updateEditForms,
   updateProductInfo,
   uploadUserImage,
@@ -60,6 +61,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
     const file = e.target.files[0];
 
     if (file) {
+      console.log(isPhysical);
       dispatch(uploadUserImage({ file: file, isPhysical: isPhysical }));
       // const imageUrl = URL.createObjectURL(file);
       // dispatch(
@@ -101,6 +103,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
 
   useEffect(() => {
     dispatch(updateTotal(isPhysical));
+    dispatch(updateArtworkState(isPhysical));
   }, [props, isPhysical, digitalArt, physicalArt]);
 
   // useEffect(() => {
@@ -269,7 +272,6 @@ const ProductBuyForm = ({ props, editForm, close }) => {
             <div
               className={`toggle-option ${isPhysical ? "active-digital" : ""}`}
               onClick={() => setIsPhysical(false)}
-              // onClick={() => console.log("222")}
             >
               Digital Art
             </div>
@@ -278,7 +280,6 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                 !isPhysical ? "active-physical" : ""
               }`}
               onClick={() => setIsPhysical(true)}
-              // onClick={() => console.log("111")}
             >
               Physical Art
             </div>
