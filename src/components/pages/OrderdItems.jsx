@@ -9,6 +9,8 @@ import {
   updateSubTotal,
 } from "../../redux/reducers/cartItemReducer";
 
+import { fetchOrderByEmail } from "../../redux/reducers/orderReducer";
+
 import { format } from "date-fns";
 import ReviewModal from "../ReviewModal";
 
@@ -18,7 +20,8 @@ const PurchaseItems = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { cartArray, subTotal } = useSelector((state) => state.cartItems);
-  const { signIn } = useSelector((state) => state.userProfile);
+  const { signIn, userProfile } = useSelector((state) => state.userProfile);
+  const { orderListByEmail } = useSelector((state) => state.order);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -45,6 +48,15 @@ const PurchaseItems = () => {
     };
   }, [isModalOpen]);
 
+  useEffect(() => {
+    console.log(userProfile.email);
+    dispatch(fetchOrderByEmail(userProfile.email));
+  }, [userProfile]);
+
+  useEffect(() => {
+    console.log(orderListByEmail);
+  }, [orderListByEmail]);
+
   return (
     <div className="purchase-container">
       <Navbar />
@@ -56,56 +68,82 @@ const PurchaseItems = () => {
               <tr>
                 <th>PRODUCTS</th>
                 <th>ORDER STATUS</th>
-                <th>REVIEW PRODUCT</th>
+                {/* <th>REVIEW PRODUCT</th> */}
               </tr>
             </thead>
             <tbody>
-              {cartArray.length === 0 ? (
+              {orderListByEmail.length === 0 ? (
                 <tr key="no-items">
                   <td colSpan="4" className="empty-cart-message">
                     <span>Your cart is currently empty.</span>
                   </td>
                 </tr>
               ) : (
-                cartArray.map((product, index) => (
+                orderListByEmail.map((product, index) => (
                   <tr key={index}>
                     <td className="purchase-details-column">
-                      <div className="purchase-details-column-container">
-                        <img src={product.productImage[0]} />
-                        <div className="cart-purchase-details">
-                          <span>{product.category}</span>
+                      {product.items.map((item, index) => {
+                        return (
+                          <div
+                            className="purchase-details-column-container"
+                            key={index}
+                          >
+                            <img
+                              src={item.productImage[0]}
+                              alt="Product Image"
+                            />
+                            <div className="cart-purchase-details">
+                              <span>{item.category}</span>
 
-                          <span className="design">
-                            {product.isPhysicalArt
-                              ? `${product.material} / ${product.size.size}`
-                              : "Digital arts"}
-                          </span>
-                          <span>
-                            Each Price - $
-                            {(product.eachPrice + product.price).toFixed(2)}
-                          </span>
-                          <span>Quantity - {product.quantity}</span>
-                          <span>
-                            Total - ${product.total && product.total.toFixed(2)}
-                          </span>
-                          <span>
-                            Date: {format(new Date(), "MMMM do, yyyy")}
-                          </span>
-                        </div>
-                      </div>
+                              <span className="design">
+                                {item.physicalArt
+                                  ? `${item.materialAndSize}`
+                                  : "Digital arts"}
+                              </span>
+                              <span>
+                                Each Price - $
+                                {(item.eachPrice + item.price).toFixed(2)}
+                              </span>
+                              <span>Quantity - {item.quantity}</span>
+                              <span>
+                                Total - ${item.total && item.total.toFixed(2)}
+                              </span>
+                              <span>
+                                Orderd Date:{" "}
+                                {format(product.orderedDate, "MMMM do, yyyy")}
+                              </span>
+                              <span>
+                                Completed Date:{" "}
+                                {format(product.completedDate, "MMMM do, yyyy")}
+                              </span>
+                              <button
+                                className="review-button"
+                                onClick={openModal}
+                              >
+                                Review
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </td>
 
                     <td className="order-status">
-                      <span className={`status progress`}>completed</span>
-                      {/* <span className={`status ${completed}`}>completed</span> */}
+                      <span
+                        className={`status ${
+                          product.orderStatus ? "completed" : "progress"
+                        }`}
+                      >
+                        {product.orderStatus ? "completed" : "progress"}
+                      </span>
                     </td>
-                    <td className="review-product">
+                    {/* <td className="review-product">
                       <button className="review-button" onClick={openModal}>
                         Review
                       </button>
-                    </td>
+                    </td> */}
 
-                    <td className="purchase-combined-column">
+                    {/* <td className="purchase-combined-column">
                       <div className="combined-column-container">
                         <div className="c-price">
                           Price :- $
@@ -121,7 +159,7 @@ const PurchaseItems = () => {
                           Date: {format(new Date(), "MMMM do, yyyy")}
                         </div>
                       </div>
-                    </td>
+                    </td> */}
                   </tr>
                 ))
               )}

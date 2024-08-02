@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiRequest from "../api";
 
+export const fetchOrderByEmail = createAsyncThunk(
+  "admin/fetchOrderByEmail",
+  async (email) => {
+    return await apiRequest(`/order/get/${email}`, "GET");
+  }
+);
 export const fetchOrderedDetails = createAsyncThunk(
   "admin/fetchProducts",
   async () => {
@@ -11,7 +17,6 @@ export const updateStatus = createAsyncThunk(
   "admin/updateStatus",
   async (data, { getState, rejectWithValue }) => {
     const { id, status } = data;
-    console.log(status);
     try {
       return await apiRequest(`/order/update/status/${id}`, "PUT", status);
     } catch (error) {
@@ -40,21 +45,34 @@ const adminOrderDetailsSlices = createSlice({
   name: "order-states",
   initialState: {
     orders: [],
-    orderStatus: "Progress",
+    orderStatus: "progress",
     orderCompleteDate: "",
+    orderListByEmail: [],
   },
   reducers: {
     orderStatusChange: (state, action) => {
-      const status = action.payload;
-      state.orderStatus = status === "Complete" ? "Progress" : "Complete";
+      const { id, status } = action.payload;
+      const orderToUpdate = state.orders.find((order) => order.orderId === id);
+      if (orderToUpdate) {
+        orderToUpdate.orderStatus = status;
+      }
     },
     orderCompleteDateChange: (state, action) => {
       state.orderCompleteDate = action.payload;
+      const { id, completedDate } = action.payload;
+      const orderToUpdate = state.orders.find((order) => order.orderId === id);
+      if (orderToUpdate) {
+        orderToUpdate.completedDate = completedDate;
+      }
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchOrderedDetails.fulfilled, (state, action) => {
+      console.log(action.payload);
       state.orders = action.payload;
+    });
+    builder.addCase(fetchOrderByEmail.fulfilled, (state, action) => {
+      state.orderListByEmail = action.payload;
     });
   },
 });

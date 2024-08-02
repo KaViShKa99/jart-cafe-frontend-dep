@@ -12,7 +12,7 @@ import Checkout from "./components/pages/Checkout";
 import Success from "./components/pages/Success";
 import Cancel from "./components/pages/Cancel";
 import OrderdItems from "./components/pages/OrderdItems";
-import { Admin1 } from "./components/pages/Admin1";
+import { Admin } from "./components/pages/Admin";
 import AdminManageOrders from "./components/pages/AdminManageOrders";
 
 const App = () => {
@@ -21,7 +21,7 @@ const App = () => {
       <Route path="/" element={<Home />} />
       <Route path="/products/:id" element={<SelectedProduct />} />
       <Route path="/cart" element={<Cart />} />
-      <Route path="/admin" element={<PrivateRoute element={<Admin1 />} />} />
+      <Route path="/admin" element={<PrivateRoute element={<Admin />} />} />
       <Route path="/password-reset" element={<NewPasswordPage />} />
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/search" element={<SearchPage />} />

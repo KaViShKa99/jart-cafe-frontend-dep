@@ -94,7 +94,7 @@ const Cart = () => {
 
       dispatch(
         userPayment({
-          orderStatus: "Progress",
+          orderStatus: false,
           orderedDate: orderedDate,
           completedDate: completedDateISO,
           customerName: userProfile.name,
