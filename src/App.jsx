@@ -27,6 +27,7 @@ const App = () => {
       <Route path="/search" element={<SearchPage />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/success" element={<Success />} />
+      {/* <Route path="/cancel/:session_id" element={<Cancel />} /> */}
       <Route path="/cancel" element={<Cancel />} />
       <Route path="/ordered-items" element={<OrderdItems />} />
       <Route path="/admin/ordered-items" element={<AdminManageOrders />} />

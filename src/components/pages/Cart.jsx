@@ -94,6 +94,7 @@ const Cart = () => {
 
       dispatch(
         userPayment({
+          orderTransaction: false,
           orderStatus: false,
           orderedDate: orderedDate,
           completedDate: completedDateISO,

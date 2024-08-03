@@ -22,7 +22,7 @@ const AdminManageOrders = () => {
     e.preventDefault();
     const newStatus =
       order.orderStatus === "completed" ? "progress" : "completed";
-      
+
     const newStatusFlag = order.orderStatus ? false : true;
     dispatch(updateStatus({ id: order.orderId, status: newStatusFlag }));
     dispatch(orderStatusChange({ id: order.orderId, status: newStatusFlag }));
@@ -73,7 +73,7 @@ const AdminManageOrders = () => {
                 <tr className="artwork-row" key={index}>
                   <td>
                     {order.orderedDate &&
-                      format(order.orderedDate, "MMMM do, yyyy")}
+                      format(order.orderedDate, "MMMM do, yyyy h:mm a")}
                   </td>
                   <td className="title-cell">{order.customerEmail}</td>
                   <td className="progress-btn">
