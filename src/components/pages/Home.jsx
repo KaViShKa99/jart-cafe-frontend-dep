@@ -4,6 +4,7 @@ import ProductGallery from "../ProductGallery";
 import Categories from "../Categories";
 import { useDispatch } from "react-redux";
 import { fetchProducts } from "../../redux/reducers/productsReducer";
+import Footer from "../Footer";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const Home = () => {
       <Navbar />
       <Categories />
       <ProductGallery />
+      <Footer />
     </div>
   );
 };

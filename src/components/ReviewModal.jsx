@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
+import { useDispatch, useSelector } from "react-redux";
+import { submitReview } from "../redux/reducers/reviewReducer";
 
 const ReviewModal = ({ isModalOpen, onRequestClose }) => {
+  const dispatch = useDispatch();
+  const { userProfile } = useSelector((state) => state.userProfile);
+
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
 
@@ -11,8 +16,22 @@ const ReviewModal = ({ isModalOpen, onRequestClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(userProfile);
+
     console.log("Rating:", rating);
     console.log("Review:", reviewText);
+
+    if (userProfile) {
+      const reviewData = {
+        rating: rating,
+        reviewText: reviewText,
+        username: userProfile.name,
+        userEmail: userProfile.email,
+        reviewedDate: new Date(),
+      };
+      dispatch(submitReview(reviewData));
+    }
+
     onRequestClose();
   };
 

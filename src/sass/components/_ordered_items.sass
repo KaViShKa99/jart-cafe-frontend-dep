@@ -55,19 +55,19 @@
                             cursor: not-allowed
                             transform: none
                   
-
-            .order-status
-                span
-                    font-size: 18px
-                    padding: 5px 10px
-                    border-radius: 5px
-                    font-weight: bold
-                    &.Completed
-                        background-color: #28A745
-                        color: white
-                    &.Progress
-                        background-color: #FFA500
-                        color: white
+            .order-status-column
+                .order-status-column-container
+                    span
+                        font-size: 18px
+                        padding: 5px 10px
+                        border-radius: 5px
+                        font-weight: bold
+                        &.Completed
+                            background-color: #28A745
+                            color: white
+                        &.Progress
+                            background-color: #FFA500
+                            color: white
                         
     
 
@@ -108,9 +108,9 @@
                     &:nth-child(4)      
                         border-left: none
 
-                .order-status,.review-product
+                .order-status-column
                     text-align: center
-                    vertical-align: middle
+                    vertical-align: top
 
                    
             th

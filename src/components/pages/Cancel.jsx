@@ -1,39 +1,56 @@
-// Cancel.js
-import React, { useEffect } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userPaymentCancel } from "../../redux/reducers/paymentReducer";
+import { MdCancel } from "react-icons/md";
+import { Loader } from "rsuite";
 
 const Cancel = () => {
   const location = useLocation();
-  // const { session_id } = useParams();
+  const navigate = useNavigate(); // Use useNavigate to control navigation
+  const dispatch = useDispatch();
+  const [showLoading, setShowLoading] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const sessionId = params.get("session_id");
 
-    console.log(sessionId);
-    // console.log(session_id);
-
     if (sessionId) {
-      axios
-        .post(
-          `https://localhost:8080/api/checkout/cancel?session_id=${sessionId}`
-        )
-        .then((response) => {
-          console.log("Cancellation handled:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error handling cancellation:", error);
-        });
+      dispatch(userPaymentCancel(sessionId));
     }
-  }, [location.search]);
+    const timer = setTimeout(() => {
+      setShowLoading(true);
+    }, 3000);
+
+    const redirectTimer = setTimeout(() => {
+      navigate("/cart");
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(redirectTimer);
+    };
+  }, [location.search, dispatch, navigate]);
+
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Payment Cancelled</h1>
-      <p>Your payment has been cancelled.</p>
-      <Link to="/cart" style={{ textDecoration: "none", color: "blue" }}>
-        Return to Cart
-      </Link>
+    <div className="cancel-container-wrapper">
+      {!showLoading ? (
+        <div className="cancel-container">
+          <MdCancel className="cancel-icon" />
+          <h1>Payment Cancelled</h1>
+          <p>
+            Your payment has been cancelled. Please try again or contact support
+            if you need assistance.
+          </p>
+          {/* <Link to="/cart" className="return-link">
+            Return to Cart
+          </Link> */}
+        </div>
+      ) : (
+        <div className="loading-container">
+          <Loader center size="lg" />
+        </div>
+      )}
     </div>
   );
 };

@@ -9,6 +9,7 @@ import signModelReducer from "./reducers/signModelReducer";
 import paymentReducer from "./reducers/paymentReducer";
 import adminReducer from "./reducers/adminReducer";
 import orderReducer from "./reducers/orderReducer";
+import reviewReducer from "./reducers/reviewReducer";
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     userPayment: paymentReducer,
     admin: adminReducer,
     order: orderReducer,
+    review:reviewReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

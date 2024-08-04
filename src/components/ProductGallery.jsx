@@ -30,7 +30,7 @@ const ProductGallery = () => {
       <div className="product-details">
         <span className="products-name">{category}</span>
         <p className="products-page-info">
-          Showing {indexOfFirstItem + 1} -
+          Showing {indexOfFirstItem + 1} -{" "}
           {currentItems.length + indexOfFirstItem} out of{" "}
           {filteredProducts.length} products
         </p>

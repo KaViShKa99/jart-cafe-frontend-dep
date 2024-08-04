@@ -1,0 +1,58 @@
+/* Cancel.scss */
+
+$cancel-text-color: #222
+$cancel-margin-top: 50px
+$icon-color: #d9534f // Cancel red color
+$button-background-color: #000 // Black
+$button-text-color: #fff // White
+$button-hover-background-color: #333 // Darker black for hover
+// $box-background-color: #f8d7da // Light red background color for the box (Bootstrap danger)
+$box-background-color: #fff // Light red background color for the box (Bootstrap danger)
+
+.cancel-container-wrapper
+  display: flex
+  justify-content: center
+  align-items: center
+  height: 100vh
+  //background-color: $icon-color // Cancel red color
+  background-color: #fff // Cancel red color
+
+  .cancel-container
+    text-align: center
+    padding: 20px
+    border: 1px solid #ddd
+    border-radius: 8px
+    background-color: $box-background-color
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1)
+    max-width: 500px
+    width: 90%
+
+    .cancel-icon
+      font-size: 4rem
+      color: $icon-color
+      //color: $button-background-color
+      margin-bottom: 1rem
+
+    h1
+      color: $cancel-text-color
+      margin-bottom: 1rem
+      font-size: 2rem
+      font-weight: bold
+
+    p
+      color: $cancel-text-color
+      margin-bottom: 1.5rem
+      font-size: 1rem
+
+    .return-link
+      display: inline-block
+      padding: 10px 20px
+      background-color: $button-background-color
+      color: $button-text-color
+      text-decoration: none
+      border-radius: 5px
+      font-size: 1rem
+      transition: background-color 0.3s
+
+      &:hover
+        background-color: $button-hover-background-color

@@ -138,14 +138,16 @@ const PurchaseItems = () => {
                       })}
                     </td>
 
-                    <td className="order-status">
-                      <span
-                        className={`status ${
-                          product.orderStatus ? "Completed" : "Progress"
-                        }`}
-                      >
-                        {product.orderStatus ? "Completed" : "Progress"}
-                      </span>
+                    <td className="order-status-column">
+                      <div className="order-status-column-container">
+                        <span
+                          className={`status ${
+                            product.orderStatus ? "Completed" : "Progress"
+                          }`}
+                        >
+                          {product.orderStatus ? "Completed" : "Progress"}
+                        </span>
+                      </div>
                     </td>
                   </tr>
                 ))

@@ -24,6 +24,21 @@ export const userPayment = createAsyncThunk(
     }
   }
 );
+export const userPaymentCancel = createAsyncThunk(
+  "user/paymentCancel",
+  async (sessionId, { rejectWithValue }) => {
+    try {
+      const response = await apiRequest(
+        `/checkout/cancel?session_id=${sessionId}`,
+        "POST",
+        null
+      );
+      return response;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
 const paymentModel = createSlice({
   name: "stripe-payment",
@@ -35,6 +50,8 @@ const paymentModel = createSlice({
     builder.addCase(userPayment.fulfilled, async (state, action) => {
       try {
         const session = action.payload;
+
+        console.log(session);
 
         const stripe = await stripePromise;
         const { error } = await stripe.redirectToCheckout({
@@ -48,6 +65,9 @@ const paymentModel = createSlice({
         console.error("Error during payment processing:", error);
       }
     });
+    // builder.addCase(userPaymentCancel.fulfilled, async (state, action) => {
+    //   // console.log(action.payload);
+    // });
   },
 });
 
