@@ -75,7 +75,7 @@ const PurchaseItems = () => {
               {orderListByEmail.length === 0 ? (
                 <tr key="no-items">
                   <td colSpan="4" className="empty-cart-message">
-                    <span>Your cart is currently empty.</span>
+                    <span>Your Ordered Items is currently empty.</span>
                   </td>
                 </tr>
               ) : (
@@ -88,40 +88,50 @@ const PurchaseItems = () => {
                             className="purchase-details-column-container"
                             key={index}
                           >
-                            <img
-                              src={item.productImage[0]}
-                              alt="Product Image"
-                            />
-                            <div className="cart-purchase-details">
-                              <span>{item.category}</span>
+                            <div className="purchase-product-image-col">
+                              <img
+                                // className="purchase-product-image"
+                                src={item.productImage[0]}
+                                alt="Product Image"
+                              />
+                            </div>
+                            <div className="purchase-product-details-col">
+                              <div className="purchase-details-container">
+                                <span>{item.category}</span>
 
-                              <span className="design">
-                                {item.physicalArt
-                                  ? `${item.materialAndSize}`
-                                  : "Digital arts"}
-                              </span>
-                              <span>
-                                Each Price - $
-                                {(item.eachPrice + item.price).toFixed(2)}
-                              </span>
-                              <span>Quantity - {item.quantity}</span>
-                              <span>
-                                Total - ${item.total && item.total.toFixed(2)}
-                              </span>
-                              <span>
-                                Orderd Date:{" "}
-                                {format(product.orderedDate, "MMMM do, yyyy")}
-                              </span>
-                              <span>
-                                Completed Date:{" "}
-                                {format(product.completedDate, "MMMM do, yyyy")}
-                              </span>
-                              <button
-                                className="review-button"
-                                onClick={openModal}
-                              >
-                                Review
-                              </button>
+                                <span className="design">
+                                  {item.physicalArt
+                                    ? `${item.materialAndSize}`
+                                    : "Digital arts"}
+                                </span>
+                                <span>
+                                  Each Price - $
+                                  {(item.eachPrice + item.price).toFixed(2)}
+                                </span>
+                                <span>Quantity - {item.quantity}</span>
+                                <span>
+                                  Total - ${item.total && item.total.toFixed(2)}
+                                </span>
+                                <span>
+                                  Orderd Date:{" "}
+                                  {format(product.orderedDate, "MMMM do, yyyy")}
+                                </span>
+                                <span>
+                                  Completed Date:{" "}
+                                  {format(
+                                    product.completedDate,
+                                    "MMMM do, yyyy"
+                                  )}
+                                </span>
+                                <button
+                                  type="button"
+                                  className="review-button"
+                                  onClick={openModal}
+                                  disabled={!product.orderStatus}
+                                >
+                                  Review
+                                </button>
+                              </div>
                             </div>
                           </div>
                         );
@@ -131,35 +141,12 @@ const PurchaseItems = () => {
                     <td className="order-status">
                       <span
                         className={`status ${
-                          product.orderStatus ? "completed" : "progress"
+                          product.orderStatus ? "Completed" : "Progress"
                         }`}
                       >
-                        {product.orderStatus ? "completed" : "progress"}
+                        {product.orderStatus ? "Completed" : "Progress"}
                       </span>
                     </td>
-                    {/* <td className="review-product">
-                      <button className="review-button" onClick={openModal}>
-                        Review
-                      </button>
-                    </td> */}
-
-                    {/* <td className="purchase-combined-column">
-                      <div className="combined-column-container">
-                        <div className="c-price">
-                          Price :- $
-                          {(product.eachPrice + product.price).toFixed(2)}{" "}
-                        </div>
-                        <div className="c-price">
-                          Quantity :- {product.quantity}
-                        </div>
-                        <div className="c-total">
-                          Total :- $ {product.total && product.total.toFixed(2)}
-                        </div>
-                        <div className="c-total">
-                          Date: {format(new Date(), "MMMM do, yyyy")}
-                        </div>
-                      </div>
-                    </td> */}
                   </tr>
                 ))
               )}

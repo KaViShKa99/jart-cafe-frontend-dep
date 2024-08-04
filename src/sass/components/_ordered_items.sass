@@ -10,7 +10,7 @@
     // margin-top: 20px
 
     .purchase-list
-        // width: 50%
+        width: 60%
         // margin-top: 100px
         padding: 20px
 
@@ -35,7 +35,11 @@
                     flex-direction: row
                     flex-wrap: wrap
                     gap: 10px
+                    justify-content: center
+                    
                     .review-button
+                        font-size: 15px
+                        font-weight: bold
                         border-radius: 5px
                         padding: 5px 10px
                         background-color: var(--black)
@@ -45,34 +49,27 @@
                         margin-bottom: 10px
 
                         &:hover 
-                            background-color: var(--gray)
+                            transform: var(--btn-scale)
+                        &:disabled
+                            background-color: #555
+                            cursor: not-allowed
+                            transform: none
                   
 
             .order-status
                 span
-                    font-size: 15px
+                    font-size: 18px
                     padding: 5px 10px
                     border-radius: 5px
-                    &.completed
-                        background-color: #28a745
+                    font-weight: bold
+                    &.Completed
+                        background-color: #28A745
                         color: white
-                    &.progress
-                        background-color: #ffc107
-                        color: black
+                    &.Progress
+                        background-color: #FFA500
+                        color: white
                         
-
-            .review-product 
-                .review-button 
-                    border-radius: 5px
-                    padding: 5px 10px
-                    background-color: var(--black)
-                    color: white
-                    border: none
-                    cursor: pointer
-
-                    &:hover 
-                        background-color: var(--gray)
-            
+    
 
             tbody tr 
                 // background: yellow
@@ -83,10 +80,11 @@
                     padding: 20px
                     // padding: 0px 10px 0px 10px
 
-                    .cart-purchase-details
+                    .purchase-details-container
                         display: flex
                         flex-direction: column
-                        //padding: 10px 20px 10px 20px
+                        padding: 10px 0px 10px 20px
+
 
                         .design
                             font-style: oblique
@@ -96,8 +94,8 @@
                             margin-bottom: 8px
 
                     img
-                        width: 100px
-                        height: 100px
+                        width: 150px
+                        height: 150px
 
                     &:nth-child(1)     
                         // border-right: none
@@ -134,7 +132,7 @@
         padding: 20px 0px 0px 0px
 
         .purchase-list
-            width: 80%
+            // width: 80%
 // @media (max-width: 780px) 
 //     .purchase-body
 //         display: flex
@@ -156,6 +154,20 @@
 //             // margin-top: 80px
 //             width: 80%
 
+// @media (max-width: 850px) 
+//     .purchase-body
+//         padding: 20px 10px 0px 0px
+//         .purchase-list
+//             .purchase-details-column
+//                 .purchase-details-column-container
+//                     display: flex
+//                     flex-direction: column
+//                     flex-wrap: wrap
+//                     gap: 10px
+//                     .purchase-product-image-col,.purchase-product-details-col
+//                         display: flex
+//                         align-items: center
+//                         justify-content: center
 @media (max-width: 580px) 
     .purchase-body
         padding: 20px 10px 0px 0px
