@@ -64,6 +64,7 @@ const Cart = () => {
       const formatCartItemsForPayment = (cartArray) => {
         return cartArray.map((item) => ({
           // size: item.size ? item.size.size : null,
+          artworkId:item.artworkId,
           category: item.category,
           designerNote: item.designerNote,
           eachPrice: item.eachPrice,

@@ -13,12 +13,12 @@ const Success = () => {
       setShowLoading(true);
     }, 3000);
 
-    // const redirectTimer = setTimeout(() => {
-    //   navigate("/");
-    // }, 5000);
+    const redirectTimer = setTimeout(() => {
+      navigate("/");
+    }, 3000);
     return () => {
       clearTimeout(timer);
-      // clearTimeout(redirectTimer);
+      clearTimeout(redirectTimer);
     };
   }, [navigate]);
 

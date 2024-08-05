@@ -1,5 +1,5 @@
 const Review = ({ review }) => {
-  const { rating, comment, date, username } = review;
+  const { rating, reviewText, date, username, reviewedDate } = review;
 
   return (
     <div className="review">
@@ -17,11 +17,11 @@ const Review = ({ review }) => {
         <div className="review-details">
           <span className="review-username">{username}</span>
           <span className="review-date">
-            {new Date(date).toLocaleDateString()}
+            {new Date(reviewedDate).toLocaleDateString()}
           </span>
         </div>
       </div>
-      <div className="review-comment">{comment}</div>
+      <div className="review-comment">{reviewText}</div>
     </div>
   );
 };

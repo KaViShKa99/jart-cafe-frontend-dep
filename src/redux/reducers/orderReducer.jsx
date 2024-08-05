@@ -72,6 +72,8 @@ const adminOrderDetailsSlices = createSlice({
       state.orders = action.payload;
     });
     builder.addCase(fetchOrderByEmail.fulfilled, (state, action) => {
+      console.log(action.payload);
+
       state.orderListByEmail = action.payload;
     });
   },

@@ -24,8 +24,10 @@ const PurchaseItems = () => {
   const { orderListByEmail } = useSelector((state) => state.order);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedArtworkId,setSelectedArtworkId] = useState(null);
 
-  const openModal = (e) => {
+  const openModal = (e, productId) => {
+    setSelectedArtworkId(productId)
     setIsModalOpen(true);
   };
 
@@ -126,7 +128,7 @@ const PurchaseItems = () => {
                                 <button
                                   type="button"
                                   className="review-button"
-                                  onClick={openModal}
+                                  onClick={(e) => openModal(e, item.artworkId)}
                                   disabled={!product.orderStatus}
                                 >
                                   Review
@@ -156,7 +158,7 @@ const PurchaseItems = () => {
           </table>
         </div>
       </div>
-      <ReviewModal isModalOpen={isModalOpen} onRequestClose={closeModal} />
+      <ReviewModal isModalOpen={isModalOpen} onRequestClose={closeModal} artworkId={selectedArtworkId} />
     </div>
   );
 };

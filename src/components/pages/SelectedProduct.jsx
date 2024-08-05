@@ -8,6 +8,7 @@ import ProductDetails from "../ProductDetails";
 import ProductBuyForm from "../ProductBuyForm";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSelectedProduct } from "../../redux/reducers/productBuyReducer";
+import { getProductReviews } from "../../redux/reducers/reviewReducer";
 
 const SelectedProduct = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const SelectedProduct = () => {
 
   useEffect(() => {
     dispatch(fetchSelectedProduct(id));
+    dispatch(getProductReviews(id));
   }, [dispatch]);
 
   return (
@@ -26,14 +28,8 @@ const SelectedProduct = () => {
         <div className="selected-product-container">
           <ProductImageGallery images={selectedProduct.images} />
           <ReviewsContainer />
-          {/* <ProductBuyForm
-          props={selectedProduct}
-          editForm={false}
-          close={() => {}}
-        /> */}
         </div>
         <div className="reviews-and-shipping">
-          {/* <ReviewsContainer /> */}
           <ProductBuyForm
             props={selectedProduct}
             editForm={false}
