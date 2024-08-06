@@ -66,15 +66,15 @@ const Footer = () => (
     <div className="footer-branding">
       <p className="footer-rights">© 2024 Jart Cafe. All Rights Reserved</p>
       <div className="payment-icons">
-        <img src="imgs/visa.jpg" alt="Visa" title="Visa" />
-        <img src="imgs/master_card.jpg" alt="MasterCard" title="MasterCard" />
+        <img src="/imgs/visa.jpg" alt="Visa" title="Visa" />
+        <img src="/imgs/master_card.jpg" alt="MasterCard" title="MasterCard" />
         <img
-          src="imgs/amer_exp.png"
+          src="/imgs/amer_exp.png"
           alt="American Express"
           title="American Express"
         />
-        <img src="imgs/apple_pay.png" alt="Apple Pay" title="Apple Pay" />
-        <img src="imgs/pay_pal.jpg" alt="Pay Pal" title="Pay Pal" />
+        <img src="/imgs/apple_pay.png" alt="Apple Pay" title="Apple Pay" />
+        <img src="/imgs/pay_pal.jpg" alt="Pay Pal" title="Pay Pal" />
       </div>
     </div>
   </footer>

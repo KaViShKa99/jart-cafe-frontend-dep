@@ -242,7 +242,6 @@ const Cart = () => {
           </button>
         </div>
       </div>
-      <Footer />
       <Modal
         isOpen={isCartModalOpen}
         // onRequestClose={closeModal}
@@ -265,6 +264,7 @@ const Cart = () => {
           </div>
         </div>
       </Modal>
+      <Footer />
     </div>
   );
 };
