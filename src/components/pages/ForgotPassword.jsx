@@ -1,16 +1,26 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import AlertBox from "../AlertBox";
 import { closeModel } from "../../redux/reducers/signModelReducer";
 import { useDispatch } from "react-redux";
+import { Loader } from "rsuite";
+import { userForgotPassword } from "../../redux/reducers/userProfileReducer";
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
   const [emailError, setEmailError] = useState("");
   const [email, setEmail] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    if (loginLoading) {
+      timer = setTimeout(() => {
+        setLoginLoading(false);
+        dispatch(closeModel());
+      }, 4000);
+    }
+    return () => clearTimeout(timer);
+  }, [loginLoading]);
 
   const emailChange = (e) => {
     const email = e.target.value;
@@ -19,7 +29,6 @@ const ForgotPassword = () => {
 
   const resetPassword = (e) => {
     e.preventDefault();
-
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     let valid = true;
 
@@ -28,25 +37,17 @@ const ForgotPassword = () => {
       valid = false;
     }
     if (valid) {
-      axios
-        .post(`${backendUrl}/password-reset/request`, {
-          email: email,
-        })
-        .then((response) => {
-          console.log(response.data);
-          // setMessage("Password has been reset successfully");
-          //   setLoading(false);
-          AlertBox("success", "Success", response.data);
-          dispatch(closeModel());
-        })
-        .catch((error) => {
-          console.log("Error:", error);
-          AlertBox("error", "Error", error.data);
-
-          //   setMessage("An error occurred");
-        });
+      dispatch(userForgotPassword(email));
+      setLoginLoading(true);
     }
   };
+  if (loginLoading) {
+    return (
+      <div className="loader-container">
+        <Loader center size="lg" />
+      </div>
+    );
+  }
 
   return (
     <div>

@@ -35,12 +35,11 @@ const SignIn = () =>
       if (loginLoading) {
         timer = setTimeout(() => {
           setLoginLoading(false);
-          // close(false);
-        }, 2000);
+          dispatch(closeModel());
+        }, 3000);
       }
       return () => clearTimeout(timer);
     }, [loginLoading]);
-    // }, [loginLoading, close]);
 
     const loginBtn = (e) => {
       e.preventDefault();
@@ -48,7 +47,7 @@ const SignIn = () =>
         dispatch(userAuthenticate(userDetails));
         setLoginLoading(true);
         dispatch(fetchUserProfile(token));
-        dispatch(closeModel());
+        // dispatch(closeModel());
       } else {
         AlertBox("error", "Error", "Please enter your email and password ");
       }

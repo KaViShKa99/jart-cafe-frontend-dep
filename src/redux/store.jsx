@@ -11,6 +11,7 @@ import adminReducer from "./reducers/adminReducer";
 import orderReducer from "./reducers/orderReducer";
 import reviewReducer from "./reducers/reviewReducer";
 import fileDownloadReducer from "./reducers/fileDownloadReducer";
+import passwordResetReducer from "./reducers/passwordResetReducer";
 
 const store = configureStore({
   reducer: {
@@ -26,6 +27,7 @@ const store = configureStore({
     order: orderReducer,
     review: reviewReducer,
     fileDownload: fileDownloadReducer,
+    passwordReset: passwordResetReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -2,6 +2,18 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiRequest from "../api";
 import AlertBox from "../../components/AlertBox";
 
+export const userForgotPassword = createAsyncThunk(
+  "user/forgotPassword",
+  async (email, { rejectWithValue }) => {
+    try {
+      return await apiRequest("/password-reset/request", "POST", {
+        email: email,
+      });
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 export const userAuthenticate = createAsyncThunk(
   "user/authenticateUser",
   async (userCredentials, { rejectWithValue }) => {
@@ -23,6 +35,18 @@ export const fetchUserProfile = createAsyncThunk(
     }
   }
 );
+// export const resetNewPassword = createAsyncThunk(
+//   "user/resetNewPassword",
+//   async (data, { rejectWithValue }) => {
+//     try {
+//       const { token, newPassword } = data;
+//       return await apiRequest("/password-reset/reset", "POST", data,null);
+//       // return await apiRequest("/password-reset/reset", "POST", newPassword, token);
+//     } catch (error) {
+//       return rejectWithValue(error);
+//     }
+//   }
+// );
 
 const loadSignInFlagFromStorage = () => {
   try {
@@ -120,6 +144,12 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserProfile.fulfilled, (state, action) => {
         state.userProfile = action.payload;
+      })
+      .addCase(userForgotPassword.fulfilled, (state, action) => {
+        AlertBox("success", "Success", action.payload);
+      })
+      .addCase(userForgotPassword.rejected, (state, action) => {
+        AlertBox("error", "Error", action.payload);
       });
   },
 });

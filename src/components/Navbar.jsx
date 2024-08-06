@@ -86,30 +86,6 @@ const Navbar = () => {
         </div>
       </nav>
       <SignModel />
-
-      {/* <Modal
-        isOpen={isModalOpen}
-        contentLabel="Signin Modal"
-        className="signup-modal"
-        overlayClassName="overlay"
-      >
-        <div className="login-model-content">
-          <button className="close-button" onClick={(e) => closeModal(e)}>
-            &times;
-          </button>
-          {!isOpenSignUp && !isForgotPassword ? (
-            <SignIn
-              openSignup={(e) => setIsOpenSignUp(e)}
-              openForogotpwd={(e) => setIsForgotPassword(e)}
-              close={(e) => setIsModalOpen(e)}
-            />
-          ) : isOpenSignUp ? (
-            <SignUp openSignup={(e) => setIsOpenSignUp(e)} />
-          ) : (
-            <ForgotPassword close={(e) => closeModal(e)} />
-          )}
-        </div>
-      </Modal> */}
     </div>
   );
 };
