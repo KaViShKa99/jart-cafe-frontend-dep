@@ -17,6 +17,7 @@ import {
   openCardPayment,
   userPayment,
 } from "../../redux/reducers/paymentReducer";
+import Footer from "../Footer";
 
 Modal.setAppElement("#root");
 
@@ -60,11 +61,10 @@ const Cart = () => {
     if (!signIn) {
       dispatch(setIsModalOpen());
     } else {
-      console.log(cartArray[0].isPhysicalArt);
       const formatCartItemsForPayment = (cartArray) => {
         return cartArray.map((item) => ({
           // size: item.size ? item.size.size : null,
-          artworkId:item.artworkId,
+          artworkId: item.artworkId,
           category: item.category,
           designerNote: item.designerNote,
           eachPrice: item.eachPrice,
@@ -86,8 +86,6 @@ const Cart = () => {
         }));
       };
       const items = formatCartItemsForPayment(cartArray);
-      console.log(items[0]);
-
       const orderedDate = new Date().toISOString();
       const completedDate = new Date();
       completedDate.setDate(completedDate.getDate() + 5);
@@ -244,6 +242,7 @@ const Cart = () => {
           </button>
         </div>
       </div>
+      <Footer />
       <Modal
         isOpen={isCartModalOpen}
         // onRequestClose={closeModal}

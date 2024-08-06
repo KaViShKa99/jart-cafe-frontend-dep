@@ -4,6 +4,7 @@ import { Pagination } from "rsuite";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import ProductItem from "../ProductItem";
+import Footer from "../Footer";
 
 const SearchPage = () => {
   const navigate = useNavigate();
@@ -18,10 +19,12 @@ const SearchPage = () => {
   //   const filteredProducts = products.filter(
   //     (product) => product.category === category
   //   );
-  const currentItems =
-    searchArray.length > 1
-      ? searchArray.slice(indexOfFirstItem, indexOfLastItem)
-      : 1;
+  // const currentItems =
+  //   searchArray.length > 1
+  //     ? searchArray.slice(indexOfFirstItem, indexOfLastItem)
+  //     : 1;
+
+  const currentItems = searchArray.slice(indexOfFirstItem, indexOfLastItem);
 
   useEffect(() => {
     const isRefreshed = localStorage.getItem("isRefreshed");
@@ -37,11 +40,6 @@ const SearchPage = () => {
       localStorage.removeItem("isRefreshed");
     };
   }, [navigate]);
-
-  //   useEffect(() => {
-  //     console.log(products);
-  //     console.log(searchArray);
-  //   }, [products, searchArray]);
 
   return (
     <div className="home-container">
@@ -78,6 +76,7 @@ const SearchPage = () => {
           />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

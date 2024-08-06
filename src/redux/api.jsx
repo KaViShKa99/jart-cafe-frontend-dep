@@ -25,3 +25,4 @@ const apiRequest = async (url, method, data = null, token = null) => {
 };
 
 export default apiRequest;
+

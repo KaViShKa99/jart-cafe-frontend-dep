@@ -13,8 +13,6 @@ export const fetchSelectedProduct = createAsyncThunk(
 export const uploadUserImage = createAsyncThunk(
   "user/uploadImage",
   async ({ file, isPhysical }, { rejectWithValue }) => {
-    console.log(file);
-    console.log(isPhysical);
     const formData = new FormData();
     formData.append("file", file);
     const response = await apiRequest("/images/upload/user", "POST", formData);
@@ -33,14 +31,11 @@ const productBuyDetails = createSlice({
     uploadImageChange: (state, action) => {
       const { file, isPhysical } = action.payload;
       const imageUrl = URL.createObjectURL(file);
-      console.log(file);
-      console.log(isPhysical);
+
       if (isPhysical) {
-        console.log("true");
         state.physicalArt.uploadedImage = imageUrl;
         // state.physicalArt.uploadImgObj = file;
       } else {
-        console.log("false");
         state.digitalArt.uploadedImage = imageUrl;
         // state.digitalArt.uploadImgObj = file;
       }
@@ -151,7 +146,6 @@ const productBuyDetails = createSlice({
       state.physicalArt.paintingNote = action.payload;
     },
     clearStates: (state) => {
-      console.log("clear states");
       state.digitalArt = DIGITAL_ART;
       state.physicalArt = PHISICAL_ART;
     },
@@ -160,8 +154,8 @@ const productBuyDetails = createSlice({
       state[isPhysicalArt ? "physicalArt" : "digitalArt"] = action.payload;
     },
     updateArtworkState: (state, action) => {
-      const isPhysical = action.payload;
-      console.log(isPhysical);
+      // const isPhysical = action.payload;
+      // console.log(isPhysical);
       // if (isPhysical) {
       //   state.physicalArt.isPhysicalArt = isPhysical;
       // } else {

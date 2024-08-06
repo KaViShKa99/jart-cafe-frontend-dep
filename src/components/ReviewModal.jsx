@@ -17,8 +17,6 @@ const ReviewModal = ({ isModalOpen, onRequestClose, artworkId }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(artworkId);
-
     if (userProfile) {
       const reviewData = {
         artworkId: artworkId,

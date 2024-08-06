@@ -10,6 +10,7 @@ import paymentReducer from "./reducers/paymentReducer";
 import adminReducer from "./reducers/adminReducer";
 import orderReducer from "./reducers/orderReducer";
 import reviewReducer from "./reducers/reviewReducer";
+import fileDownloadReducer from "./reducers/fileDownloadReducer";
 
 const store = configureStore({
   reducer: {
@@ -23,7 +24,8 @@ const store = configureStore({
     userPayment: paymentReducer,
     admin: adminReducer,
     order: orderReducer,
-    review:reviewReducer
+    review: reviewReducer,
+    fileDownload: fileDownloadReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

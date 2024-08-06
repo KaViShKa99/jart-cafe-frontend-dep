@@ -8,7 +8,7 @@ const searchItemSlices = createSlice({
   reducers: {
     addToSearchArray: (state, action) => {
       const { product } = action.payload;
-      state.searchArray = product;
+      state.searchArray = [product];
     },
   },
 });

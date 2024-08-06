@@ -103,7 +103,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
 
   useEffect(() => {
     dispatch(updateTotal(isPhysical));
-    dispatch(updateArtworkState(isPhysical));
+    // dispatch(updateArtworkState(isPhysical));
   }, [props, isPhysical, digitalArt, physicalArt]);
 
   // useEffect(() => {

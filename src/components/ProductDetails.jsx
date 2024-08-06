@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaPlane, FaClock, FaGlobe } from "react-icons/fa";
 
 const ProductDetails = ({ productDetails }) => {
   const [activeTab, setActiveTab] = useState("details");
@@ -13,15 +14,21 @@ const ProductDetails = ({ productDetails }) => {
       <div className="tabs">
         <button
           className={`tab ${activeTab === "details" ? "active" : ""}`}
-          onClick={() => setActiveTab("details")}
+          onClick={(event) => {
+            event.preventDefault();
+            setActiveTab("details");
+          }}
         >
-          More Details
+          Item details
         </button>
         <button
           className={`tab ${activeTab === "shipping" ? "active" : ""}`}
-          onClick={() => setActiveTab("shipping")}
+          onClick={(event) => {
+            event.preventDefault();
+            setActiveTab("shipping");
+          }}
         >
-          Shipping Details
+          Shipping policy
         </button>
       </div>
       <div className="tab-content">
@@ -48,12 +55,27 @@ const ProductDetails = ({ productDetails }) => {
         {activeTab === "shipping" && (
           <div className="shipping-details">
             {/* <h2>Shipping Details</h2> */}
-            <p>Free worldwide shipping on all orders.</p>
-            <p>Estimated delivery time:</p>
+            <div className="shipping-header">
+              {/* <h2>
+                <FaGlobe /> Shipping Details
+              </h2> */}
+            </div>
+            <p>
+              <FaPlane /> Free worldwide shipping on all orders.
+            </p>
+            <p>
+              <FaClock /> Estimated delivery time:
+            </p>
             <ul>
-              <li>USA: 5-10 business days</li>
-              <li>Europe: 7-14 business days</li>
-              <li>Rest of the world: 10-20 business days</li>
+              <li>
+                <FaPlane /> USA: 5-10 business days
+              </li>
+              <li>
+                <FaPlane /> Europe: 7-14 business days
+              </li>
+              <li>
+                <FaPlane /> Rest of the world: 10-20 business days
+              </li>
             </ul>
             <p>
               Please note that due to the custom nature of our products,

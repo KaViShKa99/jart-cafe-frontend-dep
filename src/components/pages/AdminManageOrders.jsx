@@ -9,6 +9,8 @@ import {
   orderCompleteDateChange,
 } from "../../redux/reducers/orderReducer";
 import { format } from "date-fns";
+import { downloadImg } from "../../redux/reducers/fileDownloadReducer";
+import axios from "axios";
 
 const AdminManageOrders = () => {
   const dispatch = useDispatch();
@@ -36,6 +38,13 @@ const AdminManageOrders = () => {
 
   const toggleExpand = (id) => {
     setExpandedOrderedRowId((prevId) => (prevId === id ? null : id));
+  };
+
+  const imageHandle = (e, imageUrl) => {
+    e.preventDefault();
+    const fileName = imageUrl.split("/").pop();
+
+    dispatch(downloadImg({ type: "user", fileName: fileName }));
   };
 
   useEffect(() => {
@@ -137,7 +146,12 @@ const AdminManageOrders = () => {
                                   <div className="detail-item">
                                     <span className="label">
                                       Sketch
-                                      <button className="download-button">
+                                      <button
+                                        className="download-button"
+                                        onClick={(e) =>
+                                          imageHandle(e, item.uploadedImage)
+                                        }
+                                      >
                                         Download
                                       </button>
                                     </span>

@@ -10,24 +10,24 @@ import {
 } from "../../redux/reducers/cartItemReducer";
 
 import { fetchOrderByEmail } from "../../redux/reducers/orderReducer";
-
 import { format } from "date-fns";
 import ReviewModal from "../ReviewModal";
+import Footer from "../Footer";
 
 Modal.setAppElement("#root");
 
 const PurchaseItems = () => {
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { cartArray, subTotal } = useSelector((state) => state.cartItems);
   const { signIn, userProfile } = useSelector((state) => state.userProfile);
   const { orderListByEmail } = useSelector((state) => state.order);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedArtworkId,setSelectedArtworkId] = useState(null);
+  const [selectedArtworkId, setSelectedArtworkId] = useState(null);
 
   const openModal = (e, productId) => {
-    setSelectedArtworkId(productId)
+    setSelectedArtworkId(productId);
     setIsModalOpen(true);
   };
 
@@ -51,13 +51,10 @@ const PurchaseItems = () => {
   }, [isModalOpen]);
 
   useEffect(() => {
-    console.log(userProfile.email);
     dispatch(fetchOrderByEmail(userProfile.email));
   }, [userProfile]);
 
-  useEffect(() => {
-    console.log(orderListByEmail);
-  }, [orderListByEmail]);
+
 
   return (
     <div className="purchase-container">
@@ -70,7 +67,6 @@ const PurchaseItems = () => {
               <tr>
                 <th>PRODUCTS</th>
                 <th>ORDER STATUS</th>
-                {/* <th>REVIEW PRODUCT</th> */}
               </tr>
             </thead>
             <tbody>
@@ -149,6 +145,18 @@ const PurchaseItems = () => {
                         >
                           {product.orderStatus ? "Completed" : "Progress"}
                         </span>
+
+                        {/* <span
+                          className={`status ${
+                            orderStatuses[product.id] === "Completed"
+                              ? "Completed"
+                              : "Progress"
+                          }`}
+                        >
+                          {orderStatuses[product.id] === "Completed"
+                            ? "Completed"
+                            : "In Progress"}
+                        </span> */}
                       </div>
                     </td>
                   </tr>
@@ -158,7 +166,12 @@ const PurchaseItems = () => {
           </table>
         </div>
       </div>
-      <ReviewModal isModalOpen={isModalOpen} onRequestClose={closeModal} artworkId={selectedArtworkId} />
+      <Footer />
+      <ReviewModal
+        isModalOpen={isModalOpen}
+        onRequestClose={closeModal}
+        artworkId={selectedArtworkId}
+      />
     </div>
   );
 };

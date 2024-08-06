@@ -9,6 +9,7 @@ import ProductBuyForm from "../ProductBuyForm";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSelectedProduct } from "../../redux/reducers/productBuyReducer";
 import { getProductReviews } from "../../redux/reducers/reviewReducer";
+import Footer from "../Footer";
 
 const SelectedProduct = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const SelectedProduct = () => {
           <ProductDetails productDetails={selectedProduct.description} />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

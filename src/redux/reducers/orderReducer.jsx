@@ -31,7 +31,6 @@ export const updateCompletedDate = createAsyncThunk(
   async (data, { getState, rejectWithValue }) => {
     try {
       const { id, date } = data;
-
       return await apiRequest(`/order/update/complete-date/${id}`, "PUT", date);
     } catch (error) {
       return rejectWithValue(
@@ -68,12 +67,9 @@ const adminOrderDetailsSlices = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchOrderedDetails.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.orders = action.payload;
     });
     builder.addCase(fetchOrderByEmail.fulfilled, (state, action) => {
-      console.log(action.payload);
-
       state.orderListByEmail = action.payload;
     });
   },

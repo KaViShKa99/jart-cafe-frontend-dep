@@ -12,6 +12,7 @@ const SearchBar = () => {
   const { products } = useSelector((state) => state.products);
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [hideSuggestion, setHideSuggestions] = useState(false);
   const normalizeString = (str) => str.toLowerCase().replace(/\s+/g, "");
 
   const options = {
@@ -56,6 +57,7 @@ const SearchBar = () => {
         })
         .filter((item) => item !== null);
 
+      
       setSuggestions(result);
     } else {
       setSuggestions([]);
@@ -63,13 +65,24 @@ const SearchBar = () => {
   }, [query]);
 
   const handleInputChange = (e) => {
+    setHideSuggestions(false);
     setQuery(e.target.value);
   };
+  // const handleFocus = () => {
+  //   console.log("Input field is focused");
+  //   setHideSuggestions(false);
+  // };
+  // const handleBlur = () => {
+  //   console.log("Input field is not focused");
+  //   setHideSuggestions(true);
+  // };
 
   const handleSuggestionClick = (suggestion) => {
+
     dispatch(addToSearchArray(suggestion));
     setQuery(suggestion.displayText);
     setSuggestions([]);
+    setHideSuggestions(true)
     navigate("/search");
   };
 
@@ -88,9 +101,11 @@ const SearchBar = () => {
         placeholder="Search for anything"
         value={query}
         onChange={handleInputChange}
+        // onFocus={handleFocus}
+        // onBlur={handleBlur}
       />
 
-      {suggestions.length > 0 ? (
+      {suggestions.length > 0 && !hideSuggestion? (
         <ul className="suggestions-list">
           {suggestions.map((suggestion, index) => (
             <li
@@ -102,7 +117,7 @@ const SearchBar = () => {
             </li>
           ))}
         </ul>
-      ) : query ? (
+      ) : query && !hideSuggestion? (
         <div className="suggestions-list">No match results</div>
       ) : null}
     </div>

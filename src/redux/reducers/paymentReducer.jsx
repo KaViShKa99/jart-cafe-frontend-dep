@@ -9,15 +9,12 @@ export const userPayment = createAsyncThunk(
   "user/payment",
   async (userCredentials, { rejectWithValue }) => {
     try {
-      console.log(userCredentials);
-
       const response = await apiRequest(
         "/checkout/create-session",
         "POST",
         userCredentials,
         null
       );
-      console.log(response);
       return response;
     } catch (error) {
       return rejectWithValue(error);
@@ -51,8 +48,6 @@ const paymentModel = createSlice({
       try {
         const session = action.payload;
 
-        console.log(session);
-
         const stripe = await stripePromise;
         const { error } = await stripe.redirectToCheckout({
           sessionId: session.id,
@@ -65,9 +60,6 @@ const paymentModel = createSlice({
         console.error("Error during payment processing:", error);
       }
     });
-    // builder.addCase(userPaymentCancel.fulfilled, async (state, action) => {
-    //   // console.log(action.payload);
-    // });
   },
 });
 
