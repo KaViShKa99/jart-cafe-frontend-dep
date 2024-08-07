@@ -64,8 +64,8 @@ const TermsAndConditions = () => (
       <h2>Contact Us:</h2>
       <p>
         If you have any questions about these terms and conditions, please
-        contact us at{" "}
-        <a href="mailto:support@jartcafe.com">support@jartcafe.com</a>.
+        contact us at{" support@jartcafe.com "}
+        {/* <a href="mailto:support@jartcafe.com">support@jartcafe.com</a>. */}
       </p>
     </div>
     <Footer />

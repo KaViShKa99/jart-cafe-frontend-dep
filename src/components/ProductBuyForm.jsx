@@ -58,15 +58,12 @@ const ProductBuyForm = ({ props, editForm, close }) => {
   };
 
   const handleFileChange = (e) => {
+    e.preventDefault();
     const file = e.target.files[0];
 
     if (file) {
-      console.log(isPhysical);
       dispatch(uploadUserImage({ file: file, isPhysical: isPhysical }));
-      // const imageUrl = URL.createObjectURL(file);
-      // dispatch(
-      //   uploadImageChange({ imageUrl: imageUrl, isPhysical: isPhysical })
-      // );
+      e.target.value = "";
     }
   };
 
@@ -120,9 +117,9 @@ const ProductBuyForm = ({ props, editForm, close }) => {
   const addTocart = (e) => {
     e.preventDefault();
     const newItem = isPhysical ? physicalArt : digitalArt;
-    dispatch(addToCart(newItem));
+    dispatch(addToCart({ newItem: newItem, isPhysical: isPhysical }));
     dispatch(clearStates());
-    navigate("/cart");
+    // navigate("/cart");
   };
 
   const updateCartItems = (e) => {
@@ -480,7 +477,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
 
           {!editForm ? (
             <div className="cart-button">
-              <button className="buy-it-now-btn">BUY IT NOW</button>
+              {/* <button className="buy-it-now-btn">BUY IT NOW</button> */}
               <button className="add-to-cart-btn" onClick={addTocart}>
                 ADD TO CART
               </button>

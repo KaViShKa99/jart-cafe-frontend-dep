@@ -61,8 +61,8 @@ const PrivacyPolicy = () => (
       <h2>Contact Us:</h2>
       <p>
         If you have any questions or concerns about our privacy policy, please
-        contact us at{" "}
-        <a href="mailto:support@jartcafe.com">support@jartcafe.com</a>.
+        contact us at{" support@jartcafe.com"}
+        {/* <a href="mailto:support@jartcafe.com">support@jartcafe.com</a>. */}
       </p>
     </div>
     <Footer />

@@ -22,7 +22,7 @@ const Footer = () => (
           <FaMapMarkerAlt /> 123 Cafe Street, Brew City, BC 12345
         </p>
         <p>
-          <FaPhoneAlt /> +123-456-7890
+          <FaPhoneAlt /> +94 XXX-XXXX
         </p>
         <p>
           <FaEnvelope /> info@jartcafe.com

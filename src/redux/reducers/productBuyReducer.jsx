@@ -99,8 +99,10 @@ const productBuyDetails = createSlice({
       state[isPhysical ? "physicalArt" : "digitalArt"].designerNote = note;
     },
     clearUploadedImage: (state) => {
-      state.digitalArt.uploadedImage = "";
+      state.digitalArt.uploadedImage = null;
+      state.digitalArt.uploadImgObj = null;
       state.physicalArt.uploadedImage = null;
+      state.physicalArt.uploadImgObj = null;
     },
     updateQuantityChange: (state, action) => {
       const { quantity, isPhysical } = action.payload;

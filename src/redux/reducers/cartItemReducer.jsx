@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import CryptoJS from "crypto-js";
-
+import AlertBox from "../../components/AlertBox";
 const secretKey = import.meta.env.VITE_SECRET_KEY;
 
 const loadCartFromStorage = () => {
@@ -43,10 +43,38 @@ const cartItemSlices = createSlice({
   },
   reducers: {
     addToCart: (state, action) => {
-      const newItem = action.payload;
+      const { newItem, isPhysical } = action.payload;
+      if (isPhysical) {
+        const { uploadedImage, numOfPersons, material, size } = newItem;
+        if (!uploadedImage || !numOfPersons || !material || !size) {
+          AlertBox(
+            "error",
+            "Error",
+            "Please fill in all required fields for physical items."
+          );
+
+          return;
+        }
+      } else {
+        const { uploadedImage, numOfPersons, style, figure } = newItem;
+        if (!uploadedImage || !numOfPersons || !style || !figure) {
+          AlertBox(
+            "error",
+            "Error",
+            "Please fill in all required fields for digital items."
+          );
+          return;
+        }
+      }
 
       if (state.cartArray.length === 0) {
         state.cartArray.push(newItem);
+        AlertBox(
+          "success",
+          "Cart Update",
+          "Item successfully added to your cart.44"
+        );
+        saveCartToStorage(state.cartArray);
       } else {
         const existingItem = state.cartArray.find(
           (product) => product.artworkId === newItem.artworkId
@@ -54,9 +82,17 @@ const cartItemSlices = createSlice({
 
         if (!existingItem) {
           state.cartArray.push(newItem);
+          AlertBox(
+            "success",
+            "Cart Update",
+            "Item successfully added to your cart."
+          );
+          saveCartToStorage(state.cartArray);
+        } else {
+          AlertBox("error", "Error", "Cart Item already in the cart.");
         }
       }
-      saveCartToStorage(state.cartArray);
+      // saveCartToStorage(state.cartArray);
     },
     removeCart: (state, action) => {
       const artworkId = action.payload;

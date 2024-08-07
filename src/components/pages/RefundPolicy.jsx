@@ -34,8 +34,8 @@ const RefundPolicy = () => (
       <h2>How to Request a Refund:</h2>
       <ul>
         <li>
-          Contact our support team at{" "}
-          <a href="mailto:support@jartcafe.com">support@jartcafe.com</a> with
+          Contact our support team at{" support@jartcafe.com"}
+          {/* <a href="mailto:support@jartcafe.com">support@jartcafe.com</a> with */}
           your order details and reason for refund.
         </li>
         <li>
