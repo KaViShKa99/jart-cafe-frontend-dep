@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useStateContext } from "./StateContext";
+// import { useStateContext } from "./StateContext";
 import { categories } from "../data/Data";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectCategory } from "../redux/reducers/categoryReducer";

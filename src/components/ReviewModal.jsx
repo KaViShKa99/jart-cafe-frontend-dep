@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
-import { submitReview } from "../redux/reducers/reviewReducer";
+import {
+  submitReview,
+  updateReviewStatus,
+} from "../redux/reducers/reviewReducer";
+import AlertBox from "../components/AlertBox";
 
-const ReviewModal = ({ isModalOpen, onRequestClose, artworkId }) => {
+const ReviewModal = ({
+  isModalOpen,
+  onRequestClose,
+  artworkId,
+  orderId,
+  purchaseId,
+}) => {
   const dispatch = useDispatch();
   const { userProfile } = useSelector((state) => state.userProfile);
 
@@ -14,10 +24,10 @@ const ReviewModal = ({ isModalOpen, onRequestClose, artworkId }) => {
     setRating(star);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (userProfile) {
+    if (userProfile && reviewText !== "" && rating != 0) {
       const reviewData = {
         artworkId: artworkId,
         rating: rating,
@@ -26,12 +36,53 @@ const ReviewModal = ({ isModalOpen, onRequestClose, artworkId }) => {
         userEmail: userProfile.email,
         reviewedDate: new Date(),
       };
-      dispatch(submitReview(reviewData));
-    }
+      // dispatch(submitReview(reviewData));
+      // dispatch(
+      //   updateReviewStatus({
+      //     orderId: orderId,
+      //     purchaseId: purchaseId,
+      //     status: true,
+      //   })
+      // );
+      // AlertBox(
+      //   "success",
+      //   "Success",
+      //   "Your review has been added successfully."
+      // );
 
-    setReviewText("");
-    setRating("");
-    onRequestClose();
+      try {
+        await dispatch(submitReview(reviewData)).unwrap(); // assuming you use `createAsyncThunk` and `unwrap` for handling promises
+        await dispatch(
+          updateReviewStatus({
+            orderId: orderId,
+            purchaseId: purchaseId,
+            status: true,
+          })
+        ).unwrap();
+
+        onRequestClose();
+        setReviewText("");
+        setRating("");
+      } catch (error) {
+        AlertBox(
+          "error",
+          "Error",
+          "There was an error submitting your review."
+        );
+      }
+
+      setReviewText("");
+      setRating("");
+      onRequestClose();
+    } else {
+      AlertBox(
+        "error",
+        "Error",
+        "Please fill in both the text field and ratings."
+      );
+      setReviewText("");
+      setRating("");
+    }
   };
 
   return (

@@ -25,6 +25,24 @@ export const getProductReviews = createAsyncThunk(
     }
   }
 );
+
+export const updateReviewStatus = createAsyncThunk(
+  "review/updateReviewStatus",
+  async (data, { rejectWithValue }) => {
+    try {
+      const { purchaseId, orderId, status } = data;
+      return await apiRequest(
+        `/order/update/review-status/${orderId}/${purchaseId}`,
+        "PUT",
+        status
+      );
+    } catch (error) {
+      return rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
+    }
+  }
+);
 const productReviewSlices = createSlice({
   name: "product-review",
   initialState: {

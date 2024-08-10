@@ -205,7 +205,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                   </span>
                 </div>
                 <div className="detail-item">
-                  <span className="label">Style</span>
+                  <span className="label">Style </span>
                   <span className="value">
                     {physicalArt.style || digitalArt.style
                       ? isPhysical
@@ -284,7 +284,8 @@ const ProductBuyForm = ({ props, editForm, close }) => {
           {isPhysical && (
             <div className="physical-art-details">
               <label htmlFor="selected-material-design">
-                Material : {physicalArt.material}
+                Material <span style={{ color: "red" }}> *</span> :{" "}
+                {physicalArt.material}
               </label>
               <div className="material-sizes">
                 {materialDesign &&
@@ -307,7 +308,8 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                   ))}
               </div>
               <label htmlFor="selected-size">
-                Size : {physicalArt.size ? physicalArt.size.size : ""}
+                Size <span style={{ color: "red" }}> *</span>:{" "}
+                {physicalArt.size ? physicalArt.size.size : ""}
               </label>
               <div className="sizes-box">
                 {materialDesign &&
@@ -329,7 +331,9 @@ const ProductBuyForm = ({ props, editForm, close }) => {
             </div>
           )}
 
-          <label htmlFor="img">Upload your photo(s)</label>
+          <label htmlFor="img">
+            Upload your photo(s) <span style={{ color: "red" }}> *</span>
+          </label>
           <div className="file-input-container">
             <input
               type="file"
@@ -364,7 +368,9 @@ const ProductBuyForm = ({ props, editForm, close }) => {
           </div>
           <div className="select-options">
             <div className="number-persons">
-              <label htmlFor="persons">Number of Person/Pet</label>
+              <label htmlFor="persons">
+                Number of Person/Pet<span style={{ color: "red" }}> *</span>
+              </label>
               <select
                 name="persons"
                 id="persons"
@@ -386,7 +392,9 @@ const ProductBuyForm = ({ props, editForm, close }) => {
             {!isPhysical && (
               <div className="digital-image-details">
                 <div className="digital-image-style">
-                  <label htmlFor="styles">Style</label>
+                  <label htmlFor="styles">
+                    Style <span style={{ color: "red" }}> *</span>
+                  </label>
                   <select
                     name="styles"
                     id="styles"
@@ -402,7 +410,9 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                   </select>
                 </div>
                 <div className="digital-image-figures">
-                  <label htmlFor="figures">Figures</label>
+                  <label htmlFor="figures">
+                    Figures <span style={{ color: "red" }}> *</span>
+                  </label>
                   <select
                     name="figures"
                     id="figures"

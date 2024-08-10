@@ -17,7 +17,6 @@ import Footer from "../Footer";
 Modal.setAppElement("#root");
 
 const PurchaseItems = () => {
-
   const dispatch = useDispatch();
   const { cartArray, subTotal } = useSelector((state) => state.cartItems);
   const { signIn, userProfile } = useSelector((state) => state.userProfile);
@@ -25,9 +24,13 @@ const PurchaseItems = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArtworkId, setSelectedArtworkId] = useState(null);
+  const [orderId, setOrderId] = useState(null);
+  const [purchaseId, setPurchaseId] = useState(null);
 
-  const openModal = (e, productId) => {
+  const openModal = (e, productId, orderId, purchaseId) => {
     setSelectedArtworkId(productId);
+    setOrderId(orderId);
+    setPurchaseId(purchaseId);
     setIsModalOpen(true);
   };
 
@@ -52,9 +55,11 @@ const PurchaseItems = () => {
 
   useEffect(() => {
     dispatch(fetchOrderByEmail(userProfile.email));
-  }, [userProfile]);
+  }, [userProfile, isModalOpen]);
 
-
+  // useEffect(() => {
+  //   console.log(orderListByEmail);
+  // }, [orderListByEmail]);
 
   return (
     <div className="purchase-container">
@@ -124,10 +129,21 @@ const PurchaseItems = () => {
                                 <button
                                   type="button"
                                   className="review-button"
-                                  onClick={(e) => openModal(e, item.artworkId)}
-                                  disabled={!product.orderStatus}
+                                  onClick={(e) =>
+                                    openModal(
+                                      e,
+                                      item.artworkId,
+                                      product.id,
+                                      item.id
+                                    )
+                                  }
+                                  disabled={
+                                    product.orderStatus
+                                      ? item.reviewStatus
+                                      : true
+                                  }
                                 >
-                                  Review
+                                  Review {item.reviewStatus}
                                 </button>
                               </div>
                             </div>
@@ -171,6 +187,8 @@ const PurchaseItems = () => {
         isModalOpen={isModalOpen}
         onRequestClose={closeModal}
         artworkId={selectedArtworkId}
+        orderId={orderId}
+        purchaseId={purchaseId}
       />
     </div>
   );

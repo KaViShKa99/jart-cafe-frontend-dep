@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useStateContext } from "./StateContext";
+// import { useStateContext } from "./StateContext";
 
 const QuantityCounter = ({
   TotalQuantity,

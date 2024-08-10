@@ -18,6 +18,7 @@ import {
   userPayment,
 } from "../../redux/reducers/paymentReducer";
 import Footer from "../Footer";
+import { Loader } from "rsuite";
 
 Modal.setAppElement("#root");
 
@@ -31,6 +32,7 @@ const Cart = () => {
     dispatch(updateCartQuntity({ quantity: quantity, id: id }));
   };
 
+  const [loginLoading, setLoginLoading] = useState(false);
   const [isCartModalOpen, setIsCartModelOpen] = useState(false);
   const [cartItem, setCartItem] = useState(null);
 
@@ -83,6 +85,7 @@ const Cart = () => {
             (item.material ? item.material : null) +
             " " +
             (item.size ? item.size.size : null),
+          reviewStatus: false,
         }));
       };
       const items = formatCartItemsForPayment(cartArray);
@@ -102,6 +105,7 @@ const Cart = () => {
           items: items,
         })
       );
+      setLoginLoading(true);
     }
   };
 
@@ -120,6 +124,24 @@ const Cart = () => {
       document.body.classList.remove("no-scroll");
     };
   }, [isCartModalOpen]);
+
+  useEffect(() => {
+    let timer;
+    if (loginLoading) {
+      timer = setTimeout(() => {
+        setLoginLoading(false);
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [loginLoading]);
+
+  if (loginLoading) {
+    return (
+      <div className="loader-container">
+        <Loader center size="lg" />
+      </div>
+    );
+  }
 
   return (
     <div className="cart-container">
