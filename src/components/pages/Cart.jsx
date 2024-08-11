@@ -221,7 +221,6 @@ const Cart = () => {
                           Price :- $
                           {(product.eachPrice + product.price).toFixed(2)}{" "}
                         </div>
-
                         <QuantityCounter
                           TotalQuantity={(q) =>
                             updateQuantity(q, product.artworkId)

@@ -76,7 +76,7 @@ const PurchaseItems = () => {
             </thead>
             <tbody>
               {orderListByEmail.length === 0 ? (
-                <tr key="no-items">
+                <tr key="no-items" className="no-items">
                   <td colSpan="4" className="empty-cart-message">
                     <span>Your Ordered Items is currently empty.</span>
                   </td>
