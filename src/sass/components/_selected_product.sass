@@ -21,17 +21,15 @@
         .selected-product-container 
             align-items: center
             .gallery-container
-                // background: pink
                 margin: 20px 0px 0px 0px
                 .thumbnail-container
                     margin-top: 10px
             .product-review
-                width: 60%
+               width: 60%
             
         .reviews-and-shipping
-            //align-items: center
             .product-description
-                //width: 50%
+                width: 50%
                 //margin: 20px 100px 0px 30px
 
             // .product-review
@@ -41,16 +39,18 @@
             //     width: 80%
         
 @media (max-width: 1000px) 
-    .selected-product-container 
-        .gallery-container
-            // background: pink
-            margin: 20px 0px 0px 40px
-            .thumbnail-container
-                margin-top: 10px
-        .product-description
-            margin: 20px 40px 0px 30px
+    .selected-product-body
+        .selected-product-container 
+            .gallery-container
+                // background: pink
+                // margin: 20px 0px 0px 40px
+                .thumbnail-container
+                    margin-top: 10px
 
-    // .reviews-and-shipping
+            .product-review
+                width: 80%
+
+
 @media (max-width: 900px) 
     .selected-product-container 
         flex-direction: column
@@ -61,33 +61,36 @@
             width: 60%
             .thumbnail-container
                 margin-top: 10px
-        .product-description
-            margin: 20px 0px 0px 30px
-            width: 80%
+
+        // .product-description
+        //     margin: 20px 0px 0px 30px
+        //     width: 80%
 
     // .reviews-and-shipping
 
         
 @media (max-width: 768px) 
-    .selected-product-container 
+    .selected-product-body
         flex-direction: column
-        align-items: center
-        .gallery-container
-            // background: pink
-            margin: 20px 0px 0px 0px
-        .product-description
-            margin: 20px 0px 0px 0px
+        .selected-product-container 
+            flex-direction: column
+            align-items: center
+            .gallery-container
+                // background: pink
+                margin: 20px 0px 0px 0px
+            .product-description
+                margin: 20px 0px 0px 0px
 
-    .reviews-and-shipping
-        flex-direction: column-reverse
-        align-items: center
-        .product-review
-            width: 100%
-        .product-and-shipping-details
-            width: 100%
-            .tabs
-                button
-                    padding: 5px 5px
+        .reviews-and-shipping
+            .product-description
+                width: 80%
+            .product-review
+                width: 100%
+            .product-and-shipping-details
+                width: 100%
+                .tabs
+                    button
+                        padding: 5px 5px
         
 
 
