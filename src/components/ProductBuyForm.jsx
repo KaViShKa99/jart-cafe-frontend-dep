@@ -21,6 +21,7 @@ import {
 } from "../redux/reducers/productBuyReducer";
 import { addToCart, updateCartItem } from "../redux/reducers/cartItemReducer";
 import { persons, styles, figures, materialDesign } from "../data/Data";
+import { Loader } from "rsuite";
 
 const ProductBuyForm = ({ props, editForm, close }) => {
   const navigate = useNavigate();
@@ -35,6 +36,18 @@ const ProductBuyForm = ({ props, editForm, close }) => {
   const [sizesArray, setSizesArray] = useState([]);
 
   const uploadedImage = physicalArt.uploadedImage || digitalArt.uploadedImage;
+
+  const [imageLoading, setImageLoading] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    if (imageLoading) {
+      timer = setTimeout(() => {
+        setImageLoading(false);
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [imageLoading]);
 
   const handlePerChange = (e) => {
     const id = e.target.value;
@@ -64,6 +77,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
     if (file) {
       dispatch(uploadUserImage({ file: file, isPhysical: isPhysical }));
       e.target.value = "";
+      setImageLoading(true);
     }
   };
 
@@ -348,7 +362,29 @@ const ProductBuyForm = ({ props, editForm, close }) => {
               Choose Image
             </label>
             <>
-              {uploadedImage && (
+              {imageLoading ? (
+                <div className="image-loader-container">
+                  <Loader center size="md" speed="fast" content="Loading ..." />
+                </div>
+              ) : (
+                uploadedImage && (
+                  <div className="uploaded-image-preview">
+                    <img
+                      src={uploadedImage}
+                      alt="Preview"
+                      style={{ width: "100px", marginRight: "10px" }}
+                    />
+                    <button
+                      className="image-close-button"
+                      onClick={handleClearImage}
+                    >
+                      &#10005;
+                    </button>
+                  </div>
+                )
+              )}
+
+              {/* {uploadedImage && (
                 <div className="uploaded-image-preview">
                   <img
                     src={uploadedImage}
@@ -363,7 +399,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                     &#10005;
                   </button>
                 </div>
-              )}
+              )} */}
             </>
           </div>
           <div className="select-options">

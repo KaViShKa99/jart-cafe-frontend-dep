@@ -19,6 +19,7 @@ import {
 } from "../../redux/reducers/paymentReducer";
 import Footer from "../Footer";
 import { Loader } from "rsuite";
+import BounceLoader from "react-spinners/BounceLoader";
 
 Modal.setAppElement("#root");
 
@@ -32,7 +33,7 @@ const Cart = () => {
     dispatch(updateCartQuntity({ quantity: quantity, id: id }));
   };
 
-  const [loginLoading, setLoginLoading] = useState(false);
+  const [proceed, setProceed] = useState(false);
   const [isCartModalOpen, setIsCartModelOpen] = useState(false);
   const [cartItem, setCartItem] = useState(null);
 
@@ -105,7 +106,7 @@ const Cart = () => {
           items: items,
         })
       );
-      setLoginLoading(true);
+      setProceed(true);
     }
   };
 
@@ -127,18 +128,18 @@ const Cart = () => {
 
   useEffect(() => {
     let timer;
-    if (loginLoading) {
+    if (proceed) {
       timer = setTimeout(() => {
-        setLoginLoading(false);
+        // setProceed(false);
       }, 3000);
     }
     return () => clearTimeout(timer);
-  }, [loginLoading]);
+  }, [proceed]);
 
-  if (loginLoading) {
+  if (proceed) {
     return (
-      <div className="loader-container">
-        <Loader center size="lg" />
+      <div className="porceed-loader-container">
+        <BounceLoader color="#8ef685" />
       </div>
     );
   }

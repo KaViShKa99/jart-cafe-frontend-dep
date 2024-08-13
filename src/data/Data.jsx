@@ -50,11 +50,12 @@ export const categories = [
 ];
 
 export const persons = [
-  { id: 1, name: "1", value: 0 },
-  { id: 2, name: "2 +$7.00", value: 7 },
-  { id: 3, name: "3 +$14.00", value: 14 },
-  { id: 4, name: "4 +$21.00", value: 21 },
-  { id: 5, name: "5 or more +$28.00", value: 28 },
+  { id: 1, name: "Select a person", value: 0 },
+  { id: 2, name: "1", value: 0 },
+  { id: 3, name: "2 +$7.00", value: 7 },
+  { id: 4, name: "3 +$14.00", value: 14 },
+  { id: 5, name: "4 +$21.00", value: 21 },
+  { id: 6, name: "5 or more +$28.00", value: 28 },
 ];
 
 export const styles = [
@@ -75,7 +76,7 @@ export const styles = [
 ];
 
 export const figures = [
-  { id: 1, name: "Select an option", value: 0 },
+  { id: 1, name: "Select a figure", value: 0 },
   { id: 2, name: "1 figure (USD 34.00)", value: 34 },
   { id: 3, name: "2 figure (USD 44.00)", value: 44 },
   { id: 4, name: "3 figure (USD 54.00)", value: 54 },

@@ -163,6 +163,7 @@ const productBuyDetails = createSlice({
       // } else {
       //   state.digitalArt.isPhysicalArt = isPhysical;
       // }
+      
     },
   },
   extraReducers: (builder) => {
