@@ -22,6 +22,7 @@ import {
 import { addToCart, updateCartItem } from "../redux/reducers/cartItemReducer";
 import { persons, styles, figures, materialDesign } from "../data/Data";
 import { Loader } from "rsuite";
+import Skeleton from "@mui/material/Skeleton";
 
 const ProductBuyForm = ({ props, editForm, close }) => {
   const navigate = useNavigate();
@@ -35,7 +36,14 @@ const ProductBuyForm = ({ props, editForm, close }) => {
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
   const [sizesArray, setSizesArray] = useState([]);
 
-  const uploadedImage = physicalArt.uploadedImage || digitalArt.uploadedImage;
+  // const uploadedImage = physicalArt.uploadedImage || digitalArt.uploadedImage;
+
+  const uploadedImage =
+    physicalArt.uploadedImage && physicalArt.uploadedImage.length > 0
+      ? physicalArt.uploadedImage
+      : digitalArt.uploadedImage && digitalArt.uploadedImage.length > 0
+      ? digitalArt.uploadedImage
+      : [];
 
   const [imageLoading, setImageLoading] = useState(false);
 
@@ -81,9 +89,9 @@ const ProductBuyForm = ({ props, editForm, close }) => {
     }
   };
 
-  const handleClearImage = (e) => {
+  const handleClearImage = (e, index) => {
     e.preventDefault();
-    dispatch(clearUploadedImage());
+    dispatch(clearUploadedImage({ index: index, isPhysical: isPhysical }));
   };
 
   const updateQuantity = (q) => {
@@ -117,13 +125,13 @@ const ProductBuyForm = ({ props, editForm, close }) => {
     // dispatch(updateArtworkState(isPhysical));
   }, [props, isPhysical, digitalArt, physicalArt]);
 
-  // useEffect(() => {
-  //   console.log(cartArray);
-  // }, [cartArray]);
+  useEffect(() => {
+    console.log(uploadedImage);
+  }, [digitalArt]);
 
-  // useEffect(() => {
-  //   console.log("digitalArt", digitalArt);
-  // }, [digitalArt]);
+  useEffect(() => {
+    console.log("digitalArt", digitalArt);
+  }, [digitalArt]);
   // useEffect(() => {
   //   console.log("physicalArt", physicalArt);
   // }, [physicalArt]);
@@ -362,7 +370,40 @@ const ProductBuyForm = ({ props, editForm, close }) => {
               Choose Image
             </label>
             <>
-              {imageLoading ? (
+              <div className="image-preview-container">
+                {imageLoading ? (
+                  <div className="image-loader-container">
+                    <Loader
+                      center
+                      size="md"
+                      speed="fast"
+                      content="Loading ..."
+                    />
+                  </div>
+                ) : (
+                  uploadedImage &&
+                  uploadedImage.map((url, index) => (
+                    <div key={index} className="uploaded-image-preview">
+                      <img
+                        src={url}
+                        alt={`Preview ${index}`}
+                        style={{
+                          width: "100px",
+                          marginRight: "10px",
+                          height: "auto",
+                        }}
+                      />
+                      <button
+                        className="image-close-button"
+                        onClick={(e) => handleClearImage(e, index)}
+                      >
+                        &#10005;
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+              {/* {imageLoading ? (
                 <div className="image-loader-container">
                   <Loader center size="md" speed="fast" content="Loading ..." />
                 </div>
@@ -382,7 +423,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                     </button>
                   </div>
                 )
-              )}
+              )} */}
 
               {/* {uploadedImage && (
                 <div className="uploaded-image-preview">

@@ -98,10 +98,23 @@ const productBuyDetails = createSlice({
       const { note, isPhysical } = action.payload;
       state[isPhysical ? "physicalArt" : "digitalArt"].designerNote = note;
     },
-    clearUploadedImage: (state) => {
-      state.digitalArt.uploadedImage = null;
+    clearUploadedImage: (state, action) => {
+      const { index, isPhysical } = action.payload;
+      console.log(index);
+
+      if (isPhysical) {
+        if (state.physicalArt.uploadedImage.length > 0) {
+          state.physicalArt.uploadedImage =
+            state.physicalArt.uploadedImage.filter((_, i) => i !== index);
+        }
+      } else {
+        if (state.digitalArt.uploadedImage.length > 0) {
+          state.digitalArt.uploadedImage =
+            state.digitalArt.uploadedImage.filter((_, i) => i !== index);
+        }
+      }
+
       state.digitalArt.uploadImgObj = null;
-      state.physicalArt.uploadedImage = null;
       state.physicalArt.uploadImgObj = null;
     },
     updateQuantityChange: (state, action) => {
@@ -163,7 +176,6 @@ const productBuyDetails = createSlice({
       // } else {
       //   state.digitalArt.isPhysicalArt = isPhysical;
       // }
-      
     },
   },
   extraReducers: (builder) => {
@@ -172,10 +184,16 @@ const productBuyDetails = createSlice({
     });
     builder.addCase(uploadUserImage.fulfilled, (state, action) => {
       const { imageUrl, isPhysical } = action.payload;
+      // state.previewState.images = [...state.previewState.images, imageLinks];
+
       if (isPhysical) {
         state.physicalArt.uploadedImage = imageUrl;
       } else {
-        state.digitalArt.uploadedImage = imageUrl;
+        // state.digitalArt.uploadedImage = imageUrl;
+        state.digitalArt.uploadedImage = [
+          ...state.digitalArt.uploadedImage,
+          imageUrl,
+        ];
       }
     });
   },

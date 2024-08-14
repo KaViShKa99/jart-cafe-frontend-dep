@@ -95,7 +95,6 @@ const adminSlices = createSlice({
       const imageLinks = action.payload;
       if (imageLinks.trim() !== "") {
         state.previewState.images = [...state.previewState.images, imageLinks];
-        // setImageUrl((prev) => [...prev, imageLinks]);
       }
     },
     handleSizePrice: (state, action) => {

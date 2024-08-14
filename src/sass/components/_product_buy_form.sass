@@ -196,36 +196,43 @@
                 width: 100%
                 margin-top: 10px
                 margin-bottom: 20px
-
-                .image-loader-container
+                .image-preview-container
                     display: flex
-                    width: 200px
-                    height: 200px
+                    flex-wrap: wrap
 
-                .uploaded-image-preview
-                    display: flex
-                    align-items: center
-                    margin-bottom: 10px
+                    .image-loader-container
+                        display: flex
+                        width: 200px
+                        height: 200px
+                        justify-content: center
+                        align-items: center
 
-                    img
-                        width: 100px
-                        margin-right: 10px
+                    .uploaded-image-preview
+                        display: flex
+                        align-items: flex-start
+                        margin-bottom: 10px
+                        position: relative
+                       
+                        img
+                            width: 100px
+                            height: auto
+                            margin-right: 10px
+                            border: solid 1px black
 
-                    .image-close-button
-                        position: absolute
-                        top: 50px
-                        left: 70px
-                        background-color: var(--red)
-                        color: #fff
-                        border: none
-                        padding: 5px 10px
-                        cursor: pointer
-                        border-radius: 3px
-                        font-size: 10px
-                        font-weight: bold
+                        .image-close-button
+                            position: absolute
+                            left: 70px
+                            background-color: var(--red)
+                            color: #fff
+                            border: none
+                            padding: 5px 10px
+                            cursor: pointer
+                            border-radius: 3px
+                            font-size: 10px
+                            font-weight: bold
 
-                        &:hover
-                            background-color: #c0392b
+                            &:hover
+                                background-color: #c0392b
 
 
             .file-input
