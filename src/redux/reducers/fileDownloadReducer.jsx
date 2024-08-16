@@ -5,6 +5,7 @@ export const downloadImg = createAsyncThunk(
   "admin/imageDownload",
   async (downloadOption, { rejectWithValue }) => {
     const { type, fileName } = downloadOption;
+    
     return await downloadImage(type, fileName);
   }
 );

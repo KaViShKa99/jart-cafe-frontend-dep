@@ -42,17 +42,16 @@ const AdminManageOrders = () => {
 
   const imageHandle = (e, imageUrl) => {
     e.preventDefault();
+
     const fileName = imageUrl.split("/").pop();
 
     dispatch(downloadImg({ type: "user", fileName: fileName }));
   };
 
-  useEffect(() => {
-    // console.log(orderStatus);
-  }, [orderStatus]);
+  useEffect(() => {}, []);
 
   useEffect(() => {
-    console.log(orders);
+    // console.log(orders);
   }, [orders]);
 
   useEffect(() => {
@@ -144,24 +143,29 @@ const AdminManageOrders = () => {
                                   </div>
 
                                   <div className="detail-item">
-                                    <span className="label">
-                                      Sketch
-                                      <button
-                                        className="download-button"
-                                        onClick={(e) =>
-                                          imageHandle(e, item.uploadedImage)
-                                        }
-                                      >
-                                        Download
-                                      </button>
-                                    </span>
+                                    <span className="label">Sketch</span>
                                     <span className="value">
-                                      <img
-                                        key={2}
-                                        src={item.uploadedImage}
-                                        alt={`Artwork ${2}`}
-                                        className="artwork-image"
-                                      />
+                                      {item.uploadedImage.map((image, i) => (
+                                        <div
+                                          key={`uploaded-images ${i}`}
+                                          className="uploaded-images"
+                                        >
+                                          <button
+                                            className="download-button"
+                                            onClick={(e) =>
+                                              imageHandle(e, image)
+                                            }
+                                          >
+                                            Download
+                                          </button>
+                                          <img
+                                            key={i}
+                                            src={image}
+                                            alt={`Artwork ${i}`}
+                                            className="artwork-image"
+                                          />
+                                        </div>
+                                      ))}
                                     </span>
                                   </div>
 

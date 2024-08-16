@@ -19,6 +19,18 @@ export const uploadUserImage = createAsyncThunk(
     return { imageUrl: response, isPhysical: isPhysical };
   }
 );
+export const deleteUserImage = createAsyncThunk(
+  "user/deleteImage",
+  async (imageUrl, { rejectWithValue }) => {
+    const fileName = imageUrl.split("/").pop();
+    const response = await apiRequest(
+      `/images/delete/user/${fileName}`,
+      "DELETE"
+    );
+
+    return response;
+  }
+);
 
 const productBuyDetails = createSlice({
   name: "product-buy-details",

@@ -28,7 +28,6 @@ const saveCartToStorage = (cartArray) => {
       serializedCart,
       secretKey
     ).toString();
-
     localStorage.setItem("encryptedCart", encryptedCart);
   } catch (error) {
     console.error("Error saving cart to local storage:", error);

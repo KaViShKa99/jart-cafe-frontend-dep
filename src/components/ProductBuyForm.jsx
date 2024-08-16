@@ -18,6 +18,7 @@ import {
   materialNameChange,
   paintingNoteChange,
   clearStates,
+  deleteUserImage,
 } from "../redux/reducers/productBuyReducer";
 import { addToCart, updateCartItem } from "../redux/reducers/cartItemReducer";
 import { persons, styles, figures, materialDesign } from "../data/Data";
@@ -89,8 +90,11 @@ const ProductBuyForm = ({ props, editForm, close }) => {
     }
   };
 
-  const handleClearImage = (e, index) => {
+  const handleClearImage = (e, index, url) => {
     e.preventDefault();
+    console.log(url);
+
+    dispatch(deleteUserImage(url));
     dispatch(clearUploadedImage({ index: index, isPhysical: isPhysical }));
   };
 
@@ -125,13 +129,13 @@ const ProductBuyForm = ({ props, editForm, close }) => {
     // dispatch(updateArtworkState(isPhysical));
   }, [props, isPhysical, digitalArt, physicalArt]);
 
-  useEffect(() => {
-    console.log(uploadedImage);
-  }, [digitalArt]);
+  // useEffect(() => {
+  //   console.log(uploadedImage);
+  // }, [digitalArt]);
 
-  useEffect(() => {
-    console.log("digitalArt", digitalArt);
-  }, [digitalArt]);
+  // useEffect(() => {
+  //   console.log("digitalArt", digitalArt);
+  // }, [digitalArt]);
   // useEffect(() => {
   //   console.log("physicalArt", physicalArt);
   // }, [physicalArt]);
@@ -156,7 +160,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
     if (editForm) {
       dispatch(updateEditForms(props));
     } else {
-      dispatch(clearStates());
+      // dispatch(clearStates());
     }
   }, [editForm]);
 
@@ -395,7 +399,7 @@ const ProductBuyForm = ({ props, editForm, close }) => {
                       />
                       <button
                         className="image-close-button"
-                        onClick={(e) => handleClearImage(e, index)}
+                        onClick={(e) => handleClearImage(e, index, url)}
                       >
                         &#10005;
                       </button>
