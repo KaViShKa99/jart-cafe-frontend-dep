@@ -32,7 +32,11 @@ const Categories = () => {
             onClick={() => handleCategoryClick(index, category.name)}
             className={activeCategory === index ? "active" : ""}
           >
-            <img src={category.imageUrl} alt="Product" />
+            <img
+              src={category.imageUrl}
+              alt="Product"
+              className={activeCategory === index ? "active" : ""}
+            />
             {category.name}
           </li>
         ))}

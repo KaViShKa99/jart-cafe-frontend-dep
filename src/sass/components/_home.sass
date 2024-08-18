@@ -1,5 +1,112 @@
 .home-container
-    //background: pink
+    .top-bg-image
+        display: flex
+        overflow: hidden
+        //height: 600px  
+        height: 84vh      
+        .bg-image
+            display: flex
+            overflow: hidden
+            width: 50%
+            img
+                transform: scale(2) translate(20%, 12%)
+        .bg-content
+            font-family: "Inter", sans-serif
+            background: linear-gradient(to right, rgb(253, 121, 50), rgba(249,142,86,255))
+            //background: linear-gradient(to right, rgba(249,142,86,255), rgba(249,142,86,255))
+            width: 50%
+            display: flex
+            justify-content: center
+            flex-direction: column
+            padding: 10px 100px 10px 100px
+            color: white
+            p
+                text-align: justify
+            .learn-more-btn
+                margin-top: 20px
+                padding: 10px 20px
+                background-color: #fa8b53
+                color: white
+                font-weight: 700
+                border: solid 1px white
+                cursor: pointer
+                font-size: 1rem
+                border-radius: 50px
+                width: 180px
+                transition: background-color 0.3s, transform 0.3s
+
+
+                &:after
+                    content: '▼'
+                    font-size: 0.75rem
+                    margin-left: 10px
+                    transition: transform 0.3s
+
+                &:hover
+                    //text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff // White border effect around text
+                    background-color: rgba(255, 255, 255, 0.847) 
+                    color: #fa8b53
+                    //transform: scale(1.02)
+                 
+            
+
+    .bottom-bg-image
+        display: flex
+        overflow: hidden
+        height: 600px
+        .bg-image
+            display: flex
+            overflow: hidden
+            width: 50%
+            img
+                transform: scale(2.5) translate(20%, 10%)
+        .bg-content
+            font-family: "Inter", sans-serif
+            //background: linear-gradient(to right, rgba(219,61,63,255), rgba(219,61,63,255))
+            background: linear-gradient(to right, rgb(178, 31, 34), rgba(219,61,63,255))
+            width: 50%
+            display: flex
+            justify-content: center
+            flex-direction: column
+            padding: 10px 100px 10px 100px
+            color: white
+            gap: 20px
+
+            form
+                display: flex
+                //flex-direction: column
+                gap: 10px
+
+            input[type="email"]
+                padding: 10px
+                font-size: 1rem
+                border: none
+                border-radius: 50px 0 0 50px
+                padding-left: 20px
+                &::placeholder
+                    text-align: left
+
+            button[type="submit"]
+                display: flex
+                align-items: center
+                justify-content: center
+                width: auto
+                border-radius: 0 50px 50px 0
+                padding: 10px 20px
+                background-color: #fa8b53
+                color: white
+                border: none
+                //border: solid 0.5px white
+                cursor: pointer
+                font-size: 1rem
+                transition: background-color 0.3s
+                //font-weight: bold
+
+            button[type="submit"]:hover
+                background-color: #fa7837
+                color: white
+                border: solid 1px white
+
 
     
 @media (max-width: 1300px) 

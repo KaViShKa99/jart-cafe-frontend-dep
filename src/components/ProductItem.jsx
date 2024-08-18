@@ -16,8 +16,13 @@ const ProductItem = ({ product }) => {
             />
           </Link>
         </div>
-        <div className="gallery-title">{product.title}</div>
-        <div className="gallery-price">USD {product.price}</div>
+        <div className="gallery-item-details">
+          <div className="gallery-title">{product.title}</div>
+          <div className="gallery-price">
+            USD
+            <div className="price-value">{product.price}</div>
+          </div>
+        </div>
       </div>
     )
   );
