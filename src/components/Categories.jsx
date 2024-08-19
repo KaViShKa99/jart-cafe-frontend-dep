@@ -24,7 +24,9 @@ const Categories = () => {
 
   return (
     <div className="categorie-list">
-      <span className="home-headline">Unique Finds Market!</span>
+      <span className="home-headline">
+        <h1>Unique Finds Market!</h1>
+      </span>
       <ul>
         {categories.map((category, index) => (
           <li

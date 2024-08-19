@@ -19,7 +19,7 @@ import storage from "redux-persist/lib/storage";
 const persistConfig = {
   key: "selectedProductInfo",
   storage,
-  whitelist: ["selectedProduct", "digitalArt", "physicalArt"], // Persisting selectedProduct state too
+  whitelist: ["selectedProduct", "digitalArt", "physicalArt"],
 };
 
 const persistedReducer = persistReducer(persistConfig, productBuyReducer);

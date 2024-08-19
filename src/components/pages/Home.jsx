@@ -25,7 +25,7 @@ const Home = () => {
         <div className="bg-image">
           <img src="/imgs/home_bg1.jpg" alt="Background 1" />
         </div>
-        <div className="bg-content">
+        <div className="top-bg-content">
           <h1>Discover Your Next Masterpiece</h1>
           <p>
             Explore a curated collection of unique art pieces from emerging
@@ -34,7 +34,7 @@ const Home = () => {
             of Pop Art, Vector Art, and Portraits offers something for every
             taste. Start your art journey with us today!
           </p>
-          <button class="learn-more-btn" onClick={handleScrollToNextSection}>
+          <button className="learn-more-btn" onClick={handleScrollToNextSection}>
             Shop Now
           </button>
         </div>
@@ -45,7 +45,7 @@ const Home = () => {
         <div className="bg-image">
           <img src="/imgs/home_bg2.jpg" alt="Background 2" />
         </div>
-        <div className="bg-content">
+        <div className="bottom-bg-content">
           <h1>Stay Updated with Our Latest Art Collections!</h1>
           <p>
             Subscribe to our newsletter for the latest updates on unique art

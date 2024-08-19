@@ -92,7 +92,6 @@ const ProductBuyForm = ({ props, editForm, close }) => {
 
   const handleClearImage = (e, index, url) => {
     e.preventDefault();
-    console.log(url);
 
     dispatch(deleteUserImage(url));
     dispatch(clearUploadedImage({ index: index, isPhysical: isPhysical }));
@@ -130,7 +129,11 @@ const ProductBuyForm = ({ props, editForm, close }) => {
   }, [props, isPhysical, digitalArt, physicalArt]);
 
   // useEffect(() => {
+  //   console.log(physicalArt.uploadedImage || digitalArt.uploadedImage);
+  //   console.log(digitalArt);
   //   console.log(uploadedImage);
+  //   console.log(Array.isArray(uploadedImage));
+  //   console.log(uploadedImage.length > 0);
   // }, [digitalArt]);
 
   // useEffect(() => {
@@ -375,76 +378,63 @@ const ProductBuyForm = ({ props, editForm, close }) => {
             </label>
             <>
               <div className="image-preview-container">
-                {imageLoading ? (
-                  <div className="image-loader-container">
-                    <Loader
-                      center
-                      size="md"
-                      speed="fast"
-                      content="Loading ..."
-                    />
-                  </div>
-                ) : (
-                  uploadedImage &&
-                  uploadedImage.map((url, index) => (
-                    <div key={index} className="uploaded-image-preview">
-                      <img
-                        src={url}
-                        alt={`Preview ${index}`}
-                        style={{
-                          width: "100px",
-                          marginRight: "10px",
-                          height: "auto",
-                        }}
+                {
+                  imageLoading ? (
+                    <div className="image-loader-container">
+                      <Loader
+                        center
+                        size="md"
+                        speed="fast"
+                        content="Loading ..."
                       />
-                      <button
-                        className="image-close-button"
-                        onClick={(e) => handleClearImage(e, index, url)}
-                      >
-                        &#10005;
-                      </button>
                     </div>
-                  ))
-                )}
-              </div>
-              {/* {imageLoading ? (
-                <div className="image-loader-container">
-                  <Loader center size="md" speed="fast" content="Loading ..." />
-                </div>
-              ) : (
-                uploadedImage && (
-                  <div className="uploaded-image-preview">
-                    <img
-                      src={uploadedImage}
-                      alt="Preview"
-                      style={{ width: "100px", marginRight: "10px" }}
-                    />
-                    <button
-                      className="image-close-button"
-                      onClick={handleClearImage}
-                    >
-                      &#10005;
-                    </button>
-                  </div>
-                )
-              )} */}
+                  ) : Array.isArray(uploadedImage) &&
+                    uploadedImage.length > 0 ? (
+                    uploadedImage.map((url, index) => (
+                      <div key={index} className="uploaded-image-preview">
+                        <img
+                          src={url}
+                          alt={`Preview ${index}`}
+                          style={{
+                            width: "100px",
+                            marginRight: "10px",
+                            height: "auto",
+                          }}
+                        />
+                        <button
+                          className="image-close-button"
+                          onClick={(e) => handleClearImage(e, index, url)}
+                        >
+                          &#10005;
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <div>No images uploaded</div> // Optional: Display a message when there are no images
+                  )
 
-              {/* {uploadedImage && (
-                <div className="uploaded-image-preview">
-                  <img
-                    src={uploadedImage}
-                    // src={uploadedImage}
-                    alt="Preview"
-                    style={{ width: "100px", marginRight: "10px" }}
-                  />
-                  <button
-                    className="image-close-button"
-                    onClick={handleClearImage}
-                  >
-                    &#10005;
-                  </button>
-                </div>
-              )} */}
+                  // uploadedImage &&
+                  // uploadedImage.map((url, index) => (
+                  //   <div key={index} className="uploaded-image-preview">
+                  //     <img
+                  //       src={url}
+                  //       alt={`Preview ${index}`}
+                  //       style={{
+                  //         width: "100px",
+                  //         marginRight: "10px",
+                  //         height: "auto",
+                  //       }}
+                  //     />
+                  //     <button
+                  //       className="image-close-button"
+                  //       onClick={(e) => handleClearImage(e, index, url)}
+                  //     >
+                  //       &#10005;
+                  //     </button>
+                  //   </div>
+                  // ))
+                }
+              </div>
             </>
           </div>
           <div className="select-options">

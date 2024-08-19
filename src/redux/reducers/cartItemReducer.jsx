@@ -71,7 +71,7 @@ const cartItemSlices = createSlice({
         AlertBox(
           "success",
           "Cart Update",
-          "Item successfully added to your cart.44"
+          "Item successfully added to your cart."
         );
         saveCartToStorage(state.cartArray);
       } else {
@@ -129,11 +129,15 @@ const cartItemSlices = createSlice({
         }
         return product;
       });
-      console.log(updatedCartItems);
 
       state.cartArray = updatedCartItems;
       saveCartToStorage(updatedCartItems);
     },
+    clearCart: (state) => {
+      state.cartArray = [];
+      state.subTotal = 0;
+      saveCartToStorage([]);
+    }
   },
 });
 
@@ -143,6 +147,7 @@ export const {
   addToCart,
   removeCart,
   updateCartQuntity,
+  clearCart
 } = cartItemSlices.actions;
 
 export default cartItemSlices.reducer;

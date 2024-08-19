@@ -112,7 +112,6 @@ const productBuyDetails = createSlice({
     },
     clearUploadedImage: (state, action) => {
       const { index, isPhysical } = action.payload;
-      console.log(index);
 
       if (isPhysical) {
         if (state.physicalArt.uploadedImage.length > 0) {
@@ -175,6 +174,7 @@ const productBuyDetails = createSlice({
     clearStates: (state) => {
       state.digitalArt = DIGITAL_ART;
       state.physicalArt = PHISICAL_ART;
+      localStorage.removeItem("persist:selectedProductInfo");
     },
     updateEditForms: (state, action) => {
       const { isPhysicalArt } = action.payload;
@@ -199,7 +199,11 @@ const productBuyDetails = createSlice({
       // state.previewState.images = [...state.previewState.images, imageLinks];
 
       if (isPhysical) {
-        state.physicalArt.uploadedImage = imageUrl;
+        // state.physicalArt.uploadedImage = imageUrl;
+        state.physicalArt.uploadedImage = [
+          ...state.physicalArt.uploadedImage,
+          imageUrl,
+        ];
       } else {
         // state.digitalArt.uploadedImage = imageUrl;
         state.digitalArt.uploadedImage = [

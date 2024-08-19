@@ -11,6 +11,7 @@ import {
   removeCart,
   updateCartQuntity,
   updateSubTotal,
+  clearCart,
 } from "../../redux/reducers/cartItemReducer";
 import { setIsModalOpen } from "../../redux/reducers/signModelReducer";
 import {
@@ -20,6 +21,7 @@ import {
 import Footer from "../Footer";
 import { Loader } from "rsuite";
 import BounceLoader from "react-spinners/BounceLoader";
+import AlertBox from "../AlertBox";
 
 Modal.setAppElement("#root");
 
@@ -64,49 +66,54 @@ const Cart = () => {
     if (!signIn) {
       dispatch(setIsModalOpen());
     } else {
-      const formatCartItemsForPayment = (cartArray) => {
-        return cartArray.map((item) => ({
-          // size: item.size ? item.size.size : null,
-          artworkId: item.artworkId,
-          category: item.category,
-          designerNote: item.designerNote,
-          eachPrice: item.eachPrice,
-          figure: item.figure ? item.figure.name : null,
-          numOfPersons: item.numOfPersons ? item.numOfPersons.name : null,
-          style: item.style ? item.style.type : null,
-          physicalArt: item.isPhysicalArt,
-          // material: item.material,
-          // materials: item.materials,
-          price: item.price,
-          total: item.total,
-          uploadedImage: item.uploadedImage,
-          productImage: item.productImage,
-          quantity: item.quantity,
-          materialAndSize:
-            (item.material ? item.material : null) +
-            " " +
-            (item.size ? item.size.size : null),
-          reviewStatus: false,
-        }));
-      };
-      const items = formatCartItemsForPayment(cartArray);
-      const orderedDate = new Date().toISOString();
-      const completedDate = new Date();
-      completedDate.setDate(completedDate.getDate() + 5);
-      const completedDateISO = completedDate.toISOString();
+      if (cartArray && cartArray.length > 0) {
+        const formatCartItemsForPayment = (cartArray) => {
+          return cartArray.map((item) => ({
+            // size: item.size ? item.size.size : null,
+            artworkId: item.artworkId,
+            category: item.category,
+            designerNote: item.designerNote,
+            eachPrice: item.eachPrice,
+            figure: item.figure ? item.figure.name : null,
+            numOfPersons: item.numOfPersons ? item.numOfPersons.name : null,
+            style: item.style ? item.style.type : null,
+            physicalArt: item.isPhysicalArt,
+            // material: item.material,
+            // materials: item.materials,
+            price: item.price,
+            total: item.total,
+            uploadedImage: item.uploadedImage,
+            productImage: item.productImage,
+            quantity: item.quantity,
+            materialAndSize:
+              (item.material ? item.material : null) +
+              " " +
+              (item.size ? item.size.size : null),
+            reviewStatus: false,
+          }));
+        };
+        const items = formatCartItemsForPayment(cartArray);
+        const orderedDate = new Date().toISOString();
+        const completedDate = new Date();
+        completedDate.setDate(completedDate.getDate() + 5);
+        const completedDateISO = completedDate.toISOString();
 
-      dispatch(
-        userPayment({
-          orderTransaction: false,
-          orderStatus: false,
-          orderedDate: orderedDate,
-          completedDate: completedDateISO,
-          customerName: userProfile.name,
-          customerEmail: userProfile.email,
-          items: items,
-        })
-      );
-      setProceed(true);
+        dispatch(
+          userPayment({
+            orderTransaction: false,
+            orderStatus: false,
+            orderedDate: orderedDate,
+            completedDate: completedDateISO,
+            customerName: userProfile.name,
+            customerEmail: userProfile.email,
+            items: items,
+          })
+        );
+        dispatch(clearCart());
+        setProceed(true);
+      } else {
+        AlertBox("error", "Error", "Cart cannot be empty");
+      }
     }
   };
 
