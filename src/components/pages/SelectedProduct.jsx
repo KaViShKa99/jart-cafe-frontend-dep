@@ -20,6 +20,10 @@ const SelectedProduct = () => {
   useEffect(() => {
     dispatch(fetchSelectedProduct(id));
     dispatch(getProductReviews(id));
+    const nextSection = document.querySelector(".selected-products");
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: "smooth" });
+    }
   }, [dispatch]);
 
   return (

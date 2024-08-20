@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { fetchProducts } from "../../redux/reducers/productsReducer";
 import Footer from "../Footer";
 import { IoPaperPlaneOutline } from "react-icons/io5";
+// import { motion } from "framer-motion";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,10 @@ const Home = () => {
             of Pop Art, Vector Art, and Portraits offers something for every
             taste. Start your art journey with us today!
           </p>
-          <button className="learn-more-btn" onClick={handleScrollToNextSection}>
+          <button
+            className="learn-more-btn"
+            onClick={handleScrollToNextSection}
+          >
             Shop Now
           </button>
         </div>
