@@ -8,6 +8,8 @@ export const updateItem = createAsyncThunk(
   async (data, { getState, rejectWithValue }) => {
     const state = getState();
     const id = state.admin.editId;
+    console.log(data);
+
     const formData = {
       ...data,
       category: data.category.name,
@@ -44,6 +46,21 @@ export const uploadImages = createAsyncThunk(
     formData.append("file", file);
     // return await apiRequest("/images/upload", "POST", formData);
     return await apiRequest("/images/upload/artwork", "POST", formData);
+  }
+);
+
+export const createArtwork = createAsyncThunk(
+  "admin/createArtwork",
+  async (data, { rejectWithValue }) => {
+    const cleanedMaterials = data.materials.map(
+      ({ expanded, ...rest }) => rest
+    );
+    const cleanedData = {
+      ...data,
+      category: data.category.name,
+      materials: cleanedMaterials,
+    };
+    return await apiRequest("/artworks", "POST", cleanedData);
   }
 );
 
@@ -157,8 +174,8 @@ const adminSlices = createSlice({
       state.setEdit = false;
       state.previewState = PREVIEW_STATE;
     },
-    enableEdit: (state, action) => {
-      state.setEdit = action.payload;
+    enableEdit: (state) => {
+      state.setEdit = true;
     },
     handleReset: (state, action) => {
       state.previewState = PREVIEW_STATE;

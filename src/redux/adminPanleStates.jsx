@@ -10,8 +10,8 @@ const initializeMaterialsSizes = () => {
 
 export const PREVIEW_STATE = {
   category: "",
-  title: "",
   description: "",
+  title: "",
   price: "",
   lastPrice: 0,
   images: [],

@@ -3,6 +3,7 @@ import { categories, materials, commonSizes } from "../../data/Data";
 import JoditEditor from "jodit-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  createArtwork,
   handleReset,
   enableEdit,
   updateItem,
@@ -77,7 +78,6 @@ export const Admin = () => {
   const imageLinkAdd = (e) => {
     e.preventDefault();
     dispatch(handleLinkChange(imageLinks));
-    console.log(imageLinks);
     setImageLinks("");
   };
 
@@ -121,9 +121,14 @@ export const Admin = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(updateItem(previewState));
-    dispatch(enableEdit(false));
-    dispatch(handleReset());
+    if (setEdit) {
+      dispatch(updateItem(previewState));
+      dispatch(handleReset());
+      dispatch(cancelEdit());
+    } else {
+      dispatch(createArtwork(previewState));
+      dispatch(handleReset());
+    }
   };
 
   const handleEdit = (artwork) => {
